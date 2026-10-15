@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="referrer" content="no-referrer">
 <title>سامانه پیگیری وضعیت دانش‌آموز</title>
-<link rel="icon" href="assets/Logo.jpg">
+<link rel="icon" href="assets/Logo.png">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
@@ -34,9 +34,9 @@ body{font-family:'Vazirmatn',Tahoma,sans-serif;min-height:100vh;padding:28px 16p
 
 /* hero + cards */
 .hero{text-align:center;padding:18px 8px 18px}
-.logo{width:112px;height:112px;border-radius:30px;margin:0 auto 14px;display:grid;place-items:center;font-size:40px;background:#fff;padding:6px;overflow:hidden;box-shadow:0 12px 30px var(--shadow)}
-.logo img{width:100%;height:100%;object-fit:contain;display:block}
-.ap-logo{width:48px;height:48px;border-radius:14px;background:#fff;padding:3px;object-fit:contain;box-shadow:0 4px 14px var(--shadow);flex:none}
+.logo{width:130px;height:150px;margin:0 auto 10px;display:grid;place-items:center;font-size:48px}
+.logo img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 8px 14px rgba(10,22,71,.28))}
+.ap-logo{height:58px;width:auto;object-fit:contain;filter:drop-shadow(0 3px 6px rgba(10,22,71,.3));flex:none}
 .hero h1{font-size:25px;font-weight:800;margin-bottom:8px;color:var(--text)}
 .hero p{color:var(--soft);font-size:14px;line-height:2}
 .card{background:var(--card);border:1px solid var(--card-b);border-radius:22px;padding:20px;margin-bottom:16px;box-shadow:0 14px 40px var(--shadow);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
@@ -131,6 +131,7 @@ td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:
 .arow label{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--soft);flex:1;min-width:140px}
 .panel-card input,.panel-card select,.panel-card textarea{padding:9px 11px;font-size:13.5px}
 .tm{display:flex;gap:4px;align-items:center;min-width:150px}
+.tinp{width:84px;min-width:84px;text-align:center;direction:ltr;font-variant-numeric:tabular-nums}
 .seg{display:inline-flex;background:var(--chip);border-radius:999px;padding:3px;gap:2px}
 .seg button{font:inherit;font-size:13px;border:0;background:transparent;padding:6px 14px;border-radius:999px;cursor:pointer;color:var(--soft)}
 .seg button.p.on{background:#10916a;color:#fff}.seg button.a.on{background:#c43d3d;color:#fff}.seg button.l.on{background:#c98a10;color:#fff}
@@ -155,7 +156,7 @@ td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:
 
 <div class="container">
   <div class="hero">
-    <div class="logo"><img src="assets/Logo.jpg" alt="لوگوی دبیرستان شهید حسن باقری" onerror="this.parentNode.textContent='🏫'"></div>
+    <div class="logo"><img src="assets/Logo.png" alt="لوگوی دبیرستان شهید حسن باقری" onerror="this.parentNode.textContent='🏫'"></div>
     <h1>پیگیری وضعیت دانش‌آموز</h1>
     <p>برای مشاهده‌ی حضور و غیاب، ساعت ورود و خروج و زمان مطالعه‌ی فرزندتان،<br>نام کامل و کد ملی او را وارد کنید.</p>
   </div>
@@ -175,8 +176,7 @@ td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:
       <div class="grid">
         <div class="item" id="rSt"><span>وضعیت امروز</span><b></b></div>
         <div class="item"><span>زمان مطالعه</span><b id="rStudy">—</b></div>
-        <div class="item"><span>ساعت ورود</span><b id="rIn">—</b></div>
-        <div class="item"><span>ساعت خروج</span><b id="rOut">—</b></div>
+        <div class="item wide"><span>ورود و خروج امروز</span><b id="rIO" style="font-size:15px;font-weight:600;line-height:1.9">—</b></div>
         <div class="item"><span>درس‌های امروز</span><b id="rLes">—</b></div>
         <div class="item"><span>تست‌های امروز</span><b id="rTst">—</b></div>
         <div class="item wide"><span>توضیحات</span><b id="rNote" style="font-size:14px;font-weight:500">—</b></div>
@@ -239,7 +239,7 @@ td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:
       <input id="sq" placeholder="🔍 جستجوی دانش‌آموز (نام یا کد ملی)">
       <span class="chipd hide-sm" id="date"></span>
       <button class="abtn ghost" onclick="closePanel()">خروج از حساب</button>
-      <img class="ap-logo" src="assets/Logo.jpg" alt="لوگو" onerror="this.remove()">
+      <img class="ap-logo" src="assets/Logo.png" alt="لوگو" onerror="this.remove()">
     </div>
 
     <section id="dash">
@@ -277,7 +277,7 @@ td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:
     <section id="io" class="hide">
       <div class="panel-card">
         <h4>چک‌لیست ورود و خروج امروز</h4>
-        <p class="muted" style="margin-bottom:12px">با دکمه‌ی «اکنون» ساعت همین لحظه ثبت می‌شود یا می‌توانید دستی وارد کنید. با ثبت ساعت ورود، وضعیت دانش‌آموز خودکار «حاضر» می‌شود.</p>
+        <p class="muted" style="margin-bottom:12px">ساعت را ۲۴ ساعته وارد کنید، مثلاً ورود 14:00 و خروج 20:00 (فقط ارقام هم کافی است: 1400 یا 14). با دکمه‌ی «اکنون» ساعت همین لحظه ثبت می‌شود. با ثبت ساعت ورود، وضعیت دانش‌آموز خودکار «حاضر» می‌شود.</p>
         <table><thead><tr><th>نام</th><th>ساعت ورود</th><th>ساعت خروج</th><th>مطالعه (دقیقه)</th><th>درس</th><th>تست</th><th>توضیح</th></tr></thead><tbody id="ioBody"></tbody></table>
       </div>
     </section>
@@ -326,7 +326,8 @@ td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:
       </div>
       <div class="panel-card" style="margin-top:14px">
         <h4>پیامک چک‌لیست ورود و خروج (پایان روز)</h4>
-        <label class="f" style="margin-bottom:12px">متن پیامک ({نام} ، {ورود} ، {خروج} ، {مطالعه})<textarea id="tplIO" rows="2">اولیای محترم، دانش‌آموز {نام} امروز ساعت {ورود} وارد و ساعت {خروج} خارج شد. زمان مطالعه: {مطالعه}</textarea></label>
+        <label class="f" style="margin-bottom:12px">متن پیامک ({نام} ، {ورود_و_خروج} ، {مطالعه})<textarea id="tplIO" rows="2">اولیای محترم، دانش‌آموز {نام} امروز {ورود_و_خروج}. زمان مطالعه: {مطالعه}</textarea></label>
+        <p class="muted" style="margin:-4px 0 12px">{ورود_و_خروج} خودکار نوشته می‌شود؛ مثلاً «ساعت ۱۴:۰۰ وارد مدرسه شد و ساعت ۲۰:۰۰ از مدرسه خارج شد». {ورود} و {خروج} هم جداگانه قابل استفاده‌اند.</p>
         <div id="ioSms"></div>
         <button class="abtn" onclick="fake('پیامک چک‌لیست')">ارسال به اولیا</button>
       </div>
@@ -357,6 +358,23 @@ const cnt=n=>n?fa(n):'—';
 const enDigits=s=>String(s||'').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).trim();
 const normName=s=>String(s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/\u200c/g,' ').replace(/\s+/g,' ').trim();
 const stTxt={p:'حاضر',a:'غایب',l:'تأخیر'};
+/* جمله‌ی ورود و خروج: «ساعت ۱۴:۰۰ وارد مدرسه شد و ساعت ۲۰:۰۰ از مدرسه خارج شد» (در صفحه‌ی اولیا و پیامک یکسان) */
+const inOutSentence=r=>{
+  r=r||{};
+  if(r.in&&r.out)return `ساعت ${fa(r.in)} وارد مدرسه شد و ساعت ${fa(r.out)} از مدرسه خارج شد`;
+  if(r.in)return `ساعت ${fa(r.in)} وارد مدرسه شد و هنوز خارج نشده است`;
+  if(r.out)return `ساعت ${fa(r.out)} از مدرسه خارج شد`;
+  return '';
+};
+/* ساعت ۲۴ ساعته: 14:00 ، 1400 ، 14 ، ۱۴:۰۰ ، 8:30 همگی پذیرفته می‌شوند. خالی = پاک‌کردن، null = نامعتبر */
+function normTime(v){
+  v=enDigits(String(v||'')).replace(/[:٫.\s]/g,'');
+  if(!v)return '';
+  if(!/^\d{1,4}$/.test(v))return null;
+  const h=v.length<=2?+v:+v.slice(0,-2),m=v.length<=2?0:+v.slice(-2);
+  if(h>23||m>59)return null;
+  return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+}
 const toast=t=>{const x=$('#toast');x.textContent=t;x.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>x.classList.remove('show'),2400)};
 const fake=t=>toast(t+' (نمایشی) ارسال شد ✓');
 const safe=f=>async function(...a){try{return await f.apply(this,a)}catch(e){if(e)console.error(e)}};
@@ -401,8 +419,7 @@ async function load(week){
   $('#rDate').textContent=pf(d.today,{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   const box=$('#rSt');box.className='item'+(x.st?' st-'+x.st:'');box.querySelector('b').textContent=x.st?stTxt[x.st]:'هنوز ثبت نشده';
   $('#rStudy').textContent=dur(x.study);$('#rLes').textContent=cnt(x.lessons);$('#rTst').textContent=cnt(x.tests);
-  $('#rIn').textContent=x.in?fa(x.in):'—';
-  $('#rOut').textContent=x.out?fa(x.out):(x.in?'هنوز خارج نشده':'—');
+  $('#rIO').textContent=inOutSentence(x)?inOutSentence(x)+'.':'—';
   $('#rNote').textContent=x.note||'—';
 
   const w=d.week,fmt={year:'numeric',month:'long',day:'numeric'};
@@ -563,8 +580,8 @@ function render(){
   const nf=(s,f,r,ph)=>`<input type="number" min="0" data-id="${s.id}" data-f="${f}" value="${r[f]||''}" placeholder="${ph}" style="min-width:70px">`;
   $('#ioBody').innerHTML=F().map(s=>{const r=Rc(s.id);return `<tr>
     <td>${esc(s.name)}</td>
-    <td><div class="tm"><input type="time" data-id="${s.id}" data-f="in" value="${esc(r.in||'')}"><button class="abtn ghost sm" data-now="in" data-id="${s.id}">اکنون</button></div></td>
-    <td><div class="tm"><input type="time" data-id="${s.id}" data-f="out" value="${esc(r.out||'')}"><button class="abtn ghost sm" data-now="out" data-id="${s.id}">اکنون</button></div></td>
+    <td><div class="tm"><input class="tinp" inputmode="numeric" maxlength="5" autocomplete="off" placeholder="14:00" data-id="${s.id}" data-f="in" value="${esc(r.in||'')}"><button class="abtn ghost sm" data-now="in" data-id="${s.id}">اکنون</button></div></td>
+    <td><div class="tm"><input class="tinp" inputmode="numeric" maxlength="5" autocomplete="off" placeholder="20:00" data-id="${s.id}" data-f="out" value="${esc(r.out||'')}"><button class="abtn ghost sm" data-now="out" data-id="${s.id}">اکنون</button></div></td>
     <td>${nf(s,'study',r,'مثلاً ۱۲۰')}</td><td>${nf(s,'lessons',r,'۰')}</td><td>${nf(s,'tests',r,'۰')}</td>
     <td><input data-id="${s.id}" data-f="note" maxlength="200" value="${esc(r.note||'')}" placeholder="توضیح"></td></tr>`}).join('');
 
@@ -579,7 +596,7 @@ function render(){
   const ta=$('#tplAbs').value,ti=$('#tplIO').value,td=todayFa();
   $('#absSms').innerHTML=abs.length?abs.map(s=>`<div class="sms"><em>به: ${fa(esc(s.par))} (ولی ${esc(s.name)})</em>${esc(ta.replaceAll('{نام}',s.name).replaceAll('{تاریخ}',td))}</div>`).join(''):'<p class="muted" style="margin-bottom:10px">غایبی ثبت نشده است.</p>';
   const withIO=S().filter(s=>{const r=Rc(s.id);return r.in||r.out});
-  $('#ioSms').innerHTML=withIO.length?withIO.map(s=>{const r=Rc(s.id);return `<div class="sms"><em>به: ${fa(esc(s.par))} (ولی ${esc(s.name)})</em>${esc(ti.replaceAll('{نام}',s.name).replaceAll('{ورود}',r.in?fa(r.in):'—').replaceAll('{خروج}',r.out?fa(r.out):'—').replaceAll('{مطالعه}',dur(r.study)))}</div>`}).join(''):'<p class="muted" style="margin-bottom:10px">ورود یا خروجی ثبت نشده است.</p>';
+  $('#ioSms').innerHTML=withIO.length?withIO.map(s=>{const r=Rc(s.id);return `<div class="sms"><em>به: ${fa(esc(s.par))} (ولی ${esc(s.name)})</em>${esc(ti.replaceAll('{نام}',s.name).replaceAll('{ورود_و_خروج}',inOutSentence(r)).replaceAll('{ورود}',r.in?fa(r.in):'—').replaceAll('{خروج}',r.out?fa(r.out):'—').replaceAll('{مطالعه}',dur(r.study)))}</div>`}).join(''):'<p class="muted" style="margin-bottom:10px">ورود یا خروجی ثبت نشده است.</p>';
 }
 
 function dash(){
@@ -627,8 +644,16 @@ $('#allP').onclick=safe(async()=>{
 const nowT=()=>{const n=new Date();return String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')};
 $('#ioBody').addEventListener('click',safe(async e=>{const b=e.target.closest('[data-now]');if(!b)return;
   await setRec(+b.dataset.id,{[b.dataset.now]:nowT()});render();toast('ساعت ثبت شد')}));
-$('#ioBody').addEventListener('change',safe(async e=>{const i=e.target;if(!i.dataset.f)return;
-  await setRec(+i.dataset.id,{[i.dataset.f]:i.value.trim()});if(i.dataset.f==='in'||i.dataset.f==='out')render()}));
+$('#ioBody').addEventListener('change',safe(async e=>{const i=e.target;if(!i.dataset.f)return;const f=i.dataset.f,id=+i.dataset.id;
+  if(f==='in'||f==='out'){
+    const t=normTime(i.value);
+    if(t===null){toast('ساعت را ۲۴ ساعته وارد کنید؛ مثلاً 14:00 یا 20:00');render();return}
+    const o=Rc(id),inT=f==='in'?t:o.in,outT=f==='out'?t:o.out;
+    await setRec(id,{[f]:t});render();
+    if(inT&&outT&&outT<=inT)toast('⚠️ ساعت خروج قبل از ورود است؛ لطفاً بررسی کنید');
+    return;
+  }
+  await setRec(id,{[f]:i.value.trim()})}));
 
 $('#nAdd').onclick=safe(async()=>{
   const name=normName($('#nName').value),nid=enDigits($('#nNid').value),phone=enDigits($('#nPhone').value),par=enDigits($('#nPar').value);

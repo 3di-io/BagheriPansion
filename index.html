@@ -1,11 +1,649 @@
-<!doctype html>
-<!-- یک فایل، دو صفحه: «/» = پورتال اولیا ، «#admin» = پنل مدیریت. داده‌ها در Supabase (فایل supabase.sql). -->
-<meta charset="utf-8">
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>سامانه پیگیری وضعیت دانش‌آموز</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js" defer></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+/* پس‌زمینه: ترتیب عمداً این‌طور است تا نسخه‌ی استاندارد آخر بیاید و در همه‌ی مرورگرها جهت چپ‌به‌راست درست باشد */
+:root{--text:#0f1a3d;--soft:#4f5a7d;--dim:#7a84a3;
+  --glass:rgba(255,255,255,.94);--glass-b:rgba(10,22,71,.14);--accent:#0A1647;--accent-2:#0A1647;--on-accent:#fff;
+  --input-bg:#fff;--input-b:#cfd5e4;--card:rgba(255,255,255,.94);--card-b:rgba(10,22,71,.10);
+  --shadow:rgba(10,22,71,.22);--ok:#1f9d63;--bad:#d64545;--late:#d99a1b;--chip:#f0f3fa;--hover:rgba(10,22,71,.06)}
+html{min-height:100%}
+body{font-family:'Vazirmatn',Tahoma,sans-serif;min-height:100vh;padding:28px 16px 40px;color:var(--text);position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  background:hsla(212, 35%, 58%, 1);
+  background:-moz-linear-gradient(90deg, hsla(212, 35%, 58%, 1) 0%, hsla(218, 32%, 80%, 1) 100%);
+  background:-webkit-linear-gradient(90deg, hsla(212, 35%, 58%, 1) 0%, hsla(218, 32%, 80%, 1) 100%);
+  background:linear-gradient(90deg, hsla(212, 35%, 58%, 1) 0%, hsla(218, 32%, 80%, 1) 100%);
+  filter:progid:DXImageTransform.Microsoft.gradient( startColorstr="#6D90B9", endColorstr="#BBC7DC", GradientType=1 );
+  background-attachment:fixed}
+.hide{display:none!important}
+.admin-link{all:unset;cursor:pointer;display:block;text-align:center;margin:22px auto 0;font-size:12.5px;color:var(--soft);padding:6px 14px;border-radius:999px}
+.admin-link:hover{background:rgba(255,255,255,.35);color:var(--text)}
+.ltr{direction:ltr;text-align:right}
+.container{max-width:720px;margin:0 auto;position:relative;z-index:1}
+
+/* hero + cards */
+.hero{text-align:center;padding:18px 8px 18px}
+.logo{width:68px;height:68px;border-radius:22px;margin:0 auto 14px;display:grid;place-items:center;font-size:32px;background:var(--accent);box-shadow:0 12px 30px var(--shadow)}
+.hero h1{font-size:25px;font-weight:800;margin-bottom:8px;color:var(--text)}
+.hero p{color:var(--soft);font-size:14px;line-height:2}
+.card{background:var(--card);border:1px solid var(--card-b);border-radius:22px;padding:20px;margin-bottom:16px;box-shadow:0 14px 40px var(--shadow);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--soft)}
+input,select,textarea{font:inherit;color:var(--text);padding:12px 14px;border:1px solid var(--input-b);border-radius:13px;background:var(--input-bg);outline:none;width:100%;transition:.15s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(44,75,214,.18)}
+select option{color:#111}
+.btn{font:inherit;cursor:pointer;border:0;padding:13px 18px;border-radius:13px;background:var(--accent);color:var(--on-accent);font-size:15px;font-weight:700;width:100%;margin-top:14px;transition:.15s}
+.btn:hover{filter:brightness(1.12)}.btn:disabled{opacity:.6;cursor:wait}
+.err{color:var(--bad);font-size:13.5px;margin-top:12px;line-height:1.9;min-height:4px}
+.note{font-size:12px;color:var(--soft);line-height:1.9;text-align:center;margin-top:8px}
+.name{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.name i{width:48px;height:48px;border-radius:15px;background:var(--chip);border:1px solid var(--card-b);display:grid;place-items:center;font-style:normal;font-size:22px}
+.name h2{font-size:18px}.name span{font-size:12.5px;color:var(--soft)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.item{background:var(--chip);border:1px solid var(--card-b);border-radius:15px;padding:13px 14px}
+.item span{font-size:12px;color:var(--soft);display:block;margin-bottom:4px}.item b{font-size:17px}.item.wide{grid-column:1/-1}
+.st-p b{color:var(--ok)}.st-a b{color:var(--bad)}.st-l b{color:var(--late)}
+h3{font-size:15px;margin:2px 0 12px;color:var(--accent-2)}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
+th{font-weight:600;color:var(--soft);font-size:12px;text-align:right;padding:8px;border-bottom:1px solid var(--card-b)}
+td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:last-child td{border-bottom:0}
+.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;color:#fff}
+.pill.p{background:#10916a}.pill.a{background:#c43d3d}.pill.l{background:#c98a10}.pill.t{background:var(--accent);color:var(--on-accent)}
+.plan{background:var(--chip);border:1px solid var(--card-b);border-radius:15px;padding:13px 14px;margin-bottom:10px}
+.plan p{white-space:pre-wrap;line-height:1.9;font-size:13.5px;margin-top:6px}.plan small{color:var(--dim);margin-inline-start:8px}
+.sum{font-size:14px;line-height:2;margin:10px 0 12px;color:var(--soft)}
+
+/* login modal */
+.modal{position:fixed;inset:0;z-index:70;display:none;place-items:center;padding:20px;background:rgba(10,22,71,.55)}
+.modal.show{display:grid}
+.lg-card{position:relative;width:100%;max-width:380px;background:var(--glass);border:1px solid var(--glass-b);border-radius:26px;padding:28px 22px 22px;box-shadow:0 24px 70px var(--shadow);text-align:center}
+.x{all:unset;cursor:pointer;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:22px;color:var(--soft)}.x:hover{background:var(--hover)}
+.lg-card .x{position:absolute;top:12px;inset-inline-start:12px}
+.lg-badge{width:56px;height:56px;border-radius:18px;margin:0 auto 12px;display:grid;place-items:center;background:var(--chip);color:var(--accent-2);border:1px solid var(--card-b)}
+.lg-badge svg{width:28px;height:28px}
+.lg-card h2{font-size:19px;margin-bottom:6px}.lg-sub{font-size:13px;color:var(--soft);line-height:1.9;margin-bottom:16px}
+.lg-card input{margin-bottom:10px;text-align:right}
+.lg-cancel{all:unset;cursor:pointer;display:block;margin:10px auto 0;font-size:13px;color:var(--dim)}
+
+/* admin panel */
+.admin-panel{position:fixed;inset:0;z-index:60;display:none;grid-template-columns:232px 1fr;color:var(--text);background:hsla(212, 35%, 58%, 1);background:-webkit-linear-gradient(90deg, hsla(212, 35%, 58%, 1) 0%, hsla(218, 32%, 80%, 1) 100%);background:linear-gradient(90deg, hsla(212, 35%, 58%, 1) 0%, hsla(218, 32%, 80%, 1) 100%)}
+.admin-panel.open{display:grid}
+.ap-side{background:var(--glass);border-inline-end:1px solid var(--glass-b);padding:18px 12px;display:flex;flex-direction:column;gap:6px;overflow:auto}
+.ap-brand{font-weight:800;font-size:16px;padding:6px 10px 12px;color:var(--accent-2)}
+.ap-side button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:13px;font-size:14px;color:var(--soft);transition:.12s}
+.ap-side button:hover{background:var(--hover);color:var(--text)}
+.ap-side button.on{background:var(--accent);color:var(--on-accent);font-weight:700}
+.ap-main{overflow:auto;padding:16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.ap-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ap-top h2{font-size:22px;font-weight:800;margin-inline-end:auto}
+.ap-top input{max-width:300px;padding:9px 14px;border-radius:999px}
+.chipd{background:var(--chip);padding:7px 14px;border-radius:999px;font-size:12.5px;color:var(--soft)}
+.abtn{font:inherit;cursor:pointer;border:0;padding:9px 16px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:13.5px;font-weight:700;white-space:nowrap}
+.abtn:hover{filter:brightness(1.12)}.abtn.ghost{background:var(--chip);color:var(--text);border:1px solid var(--card-b)}.abtn.danger{background:var(--bad);color:#fff}.abtn.sm{padding:6px 12px;font-size:12px}
+.panel-card{background:var(--card);border:1px solid var(--card-b);border-radius:20px;padding:18px;overflow-x:auto}
+.panel-card h4{font-size:15px;margin-bottom:12px;color:var(--accent-2)}
+.g{display:grid;gap:14px}.g3{grid-template-columns:1.7fr 1fr 1fr}.g2{grid-template-columns:1fr 1fr}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.stat{position:relative;background:var(--card);border:1px solid var(--card-b);border-radius:18px;padding:14px}
+.stat span{font-size:13px;font-weight:600;color:var(--soft)}.stat b{display:block;font-size:34px;font-weight:800;margin:6px 0 6px;line-height:1}.stat small{font-size:11.5px;color:var(--dim)}
+.stat.ok b{color:var(--ok)}.stat.bad b{color:var(--bad)}.stat.late b{color:var(--late)}
+.stat.hl{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}.stat.hl span,.stat.hl small{color:inherit;opacity:.85}
+.bars{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;height:200px}
+.bw{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;color:var(--soft)}
+.bz{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.bp{width:100%;max-width:50px;border-radius:999px;background:linear-gradient(#5b72c4,var(--accent));color:var(--on-accent);font-size:11px;display:flex;justify-content:center;padding-top:8px}
+.bp.t{outline:2px solid var(--accent-2);outline-offset:2px}
+.bp.h{background:repeating-linear-gradient(135deg,var(--dim) 0 3px,transparent 3px 7px);border:1.5px solid var(--card-b)}
+.dn{position:relative;max-width:240px;margin:6px auto 0}.dn svg{width:100%;display:block}
+.dpct{position:absolute;inset-inline:0;bottom:2px;text-align:center}.dpct b{font-size:28px;font-weight:800;display:block;line-height:1.1}.dpct span{font-size:12px;color:var(--soft)}
+.lg{display:flex;justify-content:center;gap:12px;font-size:12px;color:var(--soft);margin-top:10px;flex-wrap:wrap}
+.lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-inline-end:5px}
+.dk{border-radius:18px;padding:18px;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;background:var(--accent);color:var(--on-accent)}
+.dk h4{color:inherit;margin:0}.dk big{display:block;font-size:28px;font-weight:800;line-height:1.4}
+.dk .r{display:flex;gap:10px}.dk .r div{flex:1;background:rgba(255,255,255,.18);border-radius:13px;padding:10px 12px;font-size:12px}.dk .r b{display:block;font-size:20px}
+.mx{display:grid;grid-template-columns:170px repeat(7,minmax(46px,1fr));gap:6px;min-width:560px;align-items:center}
+.dh{background:var(--chip);border:1px solid var(--card-b);border-radius:11px;text-align:center;font-size:11.5px;padding:5px 0;line-height:1.5}
+.dh.t{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}.dh.w{opacity:.6}
+.pn{display:flex;align-items:center;gap:8px;font-size:13px;white-space:nowrap}
+.av{width:30px;height:30px;border-radius:50%;background:var(--chip);border:1px solid var(--card-b);display:inline-grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+.c{height:38px;border-radius:11px;background:var(--chip);display:grid;place-items:center;font-size:11px;color:#fff;font-weight:600}
+.c.p{background:#10916a}.c.a{background:#c43d3d}.c.l{background:#c98a10}
+.c.w{background:repeating-linear-gradient(135deg,var(--chip) 0 4px,transparent 4px 8px)}.c.t{outline:2px dashed var(--accent);outline-offset:2px}
+.li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--chip)}.li:last-child{border:0}
+.chip{font-size:11.5px;padding:3px 10px;border-radius:999px;background:var(--chip);color:var(--soft);white-space:nowrap}.chip.ok{color:var(--ok)}
+.arow{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.arow label{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--soft);flex:1;min-width:140px}
+.panel-card input,.panel-card select,.panel-card textarea{padding:9px 11px;font-size:13.5px}
+.tm{display:flex;gap:4px;align-items:center;min-width:150px}
+.seg{display:inline-flex;background:var(--chip);border-radius:999px;padding:3px;gap:2px}
+.seg button{font:inherit;font-size:13px;border:0;background:transparent;padding:6px 14px;border-radius:999px;cursor:pointer;color:var(--soft)}
+.seg button.p.on{background:#10916a;color:#fff}.seg button.a.on{background:#c43d3d;color:#fff}.seg button.l.on{background:#c98a10;color:#fff}
+.tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;background:var(--chip);margin:3px}
+.sms{background:var(--chip);border:1px dashed var(--card-b);border-radius:14px;padding:12px;font-size:13.5px;line-height:1.9;margin-bottom:10px}
+.sms em{font-style:normal;color:var(--dim);font-size:12px;display:block;margin-bottom:4px}
+.plan .h{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.plan .h b{flex:1}
+.muted{color:var(--dim);font-size:12.5px;line-height:1.9}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--accent);color:var(--on-accent);padding:11px 20px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+@media(max-width:960px){
+  .admin-panel.open{display:block}
+  .ap-side{position:fixed;bottom:0;inset-inline:0;z-index:5;flex-direction:row;padding:6px;border-radius:20px 20px 0 0;border-inline-end:0;border-top:1px solid var(--glass-b);overflow-x:auto}
+  .ap-brand{display:none}.ap-side button{flex:1;flex-direction:column;gap:2px;font-size:11px;padding:8px 4px;justify-content:center;text-align:center;white-space:nowrap}
+  .ap-main{position:absolute;inset:0;padding-bottom:90px}
+  .g3,.g2{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.hide-sm{display:none}
+}
+@media(max-width:520px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="hero">
+    <div class="logo">🏫</div>
+    <h1>پیگیری وضعیت دانش‌آموز</h1>
+    <p>برای مشاهده‌ی حضور و غیاب، ساعت ورود و خروج و زمان مطالعه‌ی فرزندتان،<br>نام کامل و کد ملی او را وارد کنید.</p>
+  </div>
+
+  <form class="card" id="f" autocomplete="off">
+    <div class="row">
+      <label class="f">نام و نام خانوادگی دانش‌آموز<input id="q" placeholder="مثلاً علی رضایی" required></label>
+      <label class="f">کد ملی دانش‌آموز<input id="nid" inputmode="numeric" maxlength="10" class="ltr" placeholder="۱۰ رقم" required></label>
+    </div>
+    <button class="btn" id="go">مشاهده‌ی اطلاعات</button>
+    <div class="err" id="err" role="alert"></div>
+  </form>
+
+  <div id="res" class="hide">
+    <div class="card">
+      <div class="name"><i>🎓</i><div><h2 id="rName"></h2><span id="rDate"></span></div></div>
+      <div class="grid">
+        <div class="item" id="rSt"><span>وضعیت امروز</span><b></b></div>
+        <div class="item"><span>زمان مطالعه</span><b id="rStudy">—</b></div>
+        <div class="item"><span>ساعت ورود</span><b id="rIn">—</b></div>
+        <div class="item"><span>ساعت خروج</span><b id="rOut">—</b></div>
+        <div class="item"><span>درس‌های امروز</span><b id="rLes">—</b></div>
+        <div class="item"><span>تست‌های امروز</span><b id="rTst">—</b></div>
+        <div class="item wide"><span>توضیحات</span><b id="rNote" style="font-size:14px;font-weight:500">—</b></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>خلاصه‌ی هفتگی</h3>
+      <select id="wk"><option value="0">هفته‌ی جاری</option><option value="1">هفته‌ی قبل</option><option value="2">دو هفته‌ی قبل</option><option value="3">سه هفته‌ی قبل</option></select>
+      <p class="sum" id="wSum"></p>
+      <div class="grid">
+        <div class="item st-p"><span>روزهای حاضر</span><b id="wP"></b></div>
+        <div class="item st-a"><span>روزهای غایب</span><b id="wA"></b></div>
+        <div class="item st-l"><span>روزهای تأخیر</span><b id="wL"></b></div>
+        <div class="item"><span>مطالعه</span><b id="wM"></b></div>
+        <div class="item"><span>درس خوانده‌شده</span><b id="wLes"></b></div>
+        <div class="item"><span>تست زده‌شده</span><b id="wT"></b></div>
+      </div>
+    </div>
+    <div class="card"><h3>برنامه‌های مشاوره و راهبردی</h3><div id="plans"></div></div>
+    <div class="card">
+      <h3>گزارش روزهای اخیر</h3>
+      <div class="tw"><table><thead><tr><th>تاریخ</th><th>وضعیت</th><th>ورود</th><th>خروج</th><th>مطالعه</th><th>درس</th><th>تست</th><th>توضیح</th></tr></thead><tbody id="hist"></tbody></table></div>
+    </div>
+  </div>
+  <p class="note">اطلاعات هر دانش‌آموز فقط با نام کامل و کد ملی او نمایش داده می‌شود.</p>
+  <button type="button" class="admin-link" onclick="openLogin()">ورود مدیر</button>
+</div>
+
+<!-- ورود مدیر -->
+<div class="modal" id="loginModal" onclick="if(event.target===this)closeLogin()">
+  <form class="lg-card" id="lf" role="dialog" aria-modal="true" aria-labelledby="lgTitle" onsubmit="adminLogin();return false">
+    <button type="button" class="x" onclick="closeLogin()" aria-label="بستن">×</button>
+    <div class="lg-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 8.2-8 9-4.8-.8-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+    <h2 id="lgTitle">ورود به پنل مدیریت</h2>
+    <p class="lg-sub">برای ثبت حضور و غیاب و مدیریت دانش‌آموزان، وارد حساب مدیر شوید.</p>
+    <input id="adminUsername" class="ltr" type="email" autocomplete="username" placeholder="ایمیل مدیر" autocapitalize="off" spellcheck="false">
+    <input id="adminPassword" class="ltr" type="password" autocomplete="current-password" placeholder="رمز عبور">
+    <div class="err" id="adminLoginError" role="alert"></div>
+    <button class="btn" id="lgBtn">ورود</button>
+    <button type="button" class="lg-cancel" onclick="closeLogin()">انصراف</button>
+  </form>
+</div>
+
+<!-- پنل مدیریت -->
+<div class="admin-panel" id="adminPanel">
+  <aside class="ap-side">
+    <div class="ap-brand">⚙️ پنل مدیریت</div>
+    <nav id="nav" style="display:contents">
+      <button data-p="dash" class="on">📊 <span>داشبورد</span></button>
+      <button data-p="att">✅ <span>حضور و غیاب</span></button>
+      <button data-p="io">🚪 <span>ورود و خروج</span></button>
+      <button data-p="plan">🗂️ <span>برنامه‌ریزی</span></button>
+      <button data-p="stu">👥 <span>دانش‌آموزان</span></button>
+      <button data-p="sms">💬 <span>پیامک اولیا</span></button>
+    </nav>
+  </aside>
+  <main class="ap-main">
+    <div class="ap-top">
+      <h2 id="title">داشبورد</h2>
+      <input id="sq" placeholder="🔍 جستجوی دانش‌آموز (نام یا کد ملی)">
+      <span class="chipd hide-sm" id="date"></span>
+      <button class="abtn ghost" onclick="closePanel()">خروج از حساب</button>
+    </div>
+
+    <section id="dash">
+      <div class="stats">
+        <div class="stat hl"><span>کل دانش‌آموزان</span><b id="sT">۰</b><small id="sT2"></small></div>
+        <div class="stat ok"><span>حاضر</span><b id="sP">۰</b><small id="sP2"></small></div>
+        <div class="stat bad"><span>غایب</span><b id="sA">۰</b><small id="sA2"></small></div>
+        <div class="stat late"><span>تأخیر</span><b id="sL">۰</b><small id="sL2"></small></div>
+        <div class="stat"><span>هنوز داخل مدرسه</span><b id="sIn">۰</b><small id="sIn2"></small></div>
+      </div>
+      <div class="g g3" style="margin-top:14px">
+        <div class="panel-card"><h4>درصد حضور در هفته‌ی جاری</h4><div class="bars" id="bars"></div></div>
+        <div class="panel-card"><h4>وضعیت امروز</h4>
+          <div class="dn"><div id="donut"></div><div class="dpct"><b id="donutPct">۰٪</b><span>حضور</span></div></div>
+          <div class="lg"><span><i style="background:var(--ok)"></i>حاضر</span><span><i style="background:var(--late)"></i>تأخیر</span><span><i style="background:var(--bad)"></i>غایب</span></div></div>
+        <div class="dk"><h4>مطالعه‌ی امروز (کل)</h4><big id="dkStudy">۰</big>
+          <div class="r"><div>درس<b id="dkLes">۰</b></div><div>تست<b id="dkTst">۰</b></div></div></div>
+      </div>
+      <div class="panel-card" style="margin-top:14px"><h4>ماتریس حضور و غیاب هفته</h4><div class="mx" id="mx"></div></div>
+      <div class="g g2" style="margin-top:14px">
+        <div class="panel-card"><h4>غایبین امروز</h4><div id="absList" class="muted"></div></div>
+        <div class="panel-card"><h4>خروج‌های امروز</h4><div id="exitMini" class="muted"></div></div>
+        <div class="panel-card"><h4>برترین‌های مطالعه‌ی هفته</h4><div id="top"></div></div>
+        <div class="panel-card"><h4>آخرین برنامه‌های ثبت‌شده</h4><div id="recent"></div></div>
+      </div>
+    </section>
+
+    <section id="att" class="hide">
+      <div class="panel-card">
+        <div class="arow" style="margin-bottom:12px"><button class="abtn ghost" id="allP">همه حاضر</button><button class="abtn" id="toSms">پیامک غایبین ←</button></div>
+        <table><thead><tr><th>#</th><th>نام</th><th class="hide-sm">کد ملی</th><th>وضعیت</th></tr></thead><tbody id="attBody"></tbody></table>
+      </div>
+    </section>
+
+    <section id="io" class="hide">
+      <div class="panel-card">
+        <h4>چک‌لیست ورود و خروج امروز</h4>
+        <p class="muted" style="margin-bottom:12px">با دکمه‌ی «اکنون» ساعت همین لحظه ثبت می‌شود یا می‌توانید دستی وارد کنید. با ثبت ساعت ورود، وضعیت دانش‌آموز خودکار «حاضر» می‌شود.</p>
+        <table><thead><tr><th>نام</th><th>ساعت ورود</th><th>ساعت خروج</th><th>مطالعه (دقیقه)</th><th>درس</th><th>تست</th><th>توضیح</th></tr></thead><tbody id="ioBody"></tbody></table>
+      </div>
+    </section>
+
+    <section id="plan" class="hide">
+      <div class="panel-card">
+        <h4>افزودن برنامه برای دانش‌آموز</h4>
+        <div class="arow">
+          <label>دانش‌آموز<select id="pStu"></select></label>
+          <label>نوع برنامه<select id="pType"><option>مشاوره تحصیلی</option><option>راهبردی</option></select></label>
+          <label>عنوان<input id="pTitle" maxlength="100" placeholder="مثلاً برنامه‌ی هفته‌ی اول مهر"></label>
+        </div>
+        <label class="f" style="margin-top:10px">متن برنامه<textarea id="pText" rows="5" maxlength="3000"></textarea></label>
+        <button class="abtn" id="pAdd" style="margin-top:12px">افزودن برنامه</button>
+        <p class="muted" style="margin-top:10px">برنامه فقط در صفحه‌ی همان دانش‌آموز (بخش «برنامه‌های مشاوره و راهبردی») نمایش داده می‌شود.</p>
+      </div>
+      <div class="panel-card" style="margin-top:14px"><h4>برنامه‌های ثبت‌شده‌ی این دانش‌آموز</h4><div id="pList"></div></div>
+    </section>
+
+    <section id="stu" class="hide">
+      <div class="panel-card">
+        <h4>افزودن دانش‌آموز</h4>
+        <div class="arow">
+          <label>نام و نام خانوادگی<input id="nName" maxlength="100"></label>
+          <label>کد ملی<input id="nNid" inputmode="numeric" maxlength="10" class="ltr"></label>
+          <label>شماره‌ی دانش‌آموز<input id="nPhone" inputmode="tel" class="ltr" placeholder="09..."></label>
+          <label>شماره‌ی ولی<input id="nPar" inputmode="tel" class="ltr" placeholder="09..."></label>
+          <button class="abtn" id="nAdd">افزودن</button>
+        </div>
+        <p class="muted" style="margin-top:10px">اولیا برای دیدن اطلاعات باید «نام کامل» و «کد ملی» فرزندشان را در صفحه‌ی اصلی وارد کنند.</p>
+      </div>
+      <div class="panel-card" style="margin-top:14px">
+        <h4>لیست دانش‌آموزان</h4>
+        <table><thead><tr><th>نام</th><th class="hide-sm">کد ملی</th><th class="hide-sm">تماس دانش‌آموز</th><th>تماس ولی</th><th></th></tr></thead><tbody id="stuBody"></tbody></table>
+      </div>
+    </section>
+
+    <section id="sms" class="hide">
+      <div class="panel-card">
+        <h4>پیامک غیبت (ابتدای روز)</h4>
+        <label class="f" style="margin-bottom:12px">متن پیامک ({نام} و {تاریخ})<textarea id="tplAbs" rows="2">اولیای محترم، دانش‌آموز {نام} در تاریخ {تاریخ} در مدرسه حضور نداشت. لطفاً علت غیبت را اطلاع دهید.</textarea></label>
+        <div id="absSms"></div>
+        <button class="abtn" onclick="fake('پیامک غیبت')">ارسال به اولیای غایبین</button>
+      </div>
+      <div class="panel-card" style="margin-top:14px">
+        <h4>پیامک چک‌لیست ورود و خروج (پایان روز)</h4>
+        <label class="f" style="margin-bottom:12px">متن پیامک ({نام} ، {ورود} ، {خروج} ، {مطالعه})<textarea id="tplIO" rows="2">اولیای محترم، دانش‌آموز {نام} امروز ساعت {ورود} وارد و ساعت {خروج} خارج شد. زمان مطالعه: {مطالعه}</textarea></label>
+        <div id="ioSms"></div>
+        <button class="abtn" onclick="fake('پیامک چک‌لیست')">ارسال به اولیا</button>
+      </div>
+      <p class="muted" style="margin-top:12px">این بخش فعلاً نمایشی است و پیامکی ارسال نمی‌شود؛ برای ارسال واقعی باید به یک سرویس پیامک (از طریق Supabase Edge Function) وصل شود.</p>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
 <script>
-(function(){
-  const PARENT="<!doctype html>\n<html lang=\"fa\" dir=\"rtl\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n<link href=\"https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap\" rel=\"stylesheet\">\n<title>پیگیری حضور و غیاب دانش‌آموز<\/title>\n<style>\n  :root{--dark:#0A1647;--ink:#0f1a3d;--muted:#5b6585;--line:#dde1ea;--ok:#1f9d63;--bad:#d64545;--late:#d99a1b;--accent:#2c4bd6}\n  *{box-sizing:border-box;margin:0}\n  body{font-family:\"Vazirmatn\",Tahoma,\"Segoe UI\",sans-serif;color:var(--ink);min-height:100vh;\n    background:hsla(212, 35%, 58%, 1);\n    background:linear-gradient(90deg, hsla(212, 35%, 58%, 1) 0%, hsla(218, 32%, 80%, 1) 100%);\n    background:-moz-linear-gradient(90deg, hsla(212, 35%, 58%, 1) 0%, hsla(218, 32%, 80%, 1) 100%);\n    background:-webkit-linear-gradient(90deg, hsla(212, 35%, 58%, 1) 0%, hsla(218, 32%, 80%, 1) 100%);\n    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=\"#6D90B9\",endColorstr=\"#BBC7DC\",GradientType=1);\n    background-attachment:fixed;padding:24px 16px 40px}\n  .wrap{max-width:720px;margin:0 auto}\n  .hero{text-align:center;padding:26px 8px 20px;color:var(--ink)}\n  .hero .logo{width:64px;height:64px;border-radius:20px;background:var(--dark);color:#fff;display:grid;place-items:center;font-size:30px;margin:0 auto 14px;box-shadow:0 10px 26px rgba(10,22,71,.35)}\n  .hero h1{font-size:24px;margin-bottom:8px}\n  .hero p{color:var(--muted);font-size:14px;line-height:1.9}\n  .card{background:rgba(255,255,255,.94);border-radius:20px;padding:20px;box-shadow:0 14px 40px rgba(10,22,71,.25);margin-bottom:16px}\n  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}\n  label{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--muted)}\n  input{font:inherit;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);outline:none;width:100%}\n  input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(44,75,214,.15)}\n  .btn{font:inherit;cursor:pointer;border:0;padding:13px 18px;border-radius:12px;background:var(--dark);color:#fff;font-size:15px;width:100%;margin-top:14px;transition:.15s}\n  .btn:hover{filter:brightness(1.25)}\n  .err{color:var(--bad);font-size:13.5px;margin-top:12px;line-height:1.9}\n  .name{display:flex;align-items:center;gap:12px;margin-bottom:16px}\n  .name i{width:46px;height:46px;border-radius:14px;background:var(--dark);color:#fff;display:grid;place-items:center;font-style:normal;font-size:20px}\n  .name h2{font-size:18px}.name span{font-size:12.5px;color:var(--muted)}\n  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}\n  .item{background:#f4f6fb;border-radius:14px;padding:13px 14px}\n  .item span{font-size:12px;color:var(--muted);display:block;margin-bottom:4px}\n  .item b{font-size:17px}\n  .item.wide{grid-column:1/-1}\n  .st-p b{color:var(--ok)}.st-a b{color:var(--bad)}.st-l b{color:var(--late)}\n  h3{font-size:15px;margin:4px 0 12px}\n  .tw{overflow-x:auto}\n  table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}\n  th{font-weight:600;color:var(--muted);font-size:12px;text-align:right;padding:8px;border-bottom:1px solid var(--line)}\n  td{padding:9px 8px;border-bottom:1px solid #eef0f5}\n  tr:last-child td{border-bottom:0}\n  .pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;color:#fff}\n  .pill.p{background:var(--ok)}.pill.a{background:var(--bad)}.pill.l{background:var(--late)}\n  .plan{background:#f4f6fb;border-radius:14px;padding:13px 14px;margin-bottom:10px}\n  .plan p{white-space:pre-wrap;line-height:1.9;font-size:13.5px;margin-top:6px}\n  .plan small{color:var(--muted);margin-inline-start:8px}\n  .pill.t{background:var(--accent)}\n  .sum{font-size:14px;line-height:2;margin:10px 0 12px}\n  select{font:inherit;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}\n  .hide{display:none}\n  .note{font-size:12px;color:var(--muted);line-height:1.9;text-align:center;margin-top:8px}\n  footer{text-align:center;margin-top:22px;font-size:12px}\n  footer a{color:var(--ink);text-decoration:none}\n  @media(max-width:520px){.row{grid-template-columns:1fr}}\n<\/style>\n<\/head>\n<body>\n<div class=\"wrap\">\n  <div class=\"hero\">\n    <div class=\"logo\">🏫<\/div>\n    <h1>پیگیری وضعیت دانش‌آموز<\/h1>\n    <p>برای مشاهده‌ی حضور و غیاب، ساعت ورود و خروج و زمان مطالعه‌ی فرزندتان،<br>نام کامل و کد ملی او را وارد کنید.<\/p>\n  <\/div>\n\n  <form class=\"card\" id=\"f\" autocomplete=\"off\">\n    <div class=\"row\">\n      <label>نام و نام خانوادگی دانش‌آموز<input id=\"q\" placeholder=\"مثلاً علی رضایی\" required><\/label>\n      <label>کد ملی دانش‌آموز<input id=\"nid\" inputmode=\"numeric\" maxlength=\"10\" style=\"direction:ltr;text-align:right\" placeholder=\"۱۰ رقم\" required><\/label>\n    <\/div>\n    <button class=\"btn\">مشاهده‌ی اطلاعات<\/button>\n    <div class=\"err\" id=\"err\"><\/div>\n  <\/form>\n\n  <div id=\"res\" class=\"hide\">\n    <div class=\"card\">\n      <div class=\"name\"><i>🎓<\/i><div><h2 id=\"rName\"><\/h2><span id=\"rDate\"><\/span><\/div><\/div>\n      <div class=\"grid\">\n        <div class=\"item\" id=\"rSt\"><span>وضعیت امروز<\/span><b><\/b><\/div>\n        <div class=\"item\"><span>زمان مطالعه<\/span><b id=\"rStudy\">—<\/b><\/div>\n        <div class=\"item\"><span>ساعت ورود<\/span><b id=\"rIn\">—<\/b><\/div>\n        <div class=\"item\"><span>ساعت خروج<\/span><b id=\"rOut\">—<\/b><\/div>\n        <div class=\"item\"><span>درس‌های امروز<\/span><b id=\"rLes\">—<\/b><\/div>\n        <div class=\"item\"><span>تست‌های امروز<\/span><b id=\"rTst\">—<\/b><\/div>\n        <div class=\"item wide\"><span>توضیحات<\/span><b id=\"rNote\" style=\"font-size:14px;font-weight:500\">—<\/b><\/div>\n      <\/div>\n    <\/div>\n    <div class=\"card\">\n      <h3>خلاصه‌ی هفتگی<\/h3>\n      <select id=\"wk\"><option value=\"0\">هفته‌ی جاری<\/option><option value=\"1\">هفته‌ی قبل<\/option><option value=\"2\">دو هفته‌ی قبل<\/option><option value=\"3\">سه هفته‌ی قبل<\/option><\/select>\n      <p class=\"sum\" id=\"wSum\"><\/p>\n      <div class=\"grid\">\n        <div class=\"item st-p\"><span>روزهای حاضر<\/span><b id=\"wP\"><\/b><\/div>\n        <div class=\"item st-a\"><span>روزهای غایب<\/span><b id=\"wA\"><\/b><\/div>\n        <div class=\"item st-l\"><span>روزهای تأخیر<\/span><b id=\"wL\"><\/b><\/div>\n        <div class=\"item\"><span>مطالعه<\/span><b id=\"wM\"><\/b><\/div>\n        <div class=\"item\"><span>درس خوانده‌شده<\/span><b id=\"wLes\"><\/b><\/div>\n        <div class=\"item\"><span>تست زده‌شده<\/span><b id=\"wT\"><\/b><\/div>\n      <\/div>\n    <\/div>\n    <div class=\"card\">\n      <h3>برنامه‌های مشاوره و راهبردی<\/h3>\n      <div id=\"plans\"><\/div>\n    <\/div>\n    <div class=\"card\">\n      <h3>گزارش روزهای اخیر<\/h3>\n      <div class=\"tw\"><table><thead><tr><th>تاریخ<\/th><th>وضعیت<\/th><th>ورود<\/th><th>خروج<\/th><th>مطالعه<\/th><th>درس<\/th><th>تست<\/th><th>توضیح<\/th><\/tr><\/thead><tbody id=\"hist\"><\/tbody><\/table><\/div>\n    <\/div>\n  <\/div>\n  <p class=\"note\">اطلاعات هر دانش‌آموز فقط با نام کامل و کد ملی او نمایش داده می‌شود.<\/p>\n  <footer><a href=\"admin.html\">ورود مدیر<\/a><\/footer>\n<\/div>\n\n<script src=\"https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js\"><\/script>\n<script src=\"https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js\"><\/script>\n<script src=\"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js\"><\/script>\n<script>\n/* ⚠ این دو مقدار را از Supabase → Project Settings → API بردارید (کلید anon عمومی است؛ امنیت با RLS است) */\nconst SUPABASE_URL='https://YOUR-PROJECT.supabase.co', SUPABASE_ANON_KEY='YOUR-ANON-KEY';\nconst sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);\n<\/script>\n<script>/* GSAP + SplitText: انیمیشن‌های خیلی کوتاه. فارسی حروف چسبیده دارد، پس فقط «کلمه» شکسته می‌شود نه «حرف». */\n(function(){\n  window.animIn=window.animText=function(){};\n  if(!window.gsap||matchMedia('(prefers-reduced-motion: reduce)').matches)return;\n  if(window.SplitText)gsap.registerPlugin(SplitText);\n  window.animIn=function(root){\n    const els=[...(root||document).querySelectorAll('.stat,.card,.dk,.item,.sms,.plan')].filter(e=>e.offsetParent!==null);\n    if(els.length)gsap.from(els,{y:8,opacity:0,duration:.22,stagger:.015,ease:'power2.out',clearProps:'all'});\n  };\n  window.animText=function(sel,root){\n    if(!window.SplitText)return;\n    (root||document).querySelectorAll(sel).forEach(el=>{\n      if(el.offsetParent===null)return;\n      if(el._st)el._st.revert();\n      el._st=SplitText.create(el,{type:'words',autoSplit:true,\n        onSplit:self=>gsap.from(self.words,{yPercent:35,opacity:0,duration:.25,stagger:.02,ease:'power2.out'})});\n    });\n  };\n})();\n<\/script>\n<script>\nconst $=s=>document.querySelector(s);\nconst fa=n=>String(n).replace(/\\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);\nconst esc=s=>String(s).replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));\nconst pf=(k,o)=>new Intl.DateTimeFormat('fa-IR-u-ca-persian',o).format(new Date(k+'T12:00:00'));\nconst stTxt={p:'حاضر',a:'غایب',l:'تأخیر'};\nconst dur=m=>{if(!m)return '—';const h=Math.floor(m/60),r=m%60;return fa([h&&h+' ساعت',r&&r+' دقیقه'].filter(Boolean).join(' و '))};\nconst cnt=n=>n?fa(n):'—';\n\n/* همه‌ی داده‌ها از سرور می‌آید؛ در این صفحه هیچ اطلاعات دانش‌آموزی ذخیره نشده است */\nasync function load(week){\n  const {data:d,error}=await sb.rpc('parent_lookup',{p_name:$('#q').value,p_nid:$('#nid').value,p_week:week});\n  if(error)throw error;\n  if(d.error){$('#err').textContent=d.error||'خطا در ارتباط با سرور';$('#res').classList.add('hide');return}\n  const x=d.rec||{};\n  $('#rName').textContent=d.name; $('#rDate').textContent=pf(d.today,{weekday:'long',year:'numeric',month:'long',day:'numeric'});\n  const box=$('#rSt'); box.className='item'+(x.st?' st-'+x.st:''); box.querySelector('b').textContent=x.st?stTxt[x.st]:'هنوز ثبت نشده';\n  $('#rStudy').textContent=dur(x.study);\n  $('#rLes').textContent=cnt(x.lessons); $('#rTst').textContent=cnt(x.tests);\n  $('#rIn').textContent=x.in?fa(x.in):'—';\n  $('#rOut').textContent=x.out?fa(x.out):(x.in?'هنوز خارج نشده':'—');\n  $('#rNote').textContent=x.note||'—';\n\n  const w=d.week, fmt={year:'numeric',month:'long',day:'numeric'};\n  $('#wSum').textContent=`دانش‌آموز ${d.name} از تاریخ ${pf(w.from,fmt)} تا ${pf(w.to,fmt)} در مجموع ${w.minutes?dur(w.minutes):'۰ ساعت'} مطالعه داشته، ${fa(w.lessons)} درس خوانده و ${fa(w.tests)} تست زده است.`;\n  $('#wP').textContent=fa(w.p); $('#wA').textContent=fa(w.a); $('#wL').textContent=fa(w.l);\n  $('#wM').textContent=dur(w.minutes); $('#wLes').textContent=fa(w.lessons); $('#wT').textContent=fa(w.tests);\n  $('#wk').value=String(week);\n\n  $('#plans').innerHTML=d.plans.length?d.plans.map(p=>`<div class=\"plan\"><b>${esc(p.title)}<\/b><span class=\"pill t\">${esc(p.type)}<\/span><small>${pf(p.date,{year:'numeric',month:'long',day:'numeric'})}<\/small><p>${esc(p.text)}<\/p><\/div>`).join(''):'<p class=\"note\">هنوز برنامه‌ای ثبت نشده است.<\/p>';\n\n  $('#hist').innerHTML=d.hist.map(h=>`<tr><td>${pf(h.date,{month:'long',day:'numeric'})}<\/td><td>${h.st?`<span class=\"pill ${h.st}\">${stTxt[h.st]}<\/span>`:'—'}<\/td><td>${h.in?fa(h.in):'—'}<\/td><td>${h.out?fa(h.out):'—'}<\/td><td>${dur(h.study)}<\/td><td>${cnt(h.lessons)}<\/td><td>${cnt(h.tests)}<\/td><td>${esc(h.note||'—')}<\/td><\/tr>`).join('')||'<tr><td colspan=\"8\" style=\"color:#5b6585\">گزارشی ثبت نشده است.<\/td><\/tr>';\n  $('#err').textContent=''; $('#res').classList.remove('hide'); animText('#rName'); animIn($('#res'));\n}\n$('#f').onsubmit=e=>{e.preventDefault();$('#err').textContent='';load(0).catch(()=>{$('#err').textContent='ارتباط با سرور برقرار نشد.'})};\nanimText('.hero h1,.hero p'); animIn(document.querySelector('#f'));\n$('#wk').onchange=()=>load(+$('#wk').value);\n<\/script>\n<a href=\"#admin\" style=\"display:block;text-align:center;margin:18px 0;color:#5b6585;font-size:12px\">ورود مدیر<\/a>\n<\/body>\n<\/html>\n";
-  const ADMIN="<!doctype html>\n<html lang=\"fa\" dir=\"rtl\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<meta name=\"robots\" content=\"noindex,nofollow\">\n<title>پنل مدیریت | حضور و غیاب<\/title>\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n<link href=\"https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap\" rel=\"stylesheet\">\n<style>\n  :root{--dark:#0A1647;--ink:#0f1a3d;--muted:#667091;--panel:#f5f6fa;--line:#e2e6ef;--ok:#1f9d63;--bad:#d64545;--late:#d99a1b;--accent:#2c4bd6}\n  *{box-sizing:border-box;margin:0;font-family:inherit}\n  body{font-family:\"Vazirmatn\",Tahoma,\"Segoe UI\",sans-serif;color:var(--ink);min-height:100vh;\n    background:hsla(212, 35%, 58%, 1);\n    background:linear-gradient(90deg, hsla(212, 35%, 58%, 1) 0%, hsla(218, 32%, 80%, 1) 100%);\n    background:-moz-linear-gradient(90deg, hsla(212, 35%, 58%, 1) 0%, hsla(218, 32%, 80%, 1) 100%);\n    background:-webkit-linear-gradient(90deg, hsla(212, 35%, 58%, 1) 0%, hsla(218, 32%, 80%, 1) 100%);\n    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=\"#6D90B9\",endColorstr=\"#BBC7DC\",GradientType=1);\n    background-attachment:fixed}\n  .hide{display:none!important}\n  .ltr{direction:ltr;unicode-bidi:embed;text-align:right}\n  .note{font-size:12.5px;color:var(--muted);line-height:1.9}\n  /* login */\n  .login{min-height:100vh;display:grid;place-items:center;padding:20px}\n  .login .box{width:100%;max-width:390px;background:var(--panel);border-radius:28px;padding:30px 26px;box-shadow:0 24px 60px rgba(10,22,71,.3)}\n  .login h1{font-size:20px;margin-bottom:6px}.login p{color:var(--muted);font-size:13px;margin-bottom:18px}\n  .login label{margin-bottom:12px}\n  .err{color:var(--bad);font-size:13px;min-height:20px;margin-bottom:6px}\n  /* shell */\n  .shell{max-width:1560px;margin:16px auto;min-height:calc(100vh - 32px);padding:14px;display:grid;grid-template-columns:232px 1fr;gap:14px;\n    background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.75);border-radius:34px;backdrop-filter:blur(14px);box-shadow:0 20px 60px rgba(10,22,71,.18)}\n  .side{background:var(--panel);border-radius:26px;padding:20px 14px;display:flex;flex-direction:column;gap:4px;height:calc(100vh - 62px);position:sticky;top:30px}\n  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;padding:0 8px 8px}\n  .brand i{width:40px;height:40px;border-radius:13px;background:var(--dark);color:#fff;display:grid;place-items:center;font-style:normal}\n  .sec{font-size:11.5px;color:var(--muted);padding:14px 12px 6px}\n  .nav{display:flex;flex-direction:column;gap:4px}\n  .nav button{all:unset;box-sizing:border-box;position:relative;width:100%;cursor:pointer;padding:12px 14px;border-radius:14px;display:flex;gap:10px;align-items:center;font-size:14px;color:var(--muted);transition:.12s}\n  .nav button:hover{color:var(--ink);background:rgba(10,22,71,.05)}\n  .nav button.on{background:#fff;color:var(--dark);font-weight:700;box-shadow:0 2px 8px rgba(10,22,71,.08)}\n  .nav button.on::after{content:\"\";position:absolute;inset-inline-start:-14px;top:10px;bottom:10px;width:4px;border-radius:4px;background:var(--dark)}\n  .content{min-width:0;display:flex;flex-direction:column;gap:14px}\n  .top{display:flex;align-items:center;gap:10px;background:var(--panel);border-radius:22px;padding:10px 14px}\n  .search{flex:1;max-width:380px;border-radius:999px!important;padding:10px 16px!important}\n  .sp{flex:1}\n  .date{background:#fff;padding:8px 14px;border-radius:999px;font-size:12.5px;color:var(--muted)}\n  .me{display:flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:4px 14px 4px 4px;font-size:13px}\n  .me i{width:32px;height:32px;border-radius:50%;background:var(--dark);color:#fff;display:grid;place-items:center;font-style:normal;font-size:13px}\n  .ic{all:unset;cursor:pointer;width:40px;height:40px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:15px}\n  .ic:hover{background:#e9ecf6}\n  .panel{background:var(--panel);border-radius:26px;padding:22px;flex:1}\n  .panel>h1{font-size:26px;font-weight:800;margin-bottom:16px}\n  .card{background:#fff;border-radius:20px;padding:18px;margin-bottom:14px;overflow-x:auto}\n  .card h2{font-size:15px;font-weight:700;margin-bottom:14px}\n  .g{display:grid;gap:14px;margin-bottom:14px}.g .card{margin:0}\n  .g3{grid-template-columns:1.7fr 1fr 1fr}.g2{grid-template-columns:1fr 1fr}\n  /* stats */\n  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:14px}\n  .stat{position:relative;background:#fff;border-radius:20px;padding:16px 16px 14px}\n  .stat span{font-size:13px;font-weight:600}.stat b{display:block;font-size:36px;font-weight:800;margin:6px 0 8px;line-height:1}\n  .stat small{font-size:11.5px;color:var(--muted)}\n  .stat.ok b{color:var(--ok)}.stat.bad b{color:var(--bad)}.stat.late b{color:var(--late)}\n  .stat.hl{background:linear-gradient(135deg,#2c4bd6 -30%,var(--dark) 70%);color:#fff}.stat.hl small{color:rgba(255,255,255,.75)}\n  .go{all:unset;cursor:pointer;position:absolute;top:14px;inset-inline-end:14px;width:30px;height:30px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;font-size:13px;opacity:.85}\n  .go:hover{opacity:1;background:rgba(127,127,127,.15)}\n  /* charts */\n  .bars{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;height:210px}\n  .bw{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;color:var(--muted)}\n  .bz{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}\n  .bp{width:100%;max-width:52px;border-radius:999px;background:linear-gradient(#6f8aee,var(--accent));color:#fff;font-size:11px;display:flex;justify-content:center;padding-top:9px}\n  .bp.t{background:var(--dark)}\n  .bp.h{background:repeating-linear-gradient(135deg,#8f9bbd 0 3px,transparent 3px 7px);border:1.5px solid #b3bbd3}\n  .dn{position:relative;max-width:250px;margin:6px auto 0}.dn svg{width:100%;display:block}\n  .dpct{position:absolute;inset-inline:0;bottom:2px;text-align:center}.dpct b{font-size:30px;font-weight:800;display:block;line-height:1.1}.dpct span{font-size:12px;color:var(--muted)}\n  .lg{display:flex;justify-content:center;gap:12px;font-size:12px;color:var(--muted);margin-top:10px;flex-wrap:wrap}\n  .lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-inline-end:5px}\n  .dk{border-radius:20px;padding:18px;color:#fff;min-height:240px;display:flex;flex-direction:column;justify-content:space-between;\n    background:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 2px,transparent 2px 10px),radial-gradient(circle at 15% 0%,#2c4bd6 0,transparent 65%),var(--dark)}\n  .dk h2{font-size:15px;margin:0}.dk big{display:block;font-size:30px;font-weight:800;line-height:1.4}\n  .dk .r{display:flex;gap:10px}.dk .r div{flex:1;background:rgba(255,255,255,.12);border-radius:14px;padding:10px 12px;font-size:12px}.dk .r b{display:block;font-size:20px}\n  .mxw{overflow-x:auto}\n  .mx{display:grid;grid-template-columns:170px repeat(7,minmax(46px,1fr));gap:6px;min-width:560px;align-items:center}\n  .dh{background:#fff;border:1px solid var(--line);border-radius:11px;text-align:center;font-size:11.5px;padding:5px 0;line-height:1.5}\n  .dh.t{background:var(--accent);color:#fff;border-color:var(--accent)}.dh.w{background:#dfe3ee}\n  .pn{display:flex;align-items:center;gap:8px;font-size:13px;white-space:nowrap}\n  .av{width:30px;height:30px;border-radius:50%;background:#e4e8f6;color:var(--dark);display:inline-grid;place-items:center;font-size:12px;font-weight:700;flex:none}\n  .c{height:38px;border-radius:11px;background:#f1f3f8;display:grid;place-items:center;font-size:11px;color:#fff;font-weight:600}\n  .c.p{background:var(--ok)}.c.a{background:var(--bad)}.c.l{background:var(--late)}\n  .c.w{background:repeating-linear-gradient(135deg,#d3d8e6 0 4px,#eceff6 4px 8px)}\n  .c.t{outline:2px dashed var(--accent);outline-offset:2px}\n  .li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #eef0f5}.li:last-child{border:0}\n  .chip{font-size:11.5px;padding:3px 10px;border-radius:999px;background:#eef0f6;color:var(--muted);white-space:nowrap}.chip.ok{background:#e3f5ec;color:var(--ok)}\n  /* forms & tables */\n  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}\n  label{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--muted);flex:1;min-width:140px}\n  input,select,textarea{font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);outline:none;width:100%}\n  input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(44,75,214,.15)}\n  .btn{font:inherit;cursor:pointer;border:0;padding:10px 18px;border-radius:999px;background:var(--dark);color:#fff;font-size:14px;transition:.15s;white-space:nowrap}\n  .btn:hover{filter:brightness(1.3)}.btn.ghost{background:#eef0f6;color:var(--ink)}.btn.danger{background:var(--bad)}\n  .btn.sm{padding:6px 12px;font-size:12px}\n  table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}\n  th{font-weight:600;color:var(--muted);font-size:12.5px;text-align:right;padding:8px;border-bottom:1px solid var(--line)}\n  td{padding:8px;border-bottom:1px solid #eef0f5;vertical-align:middle}\n  tr:last-child td{border-bottom:0}td input{padding:7px 9px;font-size:13px}\n  .tm{display:flex;gap:4px;align-items:center;min-width:150px}.tm input{min-width:90px}\n  .seg{display:inline-flex;background:#eef0f6;border-radius:999px;padding:3px;gap:2px}\n  .seg button{font:inherit;font-size:13px;border:0;background:transparent;padding:6px 14px;border-radius:999px;cursor:pointer;color:var(--muted)}\n  .seg button.p.on{background:var(--ok);color:#fff}.seg button.a.on{background:var(--bad);color:#fff}.seg button.l.on{background:var(--late);color:#fff}\n  .tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;background:#eef0f6;margin:3px}\n  .sms{background:#f4f6fb;border:1px dashed #b9c1dc;border-radius:14px;padding:12px;font-size:13.5px;line-height:1.9;margin-bottom:10px}\n  .sms em{font-style:normal;color:var(--muted);font-size:12px;display:block;margin-bottom:4px}\n  .plan{background:#f4f6fb;border-radius:14px;padding:12px 14px;margin-bottom:10px}\n  .plan p{white-space:pre-wrap;line-height:1.9;font-size:13.5px;margin:6px 0}\n  .plan .h{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.plan .h b{flex:1}\n  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:11px 20px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:9}\n  .toast.show{opacity:1}\n  @media(max-width:960px){\n    .shell{grid-template-columns:1fr;margin:0;border-radius:0;padding:10px 10px 90px;min-height:100vh}\n    .side{position:fixed;bottom:0;right:0;left:0;z-index:5;height:auto;top:auto;flex-direction:row;padding:6px;border-radius:20px 20px 0 0;box-shadow:0 -6px 24px rgba(10,22,71,.15)}\n    .brand,.sec,.side .out{display:none}\n    .nav{flex-direction:row;width:100%;gap:2px}\n    .nav button{flex-direction:column;gap:2px;font-size:11px;padding:8px 2px;justify-content:center;text-align:center}\n    .nav button.on::after{display:none}\n    .g3,.g2{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}\n    .date,.me span{display:none}.panel{padding:16px}.hide-sm{display:none}\n  }\n<\/style>\n<\/head>\n<body>\n<div class=\"login\" id=\"login\">\n  <form class=\"box\" id=\"lf\" autocomplete=\"off\">\n    <h1>🏫 ورود به پنل مدیریت<\/h1>\n    <p>برای ادامه ایمیل و رمز عبور را وارد کنید.<\/p>\n    <label>ایمیل<input id=\"u\" type=\"email\" class=\"ltr\" autocomplete=\"username\"><\/label>\n    <label>رمز عبور<input id=\"pw\" type=\"password\" class=\"ltr\" autocomplete=\"current-password\"><\/label>\n    <div class=\"err\" id=\"err\"><\/div>\n    <button class=\"btn\" style=\"width:100%\">ورود<\/button>\n  <\/form>\n<\/div>\n\n<div class=\"shell hide\" id=\"app\">\n  <aside class=\"side\">\n    <div class=\"brand\"><i>🏫<\/i> پنل مدیریت<\/div>\n    <div class=\"sec\">منو<\/div>\n    <nav class=\"nav\" id=\"nav\">\n      <button data-p=\"dash\" class=\"on\">📊 <span>داشبورد<\/span><\/button>\n      <button data-p=\"att\">✅ <span>حضور و غیاب<\/span><\/button>\n      <button data-p=\"io\">🚪 <span>ورود و خروج<\/span><\/button>\n      <button data-p=\"plan\">🗂️ <span>برنامه‌ریزی<\/span><\/button>\n      <button data-p=\"stu\">👥 <span>دانش‌آموزان<\/span><\/button>\n      <button data-p=\"sms\">💬 <span>پیامک اولیا<\/span><\/button>\n    <\/nav>\n    <div class=\"sec\">عمومی<\/div>\n    <div class=\"nav out\"><button id=\"logout\">⎋ <span>خروج از حساب<\/span><\/button><\/div>\n  <\/aside>\n  <div class=\"content\">\n    <div class=\"top\">\n      <input class=\"search\" id=\"sq\" placeholder=\"🔍 جستجوی دانش‌آموز (نام یا کد ملی)\">\n      <div class=\"sp\"><\/div>\n      <div class=\"date\" id=\"date\"><\/div>\n      <div class=\"me\"><i>م<\/i><span>مدیر<\/span><\/div>\n      <button class=\"ic\" id=\"logout2\" title=\"خروج\">⎋<\/button>\n    <\/div>\n    <main class=\"panel\">\n    <h1 id=\"title\">داشبورد<\/h1>\n\n    <section id=\"dash\">\n      <div class=\"stats\" id=\"stats\">\n        <div class=\"stat hl\"><button class=\"go\" data-go=\"stu\">↗<\/button><span>کل دانش‌آموزان<\/span><b id=\"sT\">0<\/b><small id=\"sT2\"><\/small><\/div>\n        <div class=\"stat ok\"><button class=\"go\" data-go=\"att\">↗<\/button><span>حاضر<\/span><b id=\"sP\">0<\/b><small id=\"sP2\"><\/small><\/div>\n        <div class=\"stat bad\"><button class=\"go\" data-go=\"att\">↗<\/button><span>غایب<\/span><b id=\"sA\">0<\/b><small id=\"sA2\"><\/small><\/div>\n        <div class=\"stat late\"><button class=\"go\" data-go=\"att\">↗<\/button><span>تأخیر<\/span><b id=\"sL\">0<\/b><small id=\"sL2\"><\/small><\/div>\n        <div class=\"stat\"><button class=\"go\" data-go=\"io\">↗<\/button><span>هنوز داخل مدرسه<\/span><b id=\"sIn\">0<\/b><small id=\"sIn2\"><\/small><\/div>\n      <\/div>\n      <div class=\"g g3\">\n        <div class=\"card\"><h2>درصد حضور در هفته‌ی جاری<\/h2><div class=\"bars\" id=\"bars\"><\/div><\/div>\n        <div class=\"card\"><h2>وضعیت امروز<\/h2>\n          <div class=\"dn\"><div id=\"donut\"><\/div><div class=\"dpct\"><b id=\"donutPct\">۰٪<\/b><span>حضور<\/span><\/div><\/div>\n          <div class=\"lg\"><span><i style=\"background:var(--ok)\"><\/i>حاضر<\/span><span><i style=\"background:var(--late)\"><\/i>تأخیر<\/span><span><i style=\"background:var(--bad)\"><\/i>غایب<\/span><span><i style=\"background:#c9cfdf\"><\/i>ثبت‌نشده<\/span><\/div><\/div>\n        <div class=\"dk\"><h2>مطالعه‌ی امروز (کل)<\/h2><big id=\"dkStudy\">۰<\/big>\n          <div class=\"r\"><div>درس<b id=\"dkLes\">۰<\/b><\/div><div>تست<b id=\"dkTst\">۰<\/b><\/div><\/div><\/div>\n      <\/div>\n      <div class=\"card\"><h2>ماتریس حضور و غیاب هفته<\/h2><div class=\"mxw\"><div class=\"mx\" id=\"mx\"><\/div><\/div><\/div>\n      <div class=\"g g2\">\n        <div class=\"card\"><h2>غایبین امروز<\/h2><div id=\"absList\" class=\"note\"><\/div><\/div>\n        <div class=\"card\"><h2>خروج‌های امروز<\/h2><div id=\"exitMini\" class=\"note\"><\/div><\/div>\n        <div class=\"card\"><h2>برترین‌های مطالعه‌ی هفته<\/h2><div id=\"top\"><\/div><\/div>\n        <div class=\"card\"><h2>آخرین برنامه‌های ثبت‌شده<\/h2><div id=\"recent\"><\/div><\/div>\n      <\/div>\n    <\/section>\n\n<section id=\"att\" class=\"hide\">\n      <div class=\"card\">\n        <div class=\"row\" style=\"margin-bottom:12px\">\n          <button class=\"btn ghost\" id=\"allP\">همه حاضر<\/button>\n          <button class=\"btn\" id=\"toSms\">ارسال پیامک غایبین ←<\/button>\n        <\/div>\n        <table><thead><tr><th>#<\/th><th>نام<\/th><th class=\"hide-sm\">کد ملی<\/th><th>وضعیت<\/th><\/tr><\/thead><tbody id=\"attBody\"><\/tbody><\/table>\n      <\/div>\n    <\/section>\n\n    <section id=\"io\" class=\"hide\">\n      <div class=\"card\">\n        <h2>چک‌لیست ورود و خروج امروز<\/h2>\n        <p class=\"note\" style=\"margin-bottom:12px\">با دکمه‌ی «اکنون» ساعت همین لحظه ثبت می‌شود یا می‌توانید ساعت را دستی وارد کنید. با ثبت ساعت ورود، وضعیت دانش‌آموز به‌طور خودکار «حاضر» می‌شود.<\/p>\n        <table><thead><tr><th>نام<\/th><th>ساعت ورود<\/th><th>ساعت خروج<\/th><th>مطالعه (دقیقه)<\/th><th>درس<\/th><th>تست<\/th><th>توضیح<\/th><\/tr><\/thead><tbody id=\"ioBody\"><\/tbody><\/table>\n      <\/div>\n    <\/section>\n\n    <section id=\"stu\" class=\"hide\">\n      <div class=\"card\">\n        <h2>افزودن دانش‌آموز<\/h2>\n        <div class=\"row\">\n          <label>نام و نام خانوادگی<input id=\"nName\"><\/label>\n          <label>کد ملی<input id=\"nNid\" inputmode=\"numeric\" maxlength=\"10\" class=\"ltr\"><\/label>\n          <label>شماره‌ی دانش‌آموز<input id=\"nPhone\" inputmode=\"tel\" class=\"ltr\" placeholder=\"09...\"><\/label>\n          <label>شماره‌ی ولی<input id=\"nPar\" inputmode=\"tel\" class=\"ltr\" placeholder=\"09...\"><\/label>\n          <button class=\"btn\" id=\"nAdd\">افزودن<\/button>\n        <\/div>\n        <p class=\"note\" style=\"margin-top:10px\">اولیا برای دیدن اطلاعات باید «نام کامل» و «کد ملی» فرزندشان را در صفحه‌ی اصلی سایت وارد کنند.<\/p>\n      <\/div>\n      <div class=\"card\">\n        <h2>لیست دانش‌آموزان<\/h2>\n        <table><thead><tr><th>نام<\/th><th class=\"hide-sm\">کد ملی<\/th><th class=\"hide-sm\">تماس دانش‌آموز<\/th><th>تماس ولی<\/th><th><\/th><\/tr><\/thead><tbody id=\"stuBody\"><\/tbody><\/table>\n      <\/div>\n    <\/section>\n\n    <section id=\"plan\" class=\"hide\">\n      <div class=\"card\">\n        <h2>افزودن برنامه برای دانش‌آموز<\/h2>\n        <div class=\"row\">\n          <label>دانش‌آموز<select id=\"pStu\"><\/select><\/label>\n          <label>نوع برنامه<select id=\"pType\"><option>مشاوره تحصیلی<\/option><option>راهبردی<\/option><\/select><\/label>\n          <label>عنوان<input id=\"pTitle\" maxlength=\"100\" placeholder=\"مثلاً برنامه‌ی هفته‌ی اول مهر\"><\/label>\n        <\/div>\n        <label style=\"margin-top:10px\">متن برنامه<textarea id=\"pText\" rows=\"5\" maxlength=\"3000\"><\/textarea><\/label>\n        <button class=\"btn\" id=\"pAdd\" style=\"margin-top:12px\">افزودن برنامه<\/button>\n        <p class=\"note\" style=\"margin-top:10px\">برنامه فقط در پنل همان دانش‌آموز (بخش «برنامه‌های مشاوره و راهبردی») نمایش داده می‌شود.<\/p>\n      <\/div>\n      <div class=\"card\"><h2>برنامه‌های ثبت‌شده‌ی این دانش‌آموز<\/h2><div id=\"pList\"><\/div><\/div>\n    <\/section>\n\n    <section id=\"sms\" class=\"hide\">\n      <div class=\"card\">\n        <h2>پیامک غیبت (ابتدای روز)<\/h2>\n        <label style=\"margin-bottom:12px\">متن پیامک ({نام} و {تاریخ})<textarea id=\"tplAbs\" rows=\"2\">اولیای محترم، دانش‌آموز {نام} در تاریخ {تاریخ} در مدرسه حضور نداشت. لطفاً علت غیبت را اطلاع دهید.<\/textarea><\/label>\n        <div id=\"absSms\"><\/div>\n        <button class=\"btn\" onclick=\"fake('پیامک غیبت')\">ارسال به اولیای غایبین<\/button>\n      <\/div>\n      <div class=\"card\">\n        <h2>پیامک چک‌لیست ورود و خروج (پایان روز)<\/h2>\n        <label style=\"margin-bottom:12px\">متن پیامک ({نام} ، {ورود} ، {خروج} ، {مطالعه})<textarea id=\"tplIO\" rows=\"2\">اولیای محترم، دانش‌آموز {نام} امروز ساعت {ورود} وارد و ساعت {خروج} خارج شد. زمان مطالعه: {مطالعه}<\/textarea><\/label>\n        <div id=\"ioSms\"><\/div>\n        <button class=\"btn\" onclick=\"fake('پیامک چک‌لیست')\">ارسال به اولیا<\/button>\n      <\/div>\n      <p class=\"note\">در نسخه‌ی اصلی این دکمه‌ها از طریق یک تابع سمت سرور به پنل پیامک وصل می‌شوند. در این پیش‌نمایش پیامکی ارسال نمی‌شود.<\/p>\n    <\/section>\n      <\/main>\n  <\/div>\n<\/div>\n<div class=\"toast\" id=\"toast\"><\/div>\n\n<script src=\"https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js\"><\/script>\n<script src=\"https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js\"><\/script>\n<script src=\"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js\"><\/script>\n<script>\n/* ⚠ این دو مقدار را از Supabase → Project Settings → API بردارید (کلید anon عمومی است؛ امنیت با RLS است) */\nconst SUPABASE_URL='https://YOUR-PROJECT.supabase.co', SUPABASE_ANON_KEY='YOUR-ANON-KEY';\nconst sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);\n<\/script>\n<script>/* GSAP + SplitText: انیمیشن‌های خیلی کوتاه. فارسی حروف چسبیده دارد، پس فقط «کلمه» شکسته می‌شود نه «حرف». */\n(function(){\n  window.animIn=window.animText=function(){};\n  if(!window.gsap||matchMedia('(prefers-reduced-motion: reduce)').matches)return;\n  if(window.SplitText)gsap.registerPlugin(SplitText);\n  window.animIn=function(root){\n    const els=[...(root||document).querySelectorAll('.stat,.card,.dk,.item,.sms,.plan')].filter(e=>e.offsetParent!==null);\n    if(els.length)gsap.from(els,{y:8,opacity:0,duration:.22,stagger:.015,ease:'power2.out',clearProps:'all'});\n  };\n  window.animText=function(sel,root){\n    if(!window.SplitText)return;\n    (root||document).querySelectorAll(sel).forEach(el=>{\n      if(el.offsetParent===null)return;\n      if(el._st)el._st.revert();\n      el._st=SplitText.create(el,{type:'words',autoSplit:true,\n        onSplit:self=>gsap.from(self.words,{yPercent:35,opacity:0,duration:.25,stagger:.02,ease:'power2.out'})});\n    });\n  };\n})();\n<\/script>\n<script>\nconst $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];\nconst fa=n=>String(n).replace(/\\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);\nconst esc=s=>String(s).replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));\nconst dur=m=>{if(!m)return '—';const h=Math.floor(m/60),r=m%60;return fa([h&&h+' ساعت',r&&r+' دقیقه'].filter(Boolean).join(' و '))};\nconst toast=t=>{const x=$('#toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),2200)};\nconst fake=t=>toast(t+' (نمایشی) ارسال شد ✓');\n\n/* ---------- data: همه‌چیز از سرور می‌آید، رمز و داده‌ای در این فایل نیست ---------- */\nlet D={today:'',students:[],rec:{},plans:[]};\nconst fdate=(k,o)=>new Intl.DateTimeFormat('fa-IR-u-ca-persian',o).format(new Date(k+'T12:00:00'));\nconst todayFa=()=>fdate(D.today,{weekday:'long',year:'numeric',month:'long',day:'numeric'});\nconst RPC={data:'admin_data',week:'admin_week',record:'admin_record',allpresent:'admin_all_present',addStu:'admin_add_student',delStu:'admin_delete_student',addPlan:'admin_add_plan',delPlan:'admin_delete_plan'};\nasync function api(k,args){\n  const {data:{session}}=await sb.auth.getSession();\n  if(!session){$('#app').classList.add('hide');$('#login').classList.remove('hide');throw 0}\n  const {data,error}=await sb.rpc(RPC[k],args);\n  if(error){if(error.code==='28000'){$('#app').classList.add('hide');$('#login').classList.remove('hide')}else toast(error.message||'خطا در ارتباط با سرور');throw 0}\n  return data}\nasync function load(){D=await api('data');D.week=await api('week');D.week.rec[D.today]=D.rec;$('#date').textContent=todayFa()}\nfunction enter(){$('#login').classList.add('hide');$('#app').classList.remove('hide');show('dash');animIn($('.side'));animIn($('.top'))}\nload().then(enter).catch(()=>{});\n$('#lf').onsubmit=async e=>{e.preventDefault();\n  const {error}=await sb.auth.signInWithPassword({email:$('#u').value.trim(),password:$('#pw').value});\n  if(error){$('#err').textContent=error.message==='Invalid login credentials'?'ایمیل یا رمز عبور نادرست است':error.message;return}\n  $('#err').textContent='';$('#pw').value='';try{await load();enter()}catch(e){if(e===0)$('#err').textContent='این حساب دسترسی مدیر ندارد'}};\n$('#logout').onclick=$('#logout2').onclick=async()=>{try{await sb.auth.signOut()}catch(e){}location.hash='';location.reload()};\n\n/* ---------- ui ---------- */\nconst titles={dash:'داشبورد',att:'حضور و غیاب',io:'ورود و خروج',plan:'برنامه‌ریزی',stu:'دانش‌آموزان',sms:'پیامک اولیا'};\nfunction show(p){\n  $$('main section').forEach(s=>s.classList.toggle('hide',s.id!==p));\n  $$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));\n  $('#title').textContent=titles[p];render();animText('#title');animIn($('#'+p))}\n$('#nav').onclick=e=>{const b=e.target.closest('button');if(b)show(b.dataset.p)};\nconst S=()=>D.students, Rc=id=>D.rec[id]||{};\nconst nm=id=>(S().find(s=>s.id==id)||{name:'؟'}).name;\nconst F=()=>{const q=($('#sq').value||'').trim();return q?S().filter(s=>s.name.includes(q)||s.nid.includes(q)):S()};\nconst WD=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'], stTxt={p:'حاضر',a:'غایب',l:'تأخیر'};\nconst ini=n=>esc([...n.trim()][0]||'؟');\n\nfunction render(){dash();\n  const v=S().map(s=>Rc(s.id));\n  $('#sT').textContent=fa(S().length);\n  $('#sP').textContent=fa(v.filter(x=>x.st==='p').length);\n  $('#sA').textContent=fa(v.filter(x=>x.st==='a').length);\n  $('#sL').textContent=fa(v.filter(x=>x.st==='l').length);\n  $('#sIn').textContent=fa(v.filter(x=>x.in&&!x.out).length);\n  const abs=S().filter(s=>Rc(s.id).st==='a');\n  $('#absList').innerHTML=abs.length?abs.map(s=>`<span class=\"tag\">${esc(s.name)}<\/span>`).join(''):'غایبی ثبت نشده است.';\n  const ex=S().filter(s=>Rc(s.id).out);\n  $('#exitMini').innerHTML=ex.length?ex.map(s=>`<span class=\"tag\">${esc(s.name)} — ${fa(Rc(s.id).out)}<\/span>`).join(''):'موردی ثبت نشده است.';\n\n  $('#attBody').innerHTML=F().map((s,i)=>{const st=Rc(s.id).st;return `<tr><td>${fa(i+1)}<\/td><td>${esc(s.name)}<\/td><td class=\"hide-sm ltr\">${fa(s.nid)}<\/td>\n    <td><div class=\"seg\" data-id=\"${s.id}\"><button class=\"p ${st==='p'?'on':''}\" data-v=\"p\">حاضر<\/button><button class=\"a ${st==='a'?'on':''}\" data-v=\"a\">غایب<\/button><button class=\"l ${st==='l'?'on':''}\" data-v=\"l\">تأخیر<\/button><\/div><\/td><\/tr>`}).join('');\n\n  const nf=(s,f,r,ph)=>`<input type=\"number\" min=\"0\" data-id=\"${s.id}\" data-f=\"${f}\" value=\"${r[f]||''}\" placeholder=\"${ph}\" style=\"min-width:70px\">`;\n  $('#ioBody').innerHTML=F().map(s=>{const r=Rc(s.id);return `<tr>\n    <td>${esc(s.name)}<\/td>\n    <td><div class=\"tm\"><input type=\"time\" data-id=\"${s.id}\" data-f=\"in\" value=\"${r.in||''}\"><button class=\"btn sm ghost\" data-now=\"in\" data-id=\"${s.id}\">اکنون<\/button><\/div><\/td>\n    <td><div class=\"tm\"><input type=\"time\" data-id=\"${s.id}\" data-f=\"out\" value=\"${r.out||''}\"><button class=\"btn sm ghost\" data-now=\"out\" data-id=\"${s.id}\">اکنون<\/button><\/div><\/td>\n    <td>${nf(s,'study',r,'مثلاً ۱۲۰')}<\/td><td>${nf(s,'lessons',r,'۰')}<\/td><td>${nf(s,'tests',r,'۰')}<\/td>\n    <td><input data-id=\"${s.id}\" data-f=\"note\" value=\"${esc(r.note||'')}\" placeholder=\"توضیح\"><\/td><\/tr>`}).join('');\n\n  const cur=$('#pStu').value;\n  $('#pStu').innerHTML=S().map(s=>`<option value=\"${s.id}\">${esc(s.name)}<\/option>`).join('');\n  if(cur&&S().some(s=>s.id==cur))$('#pStu').value=cur;\n  const pl=D.plans.filter(p=>p.sid==$('#pStu').value).sort((a,b)=>b.id-a.id);\n  $('#pList').innerHTML=pl.length?pl.map(p=>`<div class=\"plan\"><div class=\"h\"><b>${esc(p.title)}<\/b><span class=\"tag\">${esc(p.type)}<\/span><span class=\"note\">${fdate(p.date,{year:'numeric',month:'long',day:'numeric'})}<\/span><button class=\"btn danger sm\" onclick=\"delPlan(${p.id})\">حذف<\/button><\/div><p>${esc(p.text)}<\/p><\/div>`).join(''):'<p class=\"note\">برنامه‌ای برای این دانش‌آموز ثبت نشده است.<\/p>';\n\n  $('#stuBody').innerHTML=F().map(s=>`<tr><td>${esc(s.name)}<\/td><td class=\"hide-sm ltr\">${fa(s.nid)}<\/td><td class=\"hide-sm ltr\">${fa(s.phone||'—')}<\/td><td class=\"ltr\">${fa(s.par)}<\/td><td><button class=\"btn danger sm\" onclick=\"delStu(${s.id})\">حذف<\/button><\/td><\/tr>`).join('');\n\n  const ta=$('#tplAbs').value,ti=$('#tplIO').value,td=todayFa();\n  $('#absSms').innerHTML=abs.length?abs.map(s=>`<div class=\"sms\"><em>به: ${fa(s.par)} (ولی ${esc(s.name)})<\/em>${esc(ta.replaceAll('{نام}',s.name).replaceAll('{تاریخ}',td))}<\/div>`).join(''):'<p class=\"note\" style=\"margin-bottom:10px\">غایبی ثبت نشده است.<\/p>';\n  const withIO=S().filter(s=>{const r=Rc(s.id);return r.in||r.out});\n  $('#ioSms').innerHTML=withIO.length?withIO.map(s=>{const r=Rc(s.id);return `<div class=\"sms\"><em>به: ${fa(s.par)} (ولی ${esc(s.name)})<\/em>${esc(ti.replaceAll('{نام}',s.name).replaceAll('{ورود}',r.in?fa(r.in):'—').replaceAll('{خروج}',r.out?fa(r.out):'—').replaceAll('{مطالعه}',dur(r.study)))}<\/div>`}).join(''):'<p class=\"note\" style=\"margin-bottom:10px\">ورود یا خروجی ثبت نشده است.<\/p>';\n}\n\nfunction dash(){\n  if(!D.week)return;\n  const days=D.week.days,T=S().length,wr=k=>D.week.rec[k]||{},V=S().map(s=>Rc(s.id));\n  const n=st=>V.filter(x=>x.st===st).length,p=n('p'),a=n('a'),l=n('l'),pc=c=>T?fa(Math.round(c*100/T))+'٪ از کل':'—';\n  $('#sT2').textContent='ثبت‌شده امروز: '+fa(p+a+l);$('#sP2').textContent=pc(p);$('#sA2').textContent=pc(a);$('#sL2').textContent=pc(l);\n  $('#sIn2').textContent='خارج‌شده: '+fa(V.filter(x=>x.out).length);\n  $('#bars').innerHTML=days.map((k,i)=>{\n    const vals=S().map(s=>wr(k)[s.id]||{}),reg=vals.filter(x=>x.st).length,ok=vals.filter(x=>x.st==='p'||x.st==='l').length,pct=reg?Math.round(ok*100/reg):0;\n    const cls=k===D.today?'t':(!reg||k>D.today||i===6?'h':''),h=cls==='h'?45:Math.max(pct,14);\n    return `<div class=\"bw\"><div class=\"bz\"><div class=\"bp ${cls}\" style=\"height:${h}%\" title=\"${WD[i]}: ${fa(pct)}٪\">${cls==='h'?'':fa(pct)+'٪'}<\/div><\/div>${WD[i]}<\/div>`}).join('');\n  let c=0;\n  $('#donut').innerHTML='<svg viewBox=\"0 0 200 106\"><path d=\"M20 100A80 80 0 0 1 180 100\" fill=\"none\" stroke=\"#dfe3ee\" stroke-width=\"24\" pathLength=\"100\"/>'+\n    [[p,'#1f9d63'],[l,'#d99a1b'],[a,'#d64545']].map(([v,col])=>{const f=T?v*100/T:0,x=`<path d=\"M20 100A80 80 0 0 1 180 100\" fill=\"none\" stroke=\"${col}\" stroke-width=\"24\" pathLength=\"100\" stroke-dasharray=\"${f} 100\" stroke-dashoffset=\"${-c}\"/>`;c+=f;return x}).join('')+'<\/svg>';\n  $('#donutPct').textContent=fa(T?Math.round((p+l)*100/T):0)+'٪';\n  const sum=f=>V.reduce((t,x)=>t+(x[f]||0),0);\n  $('#dkStudy').textContent=sum('study')?dur(sum('study')):'۰ ساعت';$('#dkLes').textContent=fa(sum('lessons'));$('#dkTst').textContent=fa(sum('tests'));\n  $('#mx').innerHTML=!T?'<p class=\"note\">هنوز دانش‌آموزی ثبت نشده است.<\/p>':'<div><\/div>'+days.map((k,i)=>`<div class=\"dh ${k===D.today?'t':i===6?'w':''}\">${WD[i]}<br>${fdate(k,{day:'numeric'})}<\/div>`).join('')+\n    S().map(s=>`<div class=\"pn\"><span class=\"av\">${ini(s.name)}<\/span>${esc(s.name)}<\/div>`+days.map((k,i)=>{const r=wr(k)[s.id]||{};\n      return `<div class=\"c ${i===6?'w':r.st||''} ${k===D.today?'t':''}\" title=\"${esc(s.name)}${r.st?' — '+stTxt[r.st]:''}\">${r.study?fa(Math.round(r.study/6)/10):''}<\/div>`}).join('')).join('');\n  const top=S().map(s=>{let m=0,t=0;days.forEach(k=>{const r=wr(k)[s.id]||{};m+=r.study||0;t+=r.tests||0});return{s,m,t}}).filter(x=>x.m).sort((x,y)=>y.m-x.m).slice(0,5);\n  $('#top').innerHTML=top.length?top.map(x=>`<div class=\"li\"><span class=\"av\">${ini(x.s.name)}<\/span><b style=\"flex:1;font-weight:600;font-size:13.5px\">${esc(x.s.name)}<\/b><span class=\"chip\">${dur(x.m)}<\/span><span class=\"chip ok\">${fa(x.t)} تست<\/span><\/div>`).join(''):'<p class=\"note\">هنوز مطالعه‌ای ثبت نشده است.<\/p>';\n  const rc=D.plans.slice().sort((x,y)=>y.id-x.id).slice(0,4);\n  $('#recent').innerHTML=rc.length?rc.map(q=>`<div class=\"li\"><div style=\"flex:1\"><b style=\"font-size:13.5px\">${esc(q.title)}<\/b><div class=\"note\">${esc(nm(q.sid))}<\/div><\/div><span class=\"chip\">${esc(q.type)}<\/span><\/div>`).join(''):'<p class=\"note\">هنوز برنامه‌ای ثبت نشده است.<\/p>';\n}\n$('#dash').onclick=e=>{const b=e.target.closest('[data-go]');if(b)show(b.dataset.go)};\n$('#sq').oninput=render;\nconst setRec=async(id,patch)=>{D.rec[id]=await api('record',{p_student_id:id,p_patch:patch})};\n$('#attBody').onclick=async e=>{const b=e.target.closest('button');if(!b)return;await setRec(+b.parentNode.dataset.id,{st:b.dataset.v});render()};\n$('#allP').onclick=async()=>{D.rec=await api('allpresent');D.week.rec[D.today]=D.rec;render();toast('همه حاضر شدند')};\n$('#toSms').onclick=()=>show('sms');\nconst nowT=()=>{const n=new Date();return String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')};\n$('#ioBody').addEventListener('click',async e=>{const b=e.target.closest('[data-now]');if(!b)return;\n  await setRec(+b.dataset.id,{[b.dataset.now]:nowT()});render();toast('ساعت ثبت شد')});\n$('#ioBody').addEventListener('change',e=>{const i=e.target;if(i.dataset.f)setRec(+i.dataset.id,{[i.dataset.f]:i.value.trim()})});\n$('#nAdd').onclick=async()=>{\n  const s=await api('addStu',{p_name:$('#nName').value,p_nid:$('#nNid').value,p_phone:$('#nPhone').value,p_par:$('#nPar').value});\n  D.students.push(s);['#nName','#nNid','#nPhone','#nPar'].forEach(i=>$(i).value='');render();toast('دانش‌آموز اضافه شد')};\nasync function delStu(id){if(!confirm('این دانش‌آموز و همه‌ی برنامه‌ها و گزارش‌های او حذف شود؟'))return;\n  await api('delStu',{p_id:id});D.students=D.students.filter(s=>s.id!==id);D.plans=D.plans.filter(p=>p.sid!==id);delete D.rec[id];render()}\n$('#pAdd').onclick=async()=>{\n  const q=await api('addPlan',{p_student_id:+$('#pStu').value,p_type:$('#pType').value,p_title:$('#pTitle').value,p_text:$('#pText').value});\n  D.plans.push(q);$('#pTitle').value='';$('#pText').value='';render();toast('برنامه اضافه شد')};\nasync function delPlan(id){if(!confirm('این برنامه حذف شود؟'))return;await api('delPlan',{p_id:id});D.plans=D.plans.filter(p=>p.id!==id);render()}\n$('#pStu').onchange=render;\n$('#tplAbs').oninput=$('#tplIO').oninput=render;\n<\/script>\n<\/body>\n<\/html>\n";
-  document.open();document.write(location.hash==='#admin'?ADMIN:PARENT);document.close();
-  addEventListener('hashchange',()=>location.reload());
-})();
+/* ===================== تنظیمات Supabase =====================
+   این دو مقدار عمومی‌اند و اشکالی ندارد در سایت دیده شوند؛ امنیت را RLS و تابع parent_lookup تأمین می‌کند.
+   (کلید secret / service_role را هرگز اینجا نگذارید.) */
+var SB_URL = 'https://qqfmlwwqfelzrzedjyih.supabase.co';
+var SB_KEY = 'sb_publishable_jkoeFIXATb1DeJ_VE8IQQw_c5evfe_r';
+var CONFIGURED = SB_URL.indexOf('YOUR-') === -1 && SB_KEY.indexOf('YOUR_') === -1;
+
+/* ===================== ابزارها ===================== */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const fa=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pf=(k,o)=>new Intl.DateTimeFormat('fa-IR-u-ca-persian',o).format(new Date(k+'T12:00:00'));
+const tehranToday=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tehran'}).format(new Date());
+const addDays=(k,n)=>{const d=new Date(k+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
+const dur=m=>{if(!m)return '—';const h=Math.floor(m/60),r=m%60;return fa([h&&h+' ساعت',r&&r+' دقیقه'].filter(Boolean).join(' و '))};
+const cnt=n=>n?fa(n):'—';
+const enDigits=s=>String(s||'').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).trim();
+const normName=s=>String(s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/\u200c/g,' ').replace(/\s+/g,' ').trim();
+const stTxt={p:'حاضر',a:'غایب',l:'تأخیر'};
+const toast=t=>{const x=$('#toast');x.textContent=t;x.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>x.classList.remove('show'),2400)};
+const fake=t=>toast(t+' (نمایشی) ارسال شد ✓');
+const safe=f=>async function(...a){try{return await f.apply(this,a)}catch(e){if(e)console.error(e)}};
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLogin()});
+
+/* ===================== انیمیشن‌های کوتاه ===================== */
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function animIn(root){
+  if(!window.gsap||reduceMotion)return;
+  const els=[...(root||document).querySelectorAll('.stat,.card,.panel-card,.item,.plan,.dk')].filter(e=>e.offsetParent!==null);
+  if(els.length)gsap.from(els,{y:8,opacity:0,duration:.22,stagger:.015,ease:'power2.out',clearProps:'all'});
+}
+function animText(sel){ /* فارسی حروف چسبیده دارد؛ فقط «کلمه» شکسته می‌شود نه «حرف» */
+  if(!window.gsap||!window.SplitText||reduceMotion)return;
+  document.querySelectorAll(sel).forEach(el=>{
+    if(el.offsetParent===null)return;
+    if(el._st)el._st.revert();
+    el._st=SplitText.create(el,{type:'words',autoSplit:true,onSplit:s=>gsap.from(s.words,{yPercent:35,opacity:0,duration:.25,stagger:.02,ease:'power2.out'})});
+  });
+}
+window.addEventListener('load',()=>{if(window.gsap&&window.SplitText)gsap.registerPlugin(SplitText);animText('.hero h1');animIn($('#f'))});
+
+/* ===================== استعلام اولیا ===================== */
+async function lookup(week){
+  if(!CONFIGURED)throw new Error('cfg');
+  const r=await fetch(SB_URL+'/rest/v1/rpc/parent_lookup',{method:'POST',headers:{apikey:SB_KEY,'Content-Type':'application/json'},
+    body:JSON.stringify({p_name:$('#q').value,p_nid:$('#nid').value,p_week:week})});
+  const d=await r.json().catch(()=>null);
+  if(r.status===404)throw new Error('nofn');
+  if(!r.ok||!d)throw new Error('net');
+  return d;
+}
+async function load(week){
+  const d=await lookup(week);
+  if(d.error){
+    $('#err').textContent=d.error==='blocked'?'تعداد تلاش بیش از حد مجاز است. چند دقیقه بعد دوباره امتحان کنید.':'دانش‌آموزی با این مشخصات پیدا نشد. نام کامل و کد ملی را دقیق وارد کنید.';
+    $('#res').classList.add('hide');return;
+  }
+  const x=d.rec||{};
+  $('#rName').textContent=d.name;
+  $('#rDate').textContent=pf(d.today,{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const box=$('#rSt');box.className='item'+(x.st?' st-'+x.st:'');box.querySelector('b').textContent=x.st?stTxt[x.st]:'هنوز ثبت نشده';
+  $('#rStudy').textContent=dur(x.study);$('#rLes').textContent=cnt(x.lessons);$('#rTst').textContent=cnt(x.tests);
+  $('#rIn').textContent=x.in?fa(x.in):'—';
+  $('#rOut').textContent=x.out?fa(x.out):(x.in?'هنوز خارج نشده':'—');
+  $('#rNote').textContent=x.note||'—';
+
+  const w=d.week,fmt={year:'numeric',month:'long',day:'numeric'};
+  $('#wSum').textContent=`دانش‌آموز ${d.name} از تاریخ ${pf(w.from,fmt)} تا ${pf(w.to,fmt)} در مجموع ${w.minutes?dur(w.minutes):'۰ ساعت'} مطالعه داشته، ${fa(w.lessons)} درس خوانده و ${fa(w.tests)} تست زده است.`;
+  $('#wP').textContent=fa(w.p);$('#wA').textContent=fa(w.a);$('#wL').textContent=fa(w.l);
+  $('#wM').textContent=dur(w.minutes);$('#wLes').textContent=fa(w.lessons);$('#wT').textContent=fa(w.tests);
+  $('#wk').value=String(week);
+
+  $('#plans').innerHTML=d.plans.length?d.plans.map(p=>`<div class="plan"><b>${esc(p.title)}</b> <span class="pill t">${esc(p.type)}</span><small>${pf(p.date,{year:'numeric',month:'long',day:'numeric'})}</small><p>${esc(p.text)}</p></div>`).join(''):'<p class="note">هنوز برنامه‌ای ثبت نشده است.</p>';
+  $('#hist').innerHTML=d.hist.map(h=>`<tr><td>${pf(h.date,{month:'long',day:'numeric'})}</td><td>${h.st?`<span class="pill ${h.st}">${stTxt[h.st]}</span>`:'—'}</td><td>${h.in?fa(h.in):'—'}</td><td>${h.out?fa(h.out):'—'}</td><td>${dur(h.study)}</td><td>${cnt(h.lessons)}</td><td>${cnt(h.tests)}</td><td>${esc(h.note||'—')}</td></tr>`).join('')||'<tr><td colspan="8" class="muted">گزارشی ثبت نشده است.</td></tr>';
+  $('#err').textContent='';$('#res').classList.remove('hide');animText('#rName');animIn($('#res'));
+}
+$('#f').onsubmit=async e=>{
+  e.preventDefault();$('#err').textContent='';const b=$('#go');b.disabled=true;
+  try{await load(0)}
+  catch(x){$('#err').textContent=x.message==='cfg'?'اتصال به Supabase تنظیم نشده است (SB_URL و SB_KEY در index.html).':x.message==='nofn'?'دیتابیس هنوز آماده نیست؛ فایل supabase_final.sql را در Supabase اجرا کنید.':'ارتباط با سرور برقرار نشد.';$('#res').classList.add('hide')}
+  finally{b.disabled=false}
+};
+$('#wk').onchange=()=>load(+$('#wk').value).catch(()=>{$('#err').textContent='ارتباط با سرور برقرار نشد.'});
+
+/* ===================== ورود مدیر (Supabase Auth) ===================== */
+const SK='sd_admin_session';
+const getSess=()=>{try{return JSON.parse(sessionStorage.getItem(SK)||'null')}catch(e){return null}};
+const setSess=s=>{try{s?sessionStorage.setItem(SK,JSON.stringify(s)):sessionStorage.removeItem(SK)}catch(e){}};
+const mkSess=j=>({access_token:j.access_token,refresh_token:j.refresh_token,expires_at:Math.floor(Date.now()/1000)+(j.expires_in||3600)});
+async function sbAuth(path,body){
+  const r=await fetch(SB_URL+'/auth/v1/'+path,{method:'POST',headers:{apikey:SB_KEY,'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok){const e=new Error(j.msg||j.error_description||'auth');e.code='auth';throw e}
+  return j;
+}
+async function sbLogin(email,pass){
+  const s=mkSess(await sbAuth('token?grant_type=password',{email,password:pass}));
+  setSess(s);
+  const r=await fetch(SB_URL+'/rest/v1/rpc/is_admin',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+s.access_token,'Content-Type':'application/json'},body:'{}'});
+  const ok=r.ok?await r.json():false;
+  if(ok!==true){sbLogout();const e=new Error('forbidden');e.code='forbidden';throw e}
+}
+function sbLogout(){
+  const s=getSess();setSess(null);
+  if(s&&s.access_token)fetch(SB_URL+'/auth/v1/logout',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+s.access_token}}).catch(()=>{});
+}
+async function sbToken(){
+  const s=getSess();if(!s)throw new Error('no-session');
+  if(s.expires_at-60>Date.now()/1000)return s.access_token;
+  const n=mkSess(await sbAuth('token?grant_type=refresh_token',{refresh_token:s.refresh_token}));setSess(n);return n.access_token;
+}
+function dbMsg(j){
+  const c=j&&j.code;
+  if(c==='23505')return 'این کد ملی قبلاً ثبت شده است';
+  if(c==='23514'||c==='22P02'||c==='22001')return 'مقدار واردشده معتبر نیست';
+  if(c==='42501')return 'دسترسی مجاز نیست؛ دوباره وارد شوید';
+  return 'خطا در ذخیره‌سازی اطلاعات';
+}
+async function db(method,path,body,extra){
+  let tok;try{tok=await sbToken()}catch(e){panelLoggedOut();throw 0}
+  let r;
+  try{r=await fetch(SB_URL+'/rest/v1/'+path,{method,headers:{apikey:SB_KEY,Authorization:'Bearer '+tok,'Content-Type':'application/json',...extra},body:body===undefined?undefined:JSON.stringify(body)})}
+  catch(e){toast('ارتباط با سرور برقرار نشد');throw 0}
+  if(r.status===401){panelLoggedOut();throw 0}
+  const j=await r.json().catch(()=>null);
+  if(!r.ok){toast(dbMsg(j));throw 0}
+  return j;
+}
+async function dbAll(path){ /* صفحه‌بندی؛ Supabase در هر درخواست حداکثر ۱۰۰۰ ردیف می‌دهد */
+  let out=[],i=0;
+  for(;;){const part=await db('GET',path+`&limit=1000&offset=${i}`);out=out.concat(part||[]);if(!part||part.length<1000)return out;i+=1000}
+}
+
+function openLogin(){
+  if(!CONFIGURED){toast('اتصال به Supabase تنظیم نشده است');return}
+  if(getSess()){openPanel().catch(()=>showLogin());return}
+  showLogin();
+}
+function showLogin(){$('#loginModal').classList.add('show');$('#adminLoginError').textContent='';setTimeout(()=>$('#adminUsername').focus(),50)}
+function closeLogin(){$('#loginModal').classList.remove('show');$('#adminPassword').value=''}
+let loginBusy=false;
+async function adminLogin(){
+  if(loginBusy)return;
+  const email=$('#adminUsername').value.trim(),pw=$('#adminPassword').value,err=$('#adminLoginError');
+  if(!email||!pw){err.textContent='ایمیل و رمز عبور را وارد کنید.';return}
+  loginBusy=true;$('#lgBtn').disabled=true;err.textContent='';
+  try{await sbLogin(email,pw);closeLogin();await openPanel()}
+  catch(e){
+    err.textContent=e.code==='forbidden'?'این حساب دسترسی مدیر ندارد.':e.code==='auth'?'ایمیل یا رمز عبور اشتباه است.':'ارتباط با سرور برقرار نشد.';
+    $('#adminPassword').value='';
+  }finally{loginBusy=false;$('#lgBtn').disabled=false}
+}
+
+/* ===================== داده‌ی پنل مدیر ===================== */
+let D={today:'',students:[],rec:{},plans:[],week:{days:[],rec:{}}};
+const toC=r=>({st:r.st||'',in:r.in_time||'',out:r.out_time||'',study:r.study||0,lessons:r.lessons||0,tests:r.tests||0,note:r.note||''});
+const COL={st:'st',in:'in_time',out:'out_time',study:'study',lessons:'lessons',tests:'tests',note:'note'};
+const CAP={study:1440,lessons:100,tests:2000};
+function toRow(patch){
+  const o={};
+  for(const k in patch){
+    let v=patch[k];
+    if(k==='st')v=['p','a','l'].includes(v)?v:null;
+    else if(k==='in'||k==='out')v=/^([01]\d|2[0-3]):[0-5]\d$/.test(v)?v:null;
+    else if(k in CAP){v=Math.round(Number(enDigits(v)));v=v>0?Math.min(v,CAP[k]):0}
+    else if(k==='note')v=String(v||'').slice(0,200);
+    o[COL[k]]=v;
+  }
+  return o;
+}
+async function loadAdmin(){
+  const today=tehranToday(),dow=new Date(today+'T12:00:00Z').getUTCDay(),from=addDays(today,-((dow+1)%7)),to=addDays(from,6);
+  const days=[...Array(7)].map((_,i)=>addDays(from,i));
+  const [st,rc,pl]=await Promise.all([
+    dbAll('students?select=*&order=id'),
+    dbAll(`records?select=*&date=gte.${from}&date=lte.${to}&order=date,student_id`),
+    dbAll('plans?select=*&order=id.desc')]);
+  const wr={};days.forEach(k=>wr[k]={});
+  rc.forEach(r=>{(wr[r.date]||(wr[r.date]={}))[r.student_id]=toC(r)});
+  D={today,students:st.map(s=>({id:s.id,name:s.name,nid:s.nid,phone:s.phone||'',par:s.par})),
+     plans:pl.map(p=>({id:p.id,sid:p.student_id,type:p.type,title:p.title,text:p.body,date:p.date})),
+     week:{days,rec:wr},rec:wr[today]||(wr[today]={})};
+  $('#date').textContent=todayFa();
+}
+const todayFa=()=>pf(D.today,{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+async function openPanel(){
+  await loadAdmin();
+  $('#adminPanel').classList.add('open');document.body.style.overflow='hidden';
+  show('dash');animIn($('.ap-side'));
+}
+function panelLoggedOut(){$('#adminPanel').classList.remove('open');document.body.style.overflow='';D={today:'',students:[],rec:{},plans:[],week:{days:[],rec:{}}};toast('نشست پایان یافت؛ دوباره وارد شوید')}
+function closePanel(){sbLogout();$('#adminPanel').classList.remove('open');document.body.style.overflow='';D={today:'',students:[],rec:{},plans:[],week:{days:[],rec:{}}}}
+
+/* ===================== رابط پنل ===================== */
+const titles={dash:'داشبورد',att:'حضور و غیاب',io:'ورود و خروج',plan:'برنامه‌ریزی',stu:'دانش‌آموزان',sms:'پیامک اولیا'};
+const WD=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
+function show(p){
+  $$('.ap-main section').forEach(s=>s.classList.toggle('hide',s.id!==p));
+  $$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
+  $('#title').textContent=titles[p];render();animText('#title');animIn($('#'+p));
+}
+$('#nav').onclick=e=>{const b=e.target.closest('button');if(b)show(b.dataset.p)};
+const S=()=>D.students,Rc=id=>D.rec[id]||{};
+const nm=id=>(S().find(s=>s.id==id)||{name:'؟'}).name;
+const F=()=>{const q=enDigits($('#sq').value||'');return q?S().filter(s=>s.name.includes(q)||s.nid.includes(q)):S()};
+const ini=n=>esc([...n.trim()][0]||'؟');
+
+function render(){
+  dash();
+  const v=S().map(s=>Rc(s.id));
+  $('#sT').textContent=fa(S().length);
+  $('#sP').textContent=fa(v.filter(x=>x.st==='p').length);$('#sA').textContent=fa(v.filter(x=>x.st==='a').length);
+  $('#sL').textContent=fa(v.filter(x=>x.st==='l').length);$('#sIn').textContent=fa(v.filter(x=>x.in&&!x.out).length);
+  const abs=S().filter(s=>Rc(s.id).st==='a');
+  $('#absList').innerHTML=abs.length?abs.map(s=>`<span class="tag">${esc(s.name)}</span>`).join(''):'غایبی ثبت نشده است.';
+  const ex=S().filter(s=>Rc(s.id).out);
+  $('#exitMini').innerHTML=ex.length?ex.map(s=>`<span class="tag">${esc(s.name)} — ${fa(Rc(s.id).out)}</span>`).join(''):'موردی ثبت نشده است.';
+
+  $('#attBody').innerHTML=F().map((s,i)=>{const st=Rc(s.id).st;return `<tr><td>${fa(i+1)}</td><td>${esc(s.name)}</td><td class="hide-sm ltr">${fa(esc(s.nid))}</td>
+    <td><div class="seg" data-id="${s.id}"><button class="p ${st==='p'?'on':''}" data-v="p">حاضر</button><button class="a ${st==='a'?'on':''}" data-v="a">غایب</button><button class="l ${st==='l'?'on':''}" data-v="l">تأخیر</button></div></td></tr>`}).join('');
+
+  const nf=(s,f,r,ph)=>`<input type="number" min="0" data-id="${s.id}" data-f="${f}" value="${r[f]||''}" placeholder="${ph}" style="min-width:70px">`;
+  $('#ioBody').innerHTML=F().map(s=>{const r=Rc(s.id);return `<tr>
+    <td>${esc(s.name)}</td>
+    <td><div class="tm"><input type="time" data-id="${s.id}" data-f="in" value="${esc(r.in||'')}"><button class="abtn ghost sm" data-now="in" data-id="${s.id}">اکنون</button></div></td>
+    <td><div class="tm"><input type="time" data-id="${s.id}" data-f="out" value="${esc(r.out||'')}"><button class="abtn ghost sm" data-now="out" data-id="${s.id}">اکنون</button></div></td>
+    <td>${nf(s,'study',r,'مثلاً ۱۲۰')}</td><td>${nf(s,'lessons',r,'۰')}</td><td>${nf(s,'tests',r,'۰')}</td>
+    <td><input data-id="${s.id}" data-f="note" maxlength="200" value="${esc(r.note||'')}" placeholder="توضیح"></td></tr>`}).join('');
+
+  const cur=$('#pStu').value;
+  $('#pStu').innerHTML=S().map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
+  if(cur&&S().some(s=>s.id==cur))$('#pStu').value=cur;
+  const pl=D.plans.filter(p=>p.sid==$('#pStu').value).sort((a,b)=>b.id-a.id);
+  $('#pList').innerHTML=pl.length?pl.map(p=>`<div class="plan"><div class="h"><b>${esc(p.title)}</b><span class="tag">${esc(p.type)}</span><span class="muted">${pf(p.date,{year:'numeric',month:'long',day:'numeric'})}</span><button class="abtn danger sm" data-delplan="${p.id}">حذف</button></div><p>${esc(p.text)}</p></div>`).join(''):'<p class="muted">برنامه‌ای برای این دانش‌آموز ثبت نشده است.</p>';
+
+  $('#stuBody').innerHTML=F().map(s=>`<tr><td>${esc(s.name)}</td><td class="hide-sm ltr">${fa(esc(s.nid))}</td><td class="hide-sm ltr">${fa(esc(s.phone||'—'))}</td><td class="ltr">${fa(esc(s.par))}</td><td><button class="abtn danger sm" data-delstu="${s.id}">حذف</button></td></tr>`).join('');
+
+  const ta=$('#tplAbs').value,ti=$('#tplIO').value,td=todayFa();
+  $('#absSms').innerHTML=abs.length?abs.map(s=>`<div class="sms"><em>به: ${fa(esc(s.par))} (ولی ${esc(s.name)})</em>${esc(ta.replaceAll('{نام}',s.name).replaceAll('{تاریخ}',td))}</div>`).join(''):'<p class="muted" style="margin-bottom:10px">غایبی ثبت نشده است.</p>';
+  const withIO=S().filter(s=>{const r=Rc(s.id);return r.in||r.out});
+  $('#ioSms').innerHTML=withIO.length?withIO.map(s=>{const r=Rc(s.id);return `<div class="sms"><em>به: ${fa(esc(s.par))} (ولی ${esc(s.name)})</em>${esc(ti.replaceAll('{نام}',s.name).replaceAll('{ورود}',r.in?fa(r.in):'—').replaceAll('{خروج}',r.out?fa(r.out):'—').replaceAll('{مطالعه}',dur(r.study)))}</div>`}).join(''):'<p class="muted" style="margin-bottom:10px">ورود یا خروجی ثبت نشده است.</p>';
+}
+
+function dash(){
+  const days=D.week.days;if(!days.length)return;
+  const T=S().length,wr=k=>D.week.rec[k]||{},V=S().map(s=>Rc(s.id));
+  const n=st=>V.filter(x=>x.st===st).length,p=n('p'),a=n('a'),l=n('l'),pc=c=>T?fa(Math.round(c*100/T))+'٪ از کل':'—';
+  $('#sT2').textContent='ثبت‌شده امروز: '+fa(p+a+l);$('#sP2').textContent=pc(p);$('#sA2').textContent=pc(a);$('#sL2').textContent=pc(l);
+  $('#sIn2').textContent='خارج‌شده: '+fa(V.filter(x=>x.out).length);
+  $('#bars').innerHTML=days.map((k,i)=>{
+    const vals=S().map(s=>wr(k)[s.id]||{}),reg=vals.filter(x=>x.st).length,ok=vals.filter(x=>x.st==='p'||x.st==='l').length,pct=reg?Math.round(ok*100/reg):0;
+    const cls=k===D.today?'t':(!reg||k>D.today||i===6?'h':''),h=cls==='h'?45:Math.max(pct,14);
+    return `<div class="bw"><div class="bz"><div class="bp ${cls}" style="height:${h}%" title="${WD[i]}: ${fa(pct)}٪">${cls==='h'?'':fa(pct)+'٪'}</div></div>${WD[i]}</div>`}).join('');
+  let c=0;
+  $('#donut').innerHTML='<svg viewBox="0 0 200 106"><path d="M20 100A80 80 0 0 1 180 100" fill="none" stroke="rgba(127,127,127,.25)" stroke-width="24" pathLength="100"/>'+
+    [[p,'var(--ok)'],[l,'var(--late)'],[a,'var(--bad)']].map(([v,col])=>{const f=T?v*100/T:0,x=`<path d="M20 100A80 80 0 0 1 180 100" fill="none" stroke="${col}" stroke-width="24" pathLength="100" stroke-dasharray="${f} 100" stroke-dashoffset="${-c}"/>`;c+=f;return x}).join('')+'</svg>';
+  $('#donutPct').textContent=fa(T?Math.round((p+l)*100/T):0)+'٪';
+  const sum=f=>V.reduce((t,x)=>t+(x[f]||0),0);
+  $('#dkStudy').textContent=sum('study')?dur(sum('study')):'۰ ساعت';$('#dkLes').textContent=fa(sum('lessons'));$('#dkTst').textContent=fa(sum('tests'));
+  $('#mx').innerHTML=!T?'<p class="muted">هنوز دانش‌آموزی ثبت نشده است.</p>':'<div></div>'+days.map((k,i)=>`<div class="dh ${k===D.today?'t':i===6?'w':''}">${WD[i]}<br>${pf(k,{day:'numeric'})}</div>`).join('')+
+    S().map(s=>`<div class="pn"><span class="av">${ini(s.name)}</span>${esc(s.name)}</div>`+days.map((k,i)=>{const r=wr(k)[s.id]||{};
+      return `<div class="c ${i===6?'w':r.st||''} ${k===D.today?'t':''}" title="${esc(s.name)}${r.st?' — '+stTxt[r.st]:''}">${r.study?fa(Math.round(r.study/6)/10):''}</div>`}).join('')).join('');
+  const top=S().map(s=>{let m=0,t=0;days.forEach(k=>{const r=wr(k)[s.id]||{};m+=r.study||0;t+=r.tests||0});return{s,m,t}}).filter(x=>x.m).sort((x,y)=>y.m-x.m).slice(0,5);
+  $('#top').innerHTML=top.length?top.map(x=>`<div class="li"><span class="av">${ini(x.s.name)}</span><b style="flex:1;font-weight:600;font-size:13.5px">${esc(x.s.name)}</b><span class="chip">${dur(x.m)}</span><span class="chip ok">${fa(x.t)} تست</span></div>`).join(''):'<p class="muted">هنوز مطالعه‌ای ثبت نشده است.</p>';
+  const rc=D.plans.slice().sort((x,y)=>y.id-x.id).slice(0,4);
+  $('#recent').innerHTML=rc.length?rc.map(q=>`<div class="li"><div style="flex:1"><b style="font-size:13.5px">${esc(q.title)}</b><div class="muted">${esc(nm(q.sid))}</div></div><span class="chip">${esc(q.type)}</span></div>`).join(''):'<p class="muted">هنوز برنامه‌ای ثبت نشده است.</p>';
+}
+
+/* ===================== عملیات مدیر (همه با RLS روی Supabase) ===================== */
+const setRec=async(id,patch)=>{
+  const row=toRow(patch);
+  if(patch.in&&row.in_time&&!Rc(id).st&&!('st' in patch))row.st='p'; /* ثبت ساعت ورود = حاضر */
+  const res=await db('POST','records?on_conflict=date,student_id',[{date:D.today,student_id:id,...row}],{Prefer:'resolution=merge-duplicates,return=representation'});
+  D.rec[id]=toC(res[0]);
+};
+$('#sq').oninput=render;
+$('#pStu').onchange=render;
+$('#tplAbs').oninput=$('#tplIO').oninput=render;
+$('#toSms').onclick=()=>show('sms');
+$('#attBody').onclick=safe(async e=>{const b=e.target.closest('button');if(!b)return;await setRec(+b.parentNode.dataset.id,{st:b.dataset.v});render()});
+$('#allP').onclick=safe(async()=>{
+  const rows=S().filter(s=>!Rc(s.id).st).map(s=>({date:D.today,student_id:s.id,st:'p'}));
+  if(rows.length){const res=await db('POST','records?on_conflict=date,student_id',rows,{Prefer:'resolution=merge-duplicates,return=representation'});res.forEach(r=>{D.rec[r.student_id]=toC(r)})}
+  render();toast('همه حاضر شدند');
+});
+const nowT=()=>{const n=new Date();return String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')};
+$('#ioBody').addEventListener('click',safe(async e=>{const b=e.target.closest('[data-now]');if(!b)return;
+  await setRec(+b.dataset.id,{[b.dataset.now]:nowT()});render();toast('ساعت ثبت شد')}));
+$('#ioBody').addEventListener('change',safe(async e=>{const i=e.target;if(!i.dataset.f)return;
+  await setRec(+i.dataset.id,{[i.dataset.f]:i.value.trim()});if(i.dataset.f==='in'||i.dataset.f==='out')render()}));
+
+$('#nAdd').onclick=safe(async()=>{
+  const name=normName($('#nName').value),nid=enDigits($('#nNid').value),phone=enDigits($('#nPhone').value),par=enDigits($('#nPar').value);
+  if(name.length<2||!/^\d{10}$/.test(nid)||!/^09\d{9}$/.test(par)||(phone&&!/^09\d{9}$/.test(phone))){toast('نام، کد ملی (۱۰ رقم) و شماره‌ی ولی (۰۹…) را درست وارد کنید');return}
+  const res=await db('POST','students',[{name,nid,phone:phone||null,par}],{Prefer:'return=representation'});
+  const s=res[0];D.students.push({id:s.id,name:s.name,nid:s.nid,phone:s.phone||'',par:s.par});
+  ['#nName','#nNid','#nPhone','#nPar'].forEach(i=>$(i).value='');render();toast('دانش‌آموز اضافه شد');
+});
+$('#stuBody').onclick=safe(async e=>{const b=e.target.closest('[data-delstu]');if(!b)return;const id=+b.dataset.delstu;
+  if(!confirm('این دانش‌آموز و همه‌ی برنامه‌ها و گزارش‌های او حذف شود؟'))return;
+  await db('DELETE','students?id=eq.'+id,undefined,{Prefer:'return=minimal'});
+  D.students=D.students.filter(s=>s.id!==id);D.plans=D.plans.filter(p=>p.sid!==id);
+  for(const k in D.week.rec)delete D.week.rec[k][id];render()});
+
+$('#pAdd').onclick=safe(async()=>{
+  const sid=+$('#pStu').value,title=$('#pTitle').value.trim(),text=$('#pText').value.trim();
+  if(!sid||!title||!text){toast('دانش‌آموز، عنوان و متن برنامه الزامی است');return}
+  const res=await db('POST','plans',[{student_id:sid,type:$('#pType').value,title:title.slice(0,100),body:text.slice(0,3000)}],{Prefer:'return=representation'});
+  const p=res[0];D.plans.push({id:p.id,sid:p.student_id,type:p.type,title:p.title,text:p.body,date:p.date});
+  $('#pTitle').value='';$('#pText').value='';render();toast('برنامه اضافه شد');
+});
+$('#pList').onclick=safe(async e=>{const b=e.target.closest('[data-delplan]');if(!b)return;const id=+b.dataset.delplan;
+  if(!confirm('این برنامه حذف شود؟'))return;
+  await db('DELETE','plans?id=eq.'+id,undefined,{Prefer:'return=minimal'});D.plans=D.plans.filter(p=>p.id!==id);render()});
 </script>
+</body>
+</html>

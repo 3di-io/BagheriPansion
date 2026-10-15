@@ -6,6 +6,7 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="referrer" content="no-referrer">
 <title>سامانه پیگیری وضعیت دانش‌آموز</title>
+<link rel="icon" href="assets/Logo.jpg">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
@@ -33,7 +34,9 @@ body{font-family:'Vazirmatn',Tahoma,sans-serif;min-height:100vh;padding:28px 16p
 
 /* hero + cards */
 .hero{text-align:center;padding:18px 8px 18px}
-.logo{width:68px;height:68px;border-radius:22px;margin:0 auto 14px;display:grid;place-items:center;font-size:32px;background:var(--accent);box-shadow:0 12px 30px var(--shadow)}
+.logo{width:112px;height:112px;border-radius:30px;margin:0 auto 14px;display:grid;place-items:center;font-size:40px;background:#fff;padding:6px;overflow:hidden;box-shadow:0 12px 30px var(--shadow)}
+.logo img{width:100%;height:100%;object-fit:contain;display:block}
+.ap-logo{width:48px;height:48px;border-radius:14px;background:#fff;padding:3px;object-fit:contain;box-shadow:0 4px 14px var(--shadow);flex:none}
 .hero h1{font-size:25px;font-weight:800;margin-bottom:8px;color:var(--text)}
 .hero p{color:var(--soft);font-size:14px;line-height:2}
 .card{background:var(--card);border:1px solid var(--card-b);border-radius:22px;padding:20px;margin-bottom:16px;box-shadow:0 14px 40px var(--shadow);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
@@ -61,6 +64,8 @@ td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:
 .pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;color:#fff}
 .pill.p{background:#10916a}.pill.a{background:#c43d3d}.pill.l{background:#c98a10}.pill.t{background:var(--accent);color:var(--on-accent)}
 .plan{background:var(--chip);border:1px solid var(--card-b);border-radius:15px;padding:13px 14px;margin-bottom:10px}
+.pimg{display:block;width:100%;max-width:100%;border-radius:12px;margin-top:10px;border:1px solid var(--card-b);background:#fff}
+.thumb{width:140px;max-width:100%;border-radius:10px;margin-top:8px;border:1px solid var(--card-b);display:block;background:#fff}
 .plan p{white-space:pre-wrap;line-height:1.9;font-size:13.5px;margin-top:6px}.plan small{color:var(--dim);margin-inline-start:8px}
 .sum{font-size:14px;line-height:2;margin:10px 0 12px;color:var(--soft)}
 
@@ -150,7 +155,7 @@ td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:
 
 <div class="container">
   <div class="hero">
-    <div class="logo">🏫</div>
+    <div class="logo"><img src="assets/Logo.jpg" alt="لوگوی دبیرستان شهید حسن باقری" onerror="this.parentNode.textContent='🏫'"></div>
     <h1>پیگیری وضعیت دانش‌آموز</h1>
     <p>برای مشاهده‌ی حضور و غیاب، ساعت ورود و خروج و زمان مطالعه‌ی فرزندتان،<br>نام کامل و کد ملی او را وارد کنید.</p>
   </div>
@@ -178,6 +183,10 @@ td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:
       </div>
     </div>
     <div class="card">
+      <h3>گزارش روزهای اخیر</h3>
+      <div class="tw"><table><thead><tr><th>تاریخ</th><th>وضعیت</th><th>ورود</th><th>خروج</th><th>مطالعه</th><th>درس</th><th>تست</th><th>توضیح</th></tr></thead><tbody id="hist"></tbody></table></div>
+      <div class="card"><h3>برنامه‌های مشاوره و راهبردی</h3><div id="plans"></div></div>
+    <div class="card">
       <h3>خلاصه‌ی هفتگی</h3>
       <select id="wk"><option value="0">هفته‌ی جاری</option><option value="1">هفته‌ی قبل</option><option value="2">دو هفته‌ی قبل</option><option value="3">سه هفته‌ی قبل</option></select>
       <p class="sum" id="wSum"></p>
@@ -190,11 +199,7 @@ td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:
         <div class="item"><span>تست زده‌شده</span><b id="wT"></b></div>
       </div>
     </div>
-    <div class="card"><h3>برنامه‌های مشاوره و راهبردی</h3><div id="plans"></div></div>
-    <div class="card">
-      <h3>گزارش روزهای اخیر</h3>
-      <div class="tw"><table><thead><tr><th>تاریخ</th><th>وضعیت</th><th>ورود</th><th>خروج</th><th>مطالعه</th><th>درس</th><th>تست</th><th>توضیح</th></tr></thead><tbody id="hist"></tbody></table></div>
-    </div>
+  </div>
   </div>
   <p class="note">اطلاعات هر دانش‌آموز فقط با نام کامل و کد ملی او نمایش داده می‌شود.</p>
   <button type="button" class="admin-link" onclick="openLogin()">ورود مدیر</button>
@@ -234,6 +239,7 @@ td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:
       <input id="sq" placeholder="🔍 جستجوی دانش‌آموز (نام یا کد ملی)">
       <span class="chipd hide-sm" id="date"></span>
       <button class="abtn ghost" onclick="closePanel()">خروج از حساب</button>
+      <img class="ap-logo" src="assets/Logo.jpg" alt="لوگو" onerror="this.remove()">
     </div>
 
     <section id="dash">
@@ -284,9 +290,11 @@ td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:
           <label>نوع برنامه<select id="pType"><option>مشاوره تحصیلی</option><option>راهبردی</option></select></label>
           <label>عنوان<input id="pTitle" maxlength="100" placeholder="مثلاً برنامه‌ی هفته‌ی اول مهر"></label>
         </div>
-        <label class="f" style="margin-top:10px">متن برنامه<textarea id="pText" rows="5" maxlength="3000"></textarea></label>
+        <label class="f" style="margin-top:10px">متن برنامه (اختیاری اگر عکس می‌گذارید)<textarea id="pText" rows="5" maxlength="3000"></textarea></label>
+        <label class="f" style="margin-top:10px">عکس برنامه (اختیاری)<input type="file" id="pImg" accept="image/jpeg,image/png,image/webp"></label>
+        <div id="pPrev" class="hide" style="margin-top:8px"><img id="pPrevImg" class="thumb" alt="پیش‌نمایش"><button type="button" class="abtn ghost sm" id="pImgClear" style="margin-top:8px">حذف عکس</button></div>
         <button class="abtn" id="pAdd" style="margin-top:12px">افزودن برنامه</button>
-        <p class="muted" style="margin-top:10px">برنامه فقط در صفحه‌ی همان دانش‌آموز (بخش «برنامه‌های مشاوره و راهبردی») نمایش داده می‌شود.</p>
+        <p class="muted" style="margin-top:10px">برنامه فقط در صفحه‌ی همان دانش‌آموز نمایش داده می‌شود. می‌توانید فقط عکس برنامه را بفرستید؛ عکس قبل از آپلود خودکار کوچک می‌شود (حداکثر ۲۰۰۰ پیکسل، JPG).</p>
       </div>
       <div class="panel-card" style="margin-top:14px"><h4>برنامه‌های ثبت‌شده‌ی این دانش‌آموز</h4><div id="pList"></div></div>
     </section>
@@ -340,6 +348,7 @@ var CONFIGURED = SB_URL.indexOf('YOUR-') === -1 && SB_KEY.indexOf('YOUR_') === -
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const fa=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const imgUrl=p=>SB_URL+'/storage/v1/object/public/plan-images/'+p;
 const pf=(k,o)=>new Intl.DateTimeFormat('fa-IR-u-ca-persian',o).format(new Date(k+'T12:00:00'));
 const tehranToday=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tehran'}).format(new Date());
 const addDays=(k,n)=>{const d=new Date(k+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
@@ -402,7 +411,7 @@ async function load(week){
   $('#wM').textContent=dur(w.minutes);$('#wLes').textContent=fa(w.lessons);$('#wT').textContent=fa(w.tests);
   $('#wk').value=String(week);
 
-  $('#plans').innerHTML=d.plans.length?d.plans.map(p=>`<div class="plan"><b>${esc(p.title)}</b> <span class="pill t">${esc(p.type)}</span><small>${pf(p.date,{year:'numeric',month:'long',day:'numeric'})}</small><p>${esc(p.text)}</p></div>`).join(''):'<p class="note">هنوز برنامه‌ای ثبت نشده است.</p>';
+  $('#plans').innerHTML=d.plans.length?d.plans.map(p=>`<div class="plan"><b>${esc(p.title)}</b> <span class="pill t">${esc(p.type)}</span><small>${pf(p.date,{year:'numeric',month:'long',day:'numeric'})}</small>${p.text?`<p>${esc(p.text)}</p>`:''}${p.image?`<a href="${esc(imgUrl(p.image))}" target="_blank" rel="noopener"><img class="pimg" loading="lazy" src="${esc(imgUrl(p.image))}" alt="تصویر برنامه"></a>`:''}</div>`).join(''):'<p class="note">هنوز برنامه‌ای ثبت نشده است.</p>';
   $('#hist').innerHTML=d.hist.map(h=>`<tr><td>${pf(h.date,{month:'long',day:'numeric'})}</td><td>${h.st?`<span class="pill ${h.st}">${stTxt[h.st]}</span>`:'—'}</td><td>${h.in?fa(h.in):'—'}</td><td>${h.out?fa(h.out):'—'}</td><td>${dur(h.study)}</td><td>${cnt(h.lessons)}</td><td>${cnt(h.tests)}</td><td>${esc(h.note||'—')}</td></tr>`).join('')||'<tr><td colspan="8" class="muted">گزارشی ثبت نشده است.</td></tr>';
   $('#err').textContent='';$('#res').classList.remove('hide');animText('#rName');animIn($('#res'));
 }
@@ -510,7 +519,7 @@ async function loadAdmin(){
   const wr={};days.forEach(k=>wr[k]={});
   rc.forEach(r=>{(wr[r.date]||(wr[r.date]={}))[r.student_id]=toC(r)});
   D={today,students:st.map(s=>({id:s.id,name:s.name,nid:s.nid,phone:s.phone||'',par:s.par})),
-     plans:pl.map(p=>({id:p.id,sid:p.student_id,type:p.type,title:p.title,text:p.body,date:p.date})),
+     plans:pl.map(p=>({id:p.id,sid:p.student_id,type:p.type,title:p.title,text:p.body,image:p.image_path||'',date:p.date})),
      week:{days,rec:wr},rec:wr[today]||(wr[today]={})};
   $('#date').textContent=todayFa();
 }
@@ -563,7 +572,7 @@ function render(){
   $('#pStu').innerHTML=S().map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
   if(cur&&S().some(s=>s.id==cur))$('#pStu').value=cur;
   const pl=D.plans.filter(p=>p.sid==$('#pStu').value).sort((a,b)=>b.id-a.id);
-  $('#pList').innerHTML=pl.length?pl.map(p=>`<div class="plan"><div class="h"><b>${esc(p.title)}</b><span class="tag">${esc(p.type)}</span><span class="muted">${pf(p.date,{year:'numeric',month:'long',day:'numeric'})}</span><button class="abtn danger sm" data-delplan="${p.id}">حذف</button></div><p>${esc(p.text)}</p></div>`).join(''):'<p class="muted">برنامه‌ای برای این دانش‌آموز ثبت نشده است.</p>';
+  $('#pList').innerHTML=pl.length?pl.map(p=>`<div class="plan"><div class="h"><b>${esc(p.title)}</b><span class="tag">${esc(p.type)}</span><span class="muted">${pf(p.date,{year:'numeric',month:'long',day:'numeric'})}</span><button class="abtn danger sm" data-delplan="${p.id}">حذف</button></div>${p.text?`<p>${esc(p.text)}</p>`:''}${p.image?`<a href="${esc(imgUrl(p.image))}" target="_blank" rel="noopener"><img class="thumb" loading="lazy" src="${esc(imgUrl(p.image))}" alt="تصویر برنامه"></a>`:''}</div>`).join(''):'<p class="muted">برنامه‌ای برای این دانش‌آموز ثبت نشده است.</p>';
 
   $('#stuBody').innerHTML=F().map(s=>`<tr><td>${esc(s.name)}</td><td class="hide-sm ltr">${fa(esc(s.nid))}</td><td class="hide-sm ltr">${fa(esc(s.phone||'—'))}</td><td class="ltr">${fa(esc(s.par))}</td><td><button class="abtn danger sm" data-delstu="${s.id}">حذف</button></td></tr>`).join('');
 
@@ -628,22 +637,73 @@ $('#nAdd').onclick=safe(async()=>{
   const s=res[0];D.students.push({id:s.id,name:s.name,nid:s.nid,phone:s.phone||'',par:s.par});
   ['#nName','#nNid','#nPhone','#nPar'].forEach(i=>$(i).value='');render();toast('دانش‌آموز اضافه شد');
 });
+/* ---- عکس برنامه: کوچک‌سازی در مرورگر + آپلود در Supabase Storage (باکت plan-images) ---- */
+const uuid=()=>crypto.randomUUID?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=crypto.getRandomValues(new Uint8Array(1))[0]&15;return(c==='x'?r:(r&3|8)).toString(16)});
+async function compressImage(file){
+  if(!/^image\/(jpeg|png|webp)$/.test(file.type))throw new Error('type');
+  const url=URL.createObjectURL(file);
+  try{
+    const img=await new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=()=>no(new Error('decode'));i.src=url});
+    const M=2000,r=Math.min(1,M/Math.max(img.naturalWidth,img.naturalHeight)),w=Math.round(img.naturalWidth*r),h=Math.round(img.naturalHeight*r);
+    const c=document.createElement('canvas');c.width=w;c.height=h;
+    const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(img,0,0,w,h);
+    const blob=await new Promise(ok=>c.toBlob(ok,'image/jpeg',.85));
+    if(!blob)throw new Error('encode');
+    if(blob.size>5*1024*1024)throw new Error('big');
+    return blob;
+  }finally{URL.revokeObjectURL(url)}
+}
+async function uploadPlanImage(sid,blob){
+  const tok=await sbToken(),path=sid+'/'+uuid()+'.jpg',fd=new FormData();
+  fd.append('cacheControl','3600');fd.append('',blob);
+  let r;
+  try{r=await fetch(SB_URL+'/storage/v1/object/plan-images/'+path,{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+tok,'x-upsert':'false'},body:fd})}
+  catch(e){toast('ارتباط با سرور برقرار نشد');throw 0}
+  if(!r.ok){toast(r.status===404?'باکت plan-images ساخته نشده؛ فایل supabase_update_images.sql را اجرا کنید':'آپلود عکس ناموفق بود');throw 0}
+  return path;
+}
+async function deleteImage(path){ /* بهترین تلاش؛ اگر نشد مهم نیست */
+  try{const tok=await sbToken();await fetch(SB_URL+'/storage/v1/object/plan-images/'+path,{method:'DELETE',headers:{apikey:SB_KEY,Authorization:'Bearer '+tok}})}catch(e){}
+}
+function clearPlanImg(){$('#pImg').value='';$('#pPrev').classList.add('hide');const i=$('#pPrevImg');if(i.dataset.u){URL.revokeObjectURL(i.dataset.u);i.dataset.u=''}i.removeAttribute('src')}
+$('#pImg').onchange=()=>{
+  const f=$('#pImg').files[0];if(!f){clearPlanImg();return}
+  const i=$('#pPrevImg');if(i.dataset.u)URL.revokeObjectURL(i.dataset.u);
+  i.dataset.u=URL.createObjectURL(f);i.src=i.dataset.u;$('#pPrev').classList.remove('hide');
+};
+$('#pImgClear').onclick=clearPlanImg;
+
 $('#stuBody').onclick=safe(async e=>{const b=e.target.closest('[data-delstu]');if(!b)return;const id=+b.dataset.delstu;
-  if(!confirm('این دانش‌آموز و همه‌ی برنامه‌ها و گزارش‌های او حذف شود؟'))return;
+  if(!confirm('این دانش‌آموز و همه‌ی برنامه‌ها، عکس‌ها و گزارش‌های او حذف شود؟'))return;
+  const imgs=D.plans.filter(p=>p.sid===id&&p.image).map(p=>p.image);
   await db('DELETE','students?id=eq.'+id,undefined,{Prefer:'return=minimal'});
+  imgs.forEach(deleteImage);
   D.students=D.students.filter(s=>s.id!==id);D.plans=D.plans.filter(p=>p.sid!==id);
   for(const k in D.week.rec)delete D.week.rec[k][id];render()});
 
 $('#pAdd').onclick=safe(async()=>{
-  const sid=+$('#pStu').value,title=$('#pTitle').value.trim(),text=$('#pText').value.trim();
-  if(!sid||!title||!text){toast('دانش‌آموز، عنوان و متن برنامه الزامی است');return}
-  const res=await db('POST','plans',[{student_id:sid,type:$('#pType').value,title:title.slice(0,100),body:text.slice(0,3000)}],{Prefer:'return=representation'});
-  const p=res[0];D.plans.push({id:p.id,sid:p.student_id,type:p.type,title:p.title,text:p.body,date:p.date});
-  $('#pTitle').value='';$('#pText').value='';render();toast('برنامه اضافه شد');
+  const sid=+$('#pStu').value,title=$('#pTitle').value.trim(),text=$('#pText').value.trim(),file=$('#pImg').files[0];
+  if(!sid||!title||(!text&&!file)){toast('دانش‌آموز، عنوان و (متن یا عکس) برنامه الزامی است');return}
+  const btn=$('#pAdd');btn.disabled=true;let path=null;
+  try{
+    if(file){
+      let blob;
+      try{blob=await compressImage(file)}
+      catch(e){toast(e.message==='big'?'حجم عکس بعد از کوچک‌سازی هم زیاد است':'این عکس خوانده نشد؛ JPG یا PNG انتخاب کنید');return}
+      path=await uploadPlanImage(sid,blob);
+    }
+    const res=await db('POST','plans',[{student_id:sid,type:$('#pType').value,title:title.slice(0,100),body:text.slice(0,3000),image_path:path}],{Prefer:'return=representation'});
+    const p=res[0];D.plans.push({id:p.id,sid:p.student_id,type:p.type,title:p.title,text:p.body,image:p.image_path||'',date:p.date});
+    $('#pTitle').value='';$('#pText').value='';clearPlanImg();render();toast('برنامه اضافه شد');
+  }catch(e){if(path)deleteImage(path);throw e}
+  finally{btn.disabled=false}
 });
 $('#pList').onclick=safe(async e=>{const b=e.target.closest('[data-delplan]');if(!b)return;const id=+b.dataset.delplan;
   if(!confirm('این برنامه حذف شود؟'))return;
-  await db('DELETE','plans?id=eq.'+id,undefined,{Prefer:'return=minimal'});D.plans=D.plans.filter(p=>p.id!==id);render()});
+  const img=(D.plans.find(p=>p.id===id)||{}).image;
+  await db('DELETE','plans?id=eq.'+id,undefined,{Prefer:'return=minimal'});
+  if(img)deleteImage(img);
+  D.plans=D.plans.filter(p=>p.id!==id);render()});
 </script>
 </body>
 </html>

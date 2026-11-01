@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#071629">
 <meta name="referrer" content="no-referrer">
 <title>سامانه پیگیری وضعیت دانش‌آموز</title>
 <link rel="icon" href="assets/Logo.png">
@@ -14,82 +13,143 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js" defer></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-/* پالت: Frost Navy / Deep Winter Blue / Icy Steel / Frost Mist / Snow White */
-:root{
-  --navy:#071629;--blue:#17345C;--steel:#9DB7D5;--mist:#EAF4FF;--snow:#FFFFFF;
-  --text:#071629;--soft:#3a5578;--dim:#5b7391;
-  --accent:#17345C;--on-accent:#FFFFFF;
-  --input-bg:#FFFFFF;--input-b:#9DB7D5;
-  --card:#FFFFFF;--card-b:rgba(23,52,92,.14);--chip:#EAF4FF;
-  --line:rgba(23,52,92,.14);
-  --ok:#14774a;--bad:#b73232;--late:#8f6208;
-  --shadow:rgba(7,22,41,.45);--r-card:28px;--r-in:16px}
+/* پس‌زمینه: ترتیب عمداً این‌طور است تا نسخه‌ی استاندارد آخر بیاید و در همه‌ی مرورگرها جهت چپ‌به‌راست درست باشد */
+:root{--text:#0f1a3d;--soft:#4f5a7d;--dim:#7a84a3;
+  --glass:rgba(255,255,255,.94);--glass-b:rgba(10,22,71,.14);--accent:#0A1647;--accent-2:#0A1647;--on-accent:#fff;
+  --input-bg:#fff;--input-b:#cfd5e4;--card:rgba(255,255,255,.94);--card-b:rgba(10,22,71,.10);
+  --shadow:rgba(10,22,71,.22);--ok:#1f9d63;--bad:#d64545;--late:#d99a1b;--chip:#f0f3fa;--hover:rgba(10,22,71,.06)}
 html{min-height:100%}
 body{font-family:'Vazirmatn',Tahoma,sans-serif;min-height:100vh;padding:28px 16px 40px;color:var(--text);position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased;
-  background:#071629;
-  background:radial-gradient(900px 520px at 88% -8%,rgba(157,183,213,.34),transparent 62%),
-             radial-gradient(700px 420px at 4% 108%,rgba(157,183,213,.22),transparent 65%),
-             linear-gradient(180deg,#071629 0%,#17345C 100%);
+  background:hsla(212, 35%, 58%, 1);
+  background:-moz-linear-gradient(90deg, hsla(212, 35%, 58%, 1) 0%, hsla(218, 32%, 80%, 1) 100%);
+  background:-webkit-linear-gradient(90deg, hsla(212, 35%, 58%, 1) 0%, hsla(218, 32%, 80%, 1) 100%);
+  background:linear-gradient(90deg, hsla(212, 35%, 58%, 1) 0%, hsla(218, 32%, 80%, 1) 100%);
+  filter:progid:DXImageTransform.Microsoft.gradient( startColorstr="#6D90B9", endColorstr="#BBC7DC", GradientType=1 );
   background-attachment:fixed}
 .hide{display:none!important}
+.admin-link{all:unset;cursor:pointer;display:block;text-align:center;margin:22px auto 0;font-size:12.5px;color:var(--soft);padding:6px 14px;border-radius:999px}
+.admin-link:hover{background:rgba(255,255,255,.35);color:var(--text)}
 .ltr{direction:ltr;text-align:right}
 .container{max-width:720px;margin:0 auto;position:relative;z-index:1}
-:focus-visible{outline:3px solid var(--steel);outline-offset:2px}
 
-/* hero */
-.hero{text-align:center;padding:18px 8px 22px}
+/* hero + cards */
+.hero{text-align:center;padding:18px 8px 18px}
 .logo{width:130px;height:150px;margin:0 auto 10px;display:grid;place-items:center;font-size:48px}
-.logo img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 10px 18px rgba(7,22,41,.5))}
-.hero h1{font-size:26px;font-weight:800;margin-bottom:10px;color:var(--snow)}
-.hero p{color:var(--steel);font-size:14px;line-height:2}
-
-/* کارت‌ها: هر کارت یکی از رنگ‌های پالت را می‌گیرد */
-.card{background:var(--card);border:1px solid var(--card-b);border-radius:var(--r-card);padding:22px;margin-bottom:16px;box-shadow:0 18px 44px var(--shadow)}
-.c-blue{--card:#17345C;--card-b:rgba(157,183,213,.28);--text:#FFFFFF;--soft:#9DB7D5;--chip:#EAF4FF;color:var(--text)}
-.c-mist{--card:#EAF4FF;--card-b:rgba(157,183,213,.6);--chip:#FFFFFF}
-.c-steel{--card:#9DB7D5;--card-b:rgba(7,22,41,.14);--soft:#17345C;--dim:#17345C;--chip:#EAF4FF;--input-b:#17345C;--line:rgba(7,22,41,.18)}
+.logo img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 8px 14px rgba(10,22,71,.28))}
+.ap-logo{height:58px;width:auto;object-fit:contain;filter:drop-shadow(0 3px 6px rgba(10,22,71,.3));flex:none}
+.hero h1{font-size:25px;font-weight:800;margin-bottom:8px;color:var(--text)}
+.hero p{color:var(--soft);font-size:14px;line-height:2}
+.card{background:var(--card);border:1px solid var(--card-b);border-radius:22px;padding:20px;margin-bottom:16px;box-shadow:0 14px 40px var(--shadow);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 label.f{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--soft)}
-input,select,textarea{font:inherit;color:var(--navy);padding:13px 15px;border:1px solid var(--input-b);border-radius:var(--r-in);background:var(--input-bg);outline:none;width:100%;transition:border-color .15s,box-shadow .15s}
-input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(157,183,213,.55)}
-input::placeholder{color:#7d93ad}
-select option{color:var(--navy)}
-.btn{font:inherit;cursor:pointer;border:0;padding:14px 18px;border-radius:var(--r-in);background:var(--blue);color:var(--on-accent);font-size:15px;font-weight:700;width:100%;margin-top:14px;transition:background .15s}
-.btn:hover{background:var(--navy)}.btn:disabled{opacity:.6;cursor:wait}
+input,select,textarea{font:inherit;color:var(--text);padding:12px 14px;border:1px solid var(--input-b);border-radius:13px;background:var(--input-bg);outline:none;width:100%;transition:.15s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(44,75,214,.18)}
+select option{color:#111}
+.btn{font:inherit;cursor:pointer;border:0;padding:13px 18px;border-radius:13px;background:var(--accent);color:var(--on-accent);font-size:15px;font-weight:700;width:100%;margin-top:14px;transition:.15s}
+.btn:hover{filter:brightness(1.12)}.btn:disabled{opacity:.6;cursor:wait}
 .err{color:var(--bad);font-size:13.5px;margin-top:12px;line-height:1.9;min-height:4px}
-.note{font-size:12px;color:var(--steel);line-height:1.9;text-align:center;margin-top:8px}
-.muted{text-align:center;color:var(--dim)}
-
-/* کارت نام دانش‌آموز */
+.note{font-size:12px;color:var(--soft);line-height:1.9;text-align:center;margin-top:8px}
 .name{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.name i{width:50px;height:50px;border-radius:16px;background:var(--steel);display:grid;place-items:center;font-style:normal;font-size:22px;flex:none}
-.name h2{font-size:19px;color:var(--snow)}.name span{font-size:12.5px;color:var(--steel)}
-
+.name i{width:48px;height:48px;border-radius:15px;background:var(--chip);border:1px solid var(--card-b);display:grid;place-items:center;font-style:normal;font-size:22px}
+.name h2{font-size:18px}.name span{font-size:12.5px;color:var(--soft)}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.item{background:var(--chip);border:1px solid var(--card-b);border-radius:18px;padding:13px 14px;color:var(--navy)}
-.item span{font-size:12px;color:#3a5578;display:block;margin-bottom:4px}.item b{font-size:17px}.item.wide{grid-column:1/-1}
+.item{background:var(--chip);border:1px solid var(--card-b);border-radius:15px;padding:13px 14px}
+.item span{font-size:12px;color:var(--soft);display:block;margin-bottom:4px}.item b{font-size:17px}.item.wide{grid-column:1/-1}
 .st-p b{color:var(--ok)}.st-a b{color:var(--bad)}.st-l b{color:var(--late)}
-h3{font-size:15px;margin:2px 0 12px;color:var(--blue)}
+h3{font-size:15px;margin:2px 0 12px;color:var(--accent-2)}
 .tw{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
-th{font-weight:600;color:var(--soft);font-size:12px;text-align:right;padding:8px;border-bottom:1px solid var(--line)}
-td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}tr:last-child td{border-bottom:0}
+th{font-weight:600;color:var(--soft);font-size:12px;text-align:right;padding:8px;border-bottom:1px solid var(--card-b)}
+td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:last-child td{border-bottom:0}
 .pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;color:#fff}
-.pill.p{background:#14774a}.pill.a{background:#b73232}.pill.l{background:#8f6208}.pill.t{background:var(--blue);color:#fff}
-.plan{background:var(--chip);border:1px solid var(--card-b);border-radius:18px;padding:13px 14px;margin-bottom:10px}
-.pimg{display:block;width:100%;max-width:100%;border-radius:14px;margin-top:10px;border:1px solid var(--card-b);background:#fff}
+.pill.p{background:#10916a}.pill.a{background:#c43d3d}.pill.l{background:#c98a10}.pill.t{background:var(--accent);color:var(--on-accent)}
+.plan{background:var(--chip);border:1px solid var(--card-b);border-radius:15px;padding:13px 14px;margin-bottom:10px}
+.pimg{display:block;width:100%;max-width:100%;border-radius:12px;margin-top:10px;border:1px solid var(--card-b);background:#fff}
 .thumb{width:140px;max-width:100%;border-radius:10px;margin-top:8px;border:1px solid var(--card-b);display:block;background:#fff}
 .plan p{white-space:pre-wrap;line-height:1.9;font-size:13.5px;margin-top:6px}.plan small{color:var(--dim);margin-inline-start:8px}
-.sum{font-size:14px;line-height:2;margin:12px 0;color:var(--navy)}
+.sum{font-size:14px;line-height:2;margin:10px 0 12px;color:var(--soft)}
 
-/* لینک ورود مدیر */
-.admin-link{display:block;width:max-content;text-align:center;margin:22px auto 0;font-size:12.5px;color:var(--steel);padding:7px 16px;border-radius:999px;text-decoration:none;border:1px solid rgba(157,183,213,.4);transition:background .15s,color .15s}
-.admin-link:hover{background:var(--steel);color:var(--navy)}
+/* login modal */
+.modal{position:fixed;inset:0;z-index:70;display:none;place-items:center;padding:20px;background:rgba(10,22,71,.55)}
+.modal.show{display:grid}
+.lg-card{position:relative;width:100%;max-width:380px;background:var(--glass);border:1px solid var(--glass-b);border-radius:26px;padding:28px 22px 22px;box-shadow:0 24px 70px var(--shadow);text-align:center}
+.x{all:unset;cursor:pointer;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:22px;color:var(--soft)}.x:hover{background:var(--hover)}
+.lg-card .x{position:absolute;top:12px;inset-inline-start:12px}
+.lg-badge{width:56px;height:56px;border-radius:18px;margin:0 auto 12px;display:grid;place-items:center;background:var(--chip);color:var(--accent-2);border:1px solid var(--card-b)}
+.lg-badge svg{width:28px;height:28px}
+.lg-card h2{font-size:19px;margin-bottom:6px}.lg-sub{font-size:13px;color:var(--soft);line-height:1.9;margin-bottom:16px}
+.lg-card input{margin-bottom:10px;text-align:right}
+.lg-cancel{all:unset;cursor:pointer;display:block;margin:10px auto 0;font-size:13px;color:var(--dim)}
 
-#toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,20px);background:var(--mist);color:var(--navy);padding:11px 20px;border-radius:999px;font-size:13.5px;box-shadow:0 10px 30px var(--shadow);opacity:0;pointer-events:none;transition:.25s;z-index:50}
-#toast.show{opacity:1;transform:translate(-50%,0)}
-
-@media(max-width:520px){.row{grid-template-columns:1fr}.card{padding:18px;border-radius:24px}}
+/* admin panel */
+.admin-panel{position:fixed;inset:0;z-index:60;display:none;grid-template-columns:232px 1fr;color:var(--text);background:hsla(212, 35%, 58%, 1);background:-webkit-linear-gradient(90deg, hsla(212, 35%, 58%, 1) 0%, hsla(218, 32%, 80%, 1) 100%);background:linear-gradient(90deg, hsla(212, 35%, 58%, 1) 0%, hsla(218, 32%, 80%, 1) 100%)}
+.admin-panel.open{display:grid}
+.ap-side{background:var(--glass);border-inline-end:1px solid var(--glass-b);padding:18px 12px;display:flex;flex-direction:column;gap:6px;overflow:auto}
+.ap-brand{font-weight:800;font-size:16px;padding:6px 10px 12px;color:var(--accent-2)}
+.ap-side button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:13px;font-size:14px;color:var(--soft);transition:.12s}
+.ap-side button:hover{background:var(--hover);color:var(--text)}
+.ap-side button.on{background:var(--accent);color:var(--on-accent);font-weight:700}
+.ap-main{overflow:auto;padding:16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.ap-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ap-top h2{font-size:22px;font-weight:800;margin-inline-end:auto}
+.ap-top input{max-width:300px;padding:9px 14px;border-radius:999px}
+.chipd{background:var(--chip);padding:7px 14px;border-radius:999px;font-size:12.5px;color:var(--soft)}
+.abtn{font:inherit;cursor:pointer;border:0;padding:9px 16px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:13.5px;font-weight:700;white-space:nowrap}
+.abtn:hover{filter:brightness(1.12)}.abtn.ghost{background:var(--chip);color:var(--text);border:1px solid var(--card-b)}.abtn.danger{background:var(--bad);color:#fff}.abtn.sm{padding:6px 12px;font-size:12px}
+.panel-card{background:var(--card);border:1px solid var(--card-b);border-radius:20px;padding:18px;overflow-x:auto}
+.panel-card h4{font-size:15px;margin-bottom:12px;color:var(--accent-2)}
+.g{display:grid;gap:14px}.g3{grid-template-columns:1.7fr 1fr 1fr}.g2{grid-template-columns:1fr 1fr}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.stat{position:relative;background:var(--card);border:1px solid var(--card-b);border-radius:18px;padding:14px}
+.stat span{font-size:13px;font-weight:600;color:var(--soft)}.stat b{display:block;font-size:34px;font-weight:800;margin:6px 0 6px;line-height:1}.stat small{font-size:11.5px;color:var(--dim)}
+.stat.ok b{color:var(--ok)}.stat.bad b{color:var(--bad)}.stat.late b{color:var(--late)}
+.stat.hl{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}.stat.hl span,.stat.hl small{color:inherit;opacity:.85}
+.bars{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;height:200px}
+.bw{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;color:var(--soft)}
+.bz{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.bp{width:100%;max-width:50px;border-radius:999px;background:linear-gradient(#5b72c4,var(--accent));color:var(--on-accent);font-size:11px;display:flex;justify-content:center;padding-top:8px}
+.bp.t{outline:2px solid var(--accent-2);outline-offset:2px}
+.bp.h{background:repeating-linear-gradient(135deg,var(--dim) 0 3px,transparent 3px 7px);border:1.5px solid var(--card-b)}
+.dn{position:relative;max-width:240px;margin:6px auto 0}.dn svg{width:100%;display:block}
+.dpct{position:absolute;inset-inline:0;bottom:2px;text-align:center}.dpct b{font-size:28px;font-weight:800;display:block;line-height:1.1}.dpct span{font-size:12px;color:var(--soft)}
+.lg{display:flex;justify-content:center;gap:12px;font-size:12px;color:var(--soft);margin-top:10px;flex-wrap:wrap}
+.lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-inline-end:5px}
+.dk{border-radius:18px;padding:18px;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;background:var(--accent);color:var(--on-accent)}
+.dk h4{color:inherit;margin:0}.dk big{display:block;font-size:28px;font-weight:800;line-height:1.4}
+.dk .r{display:flex;gap:10px}.dk .r div{flex:1;background:rgba(255,255,255,.18);border-radius:13px;padding:10px 12px;font-size:12px}.dk .r b{display:block;font-size:20px}
+.mx{display:grid;grid-template-columns:170px repeat(7,minmax(46px,1fr));gap:6px;min-width:560px;align-items:center}
+.dh{background:var(--chip);border:1px solid var(--card-b);border-radius:11px;text-align:center;font-size:11.5px;padding:5px 0;line-height:1.5}
+.dh.t{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}.dh.w{opacity:.6}
+.pn{display:flex;align-items:center;gap:8px;font-size:13px;white-space:nowrap}
+.av{width:30px;height:30px;border-radius:50%;background:var(--chip);border:1px solid var(--card-b);display:inline-grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+.c{height:38px;border-radius:11px;background:var(--chip);display:grid;place-items:center;font-size:11px;color:#fff;font-weight:600}
+.c.p{background:#10916a}.c.a{background:#c43d3d}.c.l{background:#c98a10}
+.c.w{background:repeating-linear-gradient(135deg,var(--chip) 0 4px,transparent 4px 8px)}.c.t{outline:2px dashed var(--accent);outline-offset:2px}
+.li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--chip)}.li:last-child{border:0}
+.chip{font-size:11.5px;padding:3px 10px;border-radius:999px;background:var(--chip);color:var(--soft);white-space:nowrap}.chip.ok{color:var(--ok)}
+.arow{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.arow label{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--soft);flex:1;min-width:140px}
+.panel-card input,.panel-card select,.panel-card textarea{padding:9px 11px;font-size:13.5px}
+.tm{display:flex;gap:4px;align-items:center;min-width:150px}
+.tinp{width:84px;min-width:84px;text-align:center;direction:ltr;font-variant-numeric:tabular-nums}
+.seg{display:inline-flex;background:var(--chip);border-radius:999px;padding:3px;gap:2px}
+.seg button{font:inherit;font-size:13px;border:0;background:transparent;padding:6px 14px;border-radius:999px;cursor:pointer;color:var(--soft)}
+.seg button.p.on{background:#10916a;color:#fff}.seg button.a.on{background:#c43d3d;color:#fff}.seg button.l.on{background:#c98a10;color:#fff}
+.tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;background:var(--chip);margin:3px}
+.sms{background:var(--chip);border:1px dashed var(--card-b);border-radius:14px;padding:12px;font-size:13.5px;line-height:1.9;margin-bottom:10px}
+.sms em{font-style:normal;color:var(--dim);font-size:12px;display:block;margin-bottom:4px}
+.plan .h{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.plan .h b{flex:1}
+.muted{color:var(--dim);font-size:12.5px;line-height:1.9}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--accent);color:var(--on-accent);padding:11px 20px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+@media(max-width:960px){
+  .admin-panel.open{display:block}
+  .ap-side{position:fixed;bottom:0;inset-inline:0;z-index:5;flex-direction:row;padding:6px;border-radius:20px 20px 0 0;border-inline-end:0;border-top:1px solid var(--glass-b);overflow-x:auto}
+  .ap-brand{display:none}.ap-side button{flex:1;flex-direction:column;gap:2px;font-size:11px;padding:8px 4px;justify-content:center;text-align:center;white-space:nowrap}
+  .ap-main{position:absolute;inset:0;padding-bottom:90px}
+  .g3,.g2{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.hide-sm{display:none}
+}
+@media(max-width:520px){.row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -111,7 +171,7 @@ td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}tr:
   </form>
 
   <div id="res" class="hide">
-    <div class="card c-blue">
+    <div class="card">
       <div class="name"><i>🎓</i><div><h2 id="rName"></h2><span id="rDate"></span></div></div>
       <div class="grid">
         <div class="item" id="rSt"><span>وضعیت امروز</span><b></b></div>
@@ -122,18 +182,11 @@ td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}tr:
         <div class="item wide"><span>توضیحات</span><b id="rNote" style="font-size:14px;font-weight:500">—</b></div>
       </div>
     </div>
-
-    <div class="card c-mist">
+    <div class="card">
       <h3>گزارش روزهای اخیر</h3>
       <div class="tw"><table><thead><tr><th>تاریخ</th><th>وضعیت</th><th>ورود</th><th>خروج</th><th>مطالعه</th><th>درس</th><th>تست</th><th>توضیح</th></tr></thead><tbody id="hist"></tbody></table></div>
-    </div>
-
+      <div class="card"><h3>برنامه‌های مشاوره و راهبردی</h3><div id="plans"></div></div>
     <div class="card">
-      <h3>برنامه‌های مشاوره و راهبردی</h3>
-      <div id="plans"></div>
-    </div>
-
-    <div class="card c-steel">
       <h3>خلاصه‌ی هفتگی</h3>
       <select id="wk"><option value="0">هفته‌ی جاری</option><option value="1">هفته‌ی قبل</option><option value="2">دو هفته‌ی قبل</option><option value="3">سه هفته‌ی قبل</option></select>
       <p class="sum" id="wSum"></p>
@@ -147,12 +200,142 @@ td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}tr:
       </div>
     </div>
   </div>
-
+  </div>
   <p class="note">اطلاعات هر دانش‌آموز فقط با نام کامل و کد ملی او نمایش داده می‌شود.</p>
-  <a class="admin-link" href="admin.html">ورود مدیر</a>
+  <button type="button" class="admin-link" onclick="openLogin()">ورود مدیر</button>
 </div>
 
-<div id="toast" role="status"></div>
+<!-- ورود مدیر -->
+<div class="modal" id="loginModal" onclick="if(event.target===this)closeLogin()">
+  <form class="lg-card" id="lf" role="dialog" aria-modal="true" aria-labelledby="lgTitle" onsubmit="adminLogin();return false">
+    <button type="button" class="x" onclick="closeLogin()" aria-label="بستن">×</button>
+    <div class="lg-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 8.2-8 9-4.8-.8-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+    <h2 id="lgTitle">ورود به پنل مدیریت</h2>
+    <p class="lg-sub">برای ثبت حضور و غیاب و مدیریت دانش‌آموزان، وارد حساب مدیر شوید.</p>
+    <input id="adminUsername" class="ltr" type="email" autocomplete="username" placeholder="ایمیل مدیر" autocapitalize="off" spellcheck="false">
+    <input id="adminPassword" class="ltr" type="password" autocomplete="current-password" placeholder="رمز عبور">
+    <div class="err" id="adminLoginError" role="alert"></div>
+    <button class="btn" id="lgBtn">ورود</button>
+    <button type="button" class="lg-cancel" onclick="closeLogin()">انصراف</button>
+  </form>
+</div>
+
+<!-- پنل مدیریت -->
+<div class="admin-panel" id="adminPanel">
+  <aside class="ap-side">
+    <div class="ap-brand">⚙️ پنل مدیریت</div>
+    <nav id="nav" style="display:contents">
+      <button data-p="dash" class="on">📊 <span>داشبورد</span></button>
+      <button data-p="att">✅ <span>حضور و غیاب</span></button>
+      <button data-p="io">🚪 <span>ورود و خروج</span></button>
+      <button data-p="plan">🗂️ <span>برنامه‌ریزی</span></button>
+      <button data-p="stu">👥 <span>دانش‌آموزان</span></button>
+      <button data-p="sms">💬 <span>پیامک اولیا</span></button>
+    </nav>
+  </aside>
+  <main class="ap-main">
+    <div class="ap-top">
+      <h2 id="title">داشبورد</h2>
+      <input id="sq" placeholder="🔍 جستجوی دانش‌آموز (نام یا کد ملی)">
+      <span class="chipd hide-sm" id="date"></span>
+      <button class="abtn ghost" onclick="closePanel()">خروج از حساب</button>
+      <img class="ap-logo" src="assets/Logo.png" alt="لوگو" onerror="this.remove()">
+    </div>
+
+    <section id="dash">
+      <div class="stats">
+        <div class="stat hl"><span>کل دانش‌آموزان</span><b id="sT">۰</b><small id="sT2"></small></div>
+        <div class="stat ok"><span>حاضر</span><b id="sP">۰</b><small id="sP2"></small></div>
+        <div class="stat bad"><span>غایب</span><b id="sA">۰</b><small id="sA2"></small></div>
+        <div class="stat late"><span>تأخیر</span><b id="sL">۰</b><small id="sL2"></small></div>
+        <div class="stat"><span>هنوز داخل مدرسه</span><b id="sIn">۰</b><small id="sIn2"></small></div>
+      </div>
+      <div class="g g3" style="margin-top:14px">
+        <div class="panel-card"><h4>درصد حضور در هفته‌ی جاری</h4><div class="bars" id="bars"></div></div>
+        <div class="panel-card"><h4>وضعیت امروز</h4>
+          <div class="dn"><div id="donut"></div><div class="dpct"><b id="donutPct">۰٪</b><span>حضور</span></div></div>
+          <div class="lg"><span><i style="background:var(--ok)"></i>حاضر</span><span><i style="background:var(--late)"></i>تأخیر</span><span><i style="background:var(--bad)"></i>غایب</span></div></div>
+        <div class="dk"><h4>مطالعه‌ی امروز (کل)</h4><big id="dkStudy">۰</big>
+          <div class="r"><div>درس<b id="dkLes">۰</b></div><div>تست<b id="dkTst">۰</b></div></div></div>
+      </div>
+      <div class="panel-card" style="margin-top:14px"><h4>ماتریس حضور و غیاب هفته</h4><div class="mx" id="mx"></div></div>
+      <div class="g g2" style="margin-top:14px">
+        <div class="panel-card"><h4>غایبین امروز</h4><div id="absList" class="muted"></div></div>
+        <div class="panel-card"><h4>خروج‌های امروز</h4><div id="exitMini" class="muted"></div></div>
+        <div class="panel-card"><h4>برترین‌های مطالعه‌ی هفته</h4><div id="top"></div></div>
+        <div class="panel-card"><h4>آخرین برنامه‌های ثبت‌شده</h4><div id="recent"></div></div>
+      </div>
+    </section>
+
+    <section id="att" class="hide">
+      <div class="panel-card">
+        <div class="arow" style="margin-bottom:12px"><button class="abtn ghost" id="allP">همه حاضر</button><button class="abtn" id="toSms">پیامک غایبین ←</button></div>
+        <table><thead><tr><th>#</th><th>نام</th><th class="hide-sm">کد ملی</th><th>وضعیت</th></tr></thead><tbody id="attBody"></tbody></table>
+      </div>
+    </section>
+
+    <section id="io" class="hide">
+      <div class="panel-card">
+        <h4>چک‌لیست ورود و خروج امروز</h4>
+        <p class="muted" style="margin-bottom:12px">ساعت را ۲۴ ساعته وارد کنید، مثلاً ورود 14:00 و خروج 20:00 (فقط ارقام هم کافی است: 1400 یا 14). با دکمه‌ی «اکنون» ساعت همین لحظه ثبت می‌شود. با ثبت ساعت ورود، وضعیت دانش‌آموز خودکار «حاضر» می‌شود.</p>
+        <table><thead><tr><th>نام</th><th>ساعت ورود</th><th>ساعت خروج</th><th>مطالعه (دقیقه)</th><th>درس</th><th>تست</th><th>توضیح</th></tr></thead><tbody id="ioBody"></tbody></table>
+      </div>
+    </section>
+
+    <section id="plan" class="hide">
+      <div class="panel-card">
+        <h4>افزودن برنامه برای دانش‌آموز</h4>
+        <div class="arow">
+          <label>دانش‌آموز<select id="pStu"></select></label>
+          <label>نوع برنامه<select id="pType"><option>مشاوره تحصیلی</option><option>راهبردی</option></select></label>
+          <label>عنوان<input id="pTitle" maxlength="100" placeholder="مثلاً برنامه‌ی هفته‌ی اول مهر"></label>
+        </div>
+        <label class="f" style="margin-top:10px">متن برنامه (اختیاری اگر عکس می‌گذارید)<textarea id="pText" rows="5" maxlength="3000"></textarea></label>
+        <label class="f" style="margin-top:10px">عکس برنامه (اختیاری)<input type="file" id="pImg" accept="image/jpeg,image/png,image/webp"></label>
+        <div id="pPrev" class="hide" style="margin-top:8px"><img id="pPrevImg" class="thumb" alt="پیش‌نمایش"><button type="button" class="abtn ghost sm" id="pImgClear" style="margin-top:8px">حذف عکس</button></div>
+        <button class="abtn" id="pAdd" style="margin-top:12px">افزودن برنامه</button>
+        <p class="muted" style="margin-top:10px">برنامه فقط در صفحه‌ی همان دانش‌آموز نمایش داده می‌شود. می‌توانید فقط عکس برنامه را بفرستید؛ عکس قبل از آپلود خودکار کوچک می‌شود (حداکثر ۲۰۰۰ پیکسل، JPG).</p>
+      </div>
+      <div class="panel-card" style="margin-top:14px"><h4>برنامه‌های ثبت‌شده‌ی این دانش‌آموز</h4><div id="pList"></div></div>
+    </section>
+
+    <section id="stu" class="hide">
+      <div class="panel-card">
+        <h4>افزودن دانش‌آموز</h4>
+        <div class="arow">
+          <label>نام و نام خانوادگی<input id="nName" maxlength="100"></label>
+          <label>کد ملی<input id="nNid" inputmode="numeric" maxlength="10" class="ltr"></label>
+          <label>شماره‌ی دانش‌آموز<input id="nPhone" inputmode="tel" class="ltr" placeholder="09..."></label>
+          <label>شماره‌ی ولی<input id="nPar" inputmode="tel" class="ltr" placeholder="09..."></label>
+          <button class="abtn" id="nAdd">افزودن</button>
+        </div>
+        <p class="muted" style="margin-top:10px">اولیا برای دیدن اطلاعات باید «نام کامل» و «کد ملی» فرزندشان را در صفحه‌ی اصلی وارد کنند.</p>
+      </div>
+      <div class="panel-card" style="margin-top:14px">
+        <h4>لیست دانش‌آموزان</h4>
+        <table><thead><tr><th>نام</th><th class="hide-sm">کد ملی</th><th class="hide-sm">تماس دانش‌آموز</th><th>تماس ولی</th><th></th></tr></thead><tbody id="stuBody"></tbody></table>
+      </div>
+    </section>
+
+    <section id="sms" class="hide">
+      <div class="panel-card">
+        <h4>پیامک غیبت (ابتدای روز)</h4>
+        <label class="f" style="margin-bottom:12px">متن پیامک ({نام} و {تاریخ})<textarea id="tplAbs" rows="2">اولیای محترم، دانش‌آموز {نام} در تاریخ {تاریخ} در مدرسه حضور نداشت. لطفاً علت غیبت را اطلاع دهید.</textarea></label>
+        <div id="absSms"></div>
+        <button class="abtn" onclick="fake('پیامک غیبت')">ارسال به اولیای غایبین</button>
+      </div>
+      <div class="panel-card" style="margin-top:14px">
+        <h4>پیامک چک‌لیست ورود و خروج (پایان روز)</h4>
+        <label class="f" style="margin-bottom:12px">متن پیامک ({نام} ، {ورود_و_خروج} ، {مطالعه})<textarea id="tplIO" rows="2">اولیای محترم، دانش‌آموز {نام} امروز {ورود_و_خروج}. زمان مطالعه: {مطالعه}</textarea></label>
+        <p class="muted" style="margin:-4px 0 12px">{ورود_و_خروج} خودکار نوشته می‌شود؛ مثلاً «ساعت ۱۴:۰۰ وارد مدرسه شد و ساعت ۲۰:۰۰ از مدرسه خارج شد». {ورود} و {خروج} هم جداگانه قابل استفاده‌اند.</p>
+        <div id="ioSms"></div>
+        <button class="abtn" onclick="fake('پیامک چک‌لیست')">ارسال به اولیا</button>
+      </div>
+      <p class="muted" style="margin-top:12px">این بخش فعلاً نمایشی است و پیامکی ارسال نمی‌شود؛ برای ارسال واقعی باید به یک سرویس پیامک (از طریق Supabase Edge Function) وصل شود.</p>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast" role="status"></div>
 
 <script>
 /* ===================== تنظیمات Supabase =====================
@@ -196,6 +379,7 @@ const toast=t=>{const x=$('#toast');x.textContent=t;x.classList.add('show');clea
 const fake=t=>toast(t+' (نمایشی) ارسال شد ✓');
 const safe=f=>async function(...a){try{return await f.apply(this,a)}catch(e){if(e)console.error(e)}};
 
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLogin()});
 
 /* ===================== انیمیشن‌های کوتاه ===================== */
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -256,6 +440,295 @@ $('#f').onsubmit=async e=>{
 };
 $('#wk').onchange=()=>load(+$('#wk').value).catch(()=>{$('#err').textContent='ارتباط با سرور برقرار نشد.'});
 
+/* ===================== ورود مدیر (Supabase Auth) ===================== */
+const SK='sd_admin_session';
+const getSess=()=>{try{return JSON.parse(sessionStorage.getItem(SK)||'null')}catch(e){return null}};
+const setSess=s=>{try{s?sessionStorage.setItem(SK,JSON.stringify(s)):sessionStorage.removeItem(SK)}catch(e){}};
+const mkSess=j=>({access_token:j.access_token,refresh_token:j.refresh_token,expires_at:Math.floor(Date.now()/1000)+(j.expires_in||3600)});
+async function sbAuth(path,body){
+  const r=await fetch(SB_URL+'/auth/v1/'+path,{method:'POST',headers:{apikey:SB_KEY,'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok){const e=new Error(j.msg||j.error_description||'auth');e.code='auth';throw e}
+  return j;
+}
+async function sbLogin(email,pass){
+  const s=mkSess(await sbAuth('token?grant_type=password',{email,password:pass}));
+  setSess(s);
+  const r=await fetch(SB_URL+'/rest/v1/rpc/is_admin',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+s.access_token,'Content-Type':'application/json'},body:'{}'});
+  const ok=r.ok?await r.json():false;
+  if(ok!==true){sbLogout();const e=new Error('forbidden');e.code='forbidden';throw e}
+}
+function sbLogout(){
+  const s=getSess();setSess(null);
+  if(s&&s.access_token)fetch(SB_URL+'/auth/v1/logout',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+s.access_token}}).catch(()=>{});
+}
+async function sbToken(){
+  const s=getSess();if(!s)throw new Error('no-session');
+  if(s.expires_at-60>Date.now()/1000)return s.access_token;
+  const n=mkSess(await sbAuth('token?grant_type=refresh_token',{refresh_token:s.refresh_token}));setSess(n);return n.access_token;
+}
+function dbMsg(j){
+  const c=j&&j.code;
+  if(c==='23505')return 'این کد ملی قبلاً ثبت شده است';
+  if(c==='23514'||c==='22P02'||c==='22001')return 'مقدار واردشده معتبر نیست';
+  if(c==='42501')return 'دسترسی مجاز نیست؛ دوباره وارد شوید';
+  return 'خطا در ذخیره‌سازی اطلاعات';
+}
+async function db(method,path,body,extra){
+  let tok;try{tok=await sbToken()}catch(e){panelLoggedOut();throw 0}
+  let r;
+  try{r=await fetch(SB_URL+'/rest/v1/'+path,{method,headers:{apikey:SB_KEY,Authorization:'Bearer '+tok,'Content-Type':'application/json',...extra},body:body===undefined?undefined:JSON.stringify(body)})}
+  catch(e){toast('ارتباط با سرور برقرار نشد');throw 0}
+  if(r.status===401){panelLoggedOut();throw 0}
+  const j=await r.json().catch(()=>null);
+  if(!r.ok){toast(dbMsg(j));throw 0}
+  return j;
+}
+async function dbAll(path){ /* صفحه‌بندی؛ Supabase در هر درخواست حداکثر ۱۰۰۰ ردیف می‌دهد */
+  let out=[],i=0;
+  for(;;){const part=await db('GET',path+`&limit=1000&offset=${i}`);out=out.concat(part||[]);if(!part||part.length<1000)return out;i+=1000}
+}
+
+function openLogin(){
+  if(!CONFIGURED){toast('اتصال به Supabase تنظیم نشده است');return}
+  if(getSess()){openPanel().catch(()=>showLogin());return}
+  showLogin();
+}
+function showLogin(){$('#loginModal').classList.add('show');$('#adminLoginError').textContent='';setTimeout(()=>$('#adminUsername').focus(),50)}
+function closeLogin(){$('#loginModal').classList.remove('show');$('#adminPassword').value=''}
+let loginBusy=false;
+async function adminLogin(){
+  if(loginBusy)return;
+  const email=$('#adminUsername').value.trim(),pw=$('#adminPassword').value,err=$('#adminLoginError');
+  if(!email||!pw){err.textContent='ایمیل و رمز عبور را وارد کنید.';return}
+  loginBusy=true;$('#lgBtn').disabled=true;err.textContent='';
+  try{await sbLogin(email,pw);closeLogin();await openPanel()}
+  catch(e){
+    err.textContent=e.code==='forbidden'?'این حساب دسترسی مدیر ندارد.':e.code==='auth'?'ایمیل یا رمز عبور اشتباه است.':'ارتباط با سرور برقرار نشد.';
+    $('#adminPassword').value='';
+  }finally{loginBusy=false;$('#lgBtn').disabled=false}
+}
+
+/* ===================== داده‌ی پنل مدیر ===================== */
+let D={today:'',students:[],rec:{},plans:[],week:{days:[],rec:{}}};
+const toC=r=>({st:r.st||'',in:r.in_time||'',out:r.out_time||'',study:r.study||0,lessons:r.lessons||0,tests:r.tests||0,note:r.note||''});
+const COL={st:'st',in:'in_time',out:'out_time',study:'study',lessons:'lessons',tests:'tests',note:'note'};
+const CAP={study:1440,lessons:100,tests:2000};
+function toRow(patch){
+  const o={};
+  for(const k in patch){
+    let v=patch[k];
+    if(k==='st')v=['p','a','l'].includes(v)?v:null;
+    else if(k==='in'||k==='out')v=/^([01]\d|2[0-3]):[0-5]\d$/.test(v)?v:null;
+    else if(k in CAP){v=Math.round(Number(enDigits(v)));v=v>0?Math.min(v,CAP[k]):0}
+    else if(k==='note')v=String(v||'').slice(0,200);
+    o[COL[k]]=v;
+  }
+  return o;
+}
+async function loadAdmin(){
+  const today=tehranToday(),dow=new Date(today+'T12:00:00Z').getUTCDay(),from=addDays(today,-((dow+1)%7)),to=addDays(from,6);
+  const days=[...Array(7)].map((_,i)=>addDays(from,i));
+  const [st,rc,pl]=await Promise.all([
+    dbAll('students?select=*&order=id'),
+    dbAll(`records?select=*&date=gte.${from}&date=lte.${to}&order=date,student_id`),
+    dbAll('plans?select=*&order=id.desc')]);
+  const wr={};days.forEach(k=>wr[k]={});
+  rc.forEach(r=>{(wr[r.date]||(wr[r.date]={}))[r.student_id]=toC(r)});
+  D={today,students:st.map(s=>({id:s.id,name:s.name,nid:s.nid,phone:s.phone||'',par:s.par})),
+     plans:pl.map(p=>({id:p.id,sid:p.student_id,type:p.type,title:p.title,text:p.body,image:p.image_path||'',date:p.date})),
+     week:{days,rec:wr},rec:wr[today]||(wr[today]={})};
+  $('#date').textContent=todayFa();
+}
+const todayFa=()=>pf(D.today,{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+async function openPanel(){
+  await loadAdmin();
+  $('#adminPanel').classList.add('open');document.body.style.overflow='hidden';
+  show('dash');animIn($('.ap-side'));
+}
+function panelLoggedOut(){$('#adminPanel').classList.remove('open');document.body.style.overflow='';D={today:'',students:[],rec:{},plans:[],week:{days:[],rec:{}}};toast('نشست پایان یافت؛ دوباره وارد شوید')}
+function closePanel(){sbLogout();$('#adminPanel').classList.remove('open');document.body.style.overflow='';D={today:'',students:[],rec:{},plans:[],week:{days:[],rec:{}}}}
+
+/* ===================== رابط پنل ===================== */
+const titles={dash:'داشبورد',att:'حضور و غیاب',io:'ورود و خروج',plan:'برنامه‌ریزی',stu:'دانش‌آموزان',sms:'پیامک اولیا'};
+const WD=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
+function show(p){
+  $$('.ap-main section').forEach(s=>s.classList.toggle('hide',s.id!==p));
+  $$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
+  $('#title').textContent=titles[p];render();animText('#title');animIn($('#'+p));
+}
+$('#nav').onclick=e=>{const b=e.target.closest('button');if(b)show(b.dataset.p)};
+const S=()=>D.students,Rc=id=>D.rec[id]||{};
+const nm=id=>(S().find(s=>s.id==id)||{name:'؟'}).name;
+const F=()=>{const q=enDigits($('#sq').value||'');return q?S().filter(s=>s.name.includes(q)||s.nid.includes(q)):S()};
+const ini=n=>esc([...n.trim()][0]||'؟');
+
+function render(){
+  dash();
+  const v=S().map(s=>Rc(s.id));
+  $('#sT').textContent=fa(S().length);
+  $('#sP').textContent=fa(v.filter(x=>x.st==='p').length);$('#sA').textContent=fa(v.filter(x=>x.st==='a').length);
+  $('#sL').textContent=fa(v.filter(x=>x.st==='l').length);$('#sIn').textContent=fa(v.filter(x=>x.in&&!x.out).length);
+  const abs=S().filter(s=>Rc(s.id).st==='a');
+  $('#absList').innerHTML=abs.length?abs.map(s=>`<span class="tag">${esc(s.name)}</span>`).join(''):'غایبی ثبت نشده است.';
+  const ex=S().filter(s=>Rc(s.id).out);
+  $('#exitMini').innerHTML=ex.length?ex.map(s=>`<span class="tag">${esc(s.name)} — ${fa(Rc(s.id).out)}</span>`).join(''):'موردی ثبت نشده است.';
+
+  $('#attBody').innerHTML=F().map((s,i)=>{const st=Rc(s.id).st;return `<tr><td>${fa(i+1)}</td><td>${esc(s.name)}</td><td class="hide-sm ltr">${fa(esc(s.nid))}</td>
+    <td><div class="seg" data-id="${s.id}"><button class="p ${st==='p'?'on':''}" data-v="p">حاضر</button><button class="a ${st==='a'?'on':''}" data-v="a">غایب</button><button class="l ${st==='l'?'on':''}" data-v="l">تأخیر</button></div></td></tr>`}).join('');
+
+  const nf=(s,f,r,ph)=>`<input type="number" min="0" data-id="${s.id}" data-f="${f}" value="${r[f]||''}" placeholder="${ph}" style="min-width:70px">`;
+  $('#ioBody').innerHTML=F().map(s=>{const r=Rc(s.id);return `<tr>
+    <td>${esc(s.name)}</td>
+    <td><div class="tm"><input class="tinp" inputmode="numeric" maxlength="5" autocomplete="off" placeholder="14:00" data-id="${s.id}" data-f="in" value="${esc(r.in||'')}"><button class="abtn ghost sm" data-now="in" data-id="${s.id}">اکنون</button></div></td>
+    <td><div class="tm"><input class="tinp" inputmode="numeric" maxlength="5" autocomplete="off" placeholder="20:00" data-id="${s.id}" data-f="out" value="${esc(r.out||'')}"><button class="abtn ghost sm" data-now="out" data-id="${s.id}">اکنون</button></div></td>
+    <td>${nf(s,'study',r,'مثلاً ۱۲۰')}</td><td>${nf(s,'lessons',r,'۰')}</td><td>${nf(s,'tests',r,'۰')}</td>
+    <td><input data-id="${s.id}" data-f="note" maxlength="200" value="${esc(r.note||'')}" placeholder="توضیح"></td></tr>`}).join('');
+
+  const cur=$('#pStu').value;
+  $('#pStu').innerHTML=S().map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
+  if(cur&&S().some(s=>s.id==cur))$('#pStu').value=cur;
+  const pl=D.plans.filter(p=>p.sid==$('#pStu').value).sort((a,b)=>b.id-a.id);
+  $('#pList').innerHTML=pl.length?pl.map(p=>`<div class="plan"><div class="h"><b>${esc(p.title)}</b><span class="tag">${esc(p.type)}</span><span class="muted">${pf(p.date,{year:'numeric',month:'long',day:'numeric'})}</span><button class="abtn danger sm" data-delplan="${p.id}">حذف</button></div>${p.text?`<p>${esc(p.text)}</p>`:''}${p.image?`<a href="${esc(imgUrl(p.image))}" target="_blank" rel="noopener"><img class="thumb" loading="lazy" src="${esc(imgUrl(p.image))}" alt="تصویر برنامه"></a>`:''}</div>`).join(''):'<p class="muted">برنامه‌ای برای این دانش‌آموز ثبت نشده است.</p>';
+
+  $('#stuBody').innerHTML=F().map(s=>`<tr><td>${esc(s.name)}</td><td class="hide-sm ltr">${fa(esc(s.nid))}</td><td class="hide-sm ltr">${fa(esc(s.phone||'—'))}</td><td class="ltr">${fa(esc(s.par))}</td><td><button class="abtn danger sm" data-delstu="${s.id}">حذف</button></td></tr>`).join('');
+
+  const ta=$('#tplAbs').value,ti=$('#tplIO').value,td=todayFa();
+  $('#absSms').innerHTML=abs.length?abs.map(s=>`<div class="sms"><em>به: ${fa(esc(s.par))} (ولی ${esc(s.name)})</em>${esc(ta.replaceAll('{نام}',s.name).replaceAll('{تاریخ}',td))}</div>`).join(''):'<p class="muted" style="margin-bottom:10px">غایبی ثبت نشده است.</p>';
+  const withIO=S().filter(s=>{const r=Rc(s.id);return r.in||r.out});
+  $('#ioSms').innerHTML=withIO.length?withIO.map(s=>{const r=Rc(s.id);return `<div class="sms"><em>به: ${fa(esc(s.par))} (ولی ${esc(s.name)})</em>${esc(ti.replaceAll('{نام}',s.name).replaceAll('{ورود_و_خروج}',inOutSentence(r)).replaceAll('{ورود}',r.in?fa(r.in):'—').replaceAll('{خروج}',r.out?fa(r.out):'—').replaceAll('{مطالعه}',dur(r.study)))}</div>`}).join(''):'<p class="muted" style="margin-bottom:10px">ورود یا خروجی ثبت نشده است.</p>';
+}
+
+function dash(){
+  const days=D.week.days;if(!days.length)return;
+  const T=S().length,wr=k=>D.week.rec[k]||{},V=S().map(s=>Rc(s.id));
+  const n=st=>V.filter(x=>x.st===st).length,p=n('p'),a=n('a'),l=n('l'),pc=c=>T?fa(Math.round(c*100/T))+'٪ از کل':'—';
+  $('#sT2').textContent='ثبت‌شده امروز: '+fa(p+a+l);$('#sP2').textContent=pc(p);$('#sA2').textContent=pc(a);$('#sL2').textContent=pc(l);
+  $('#sIn2').textContent='خارج‌شده: '+fa(V.filter(x=>x.out).length);
+  $('#bars').innerHTML=days.map((k,i)=>{
+    const vals=S().map(s=>wr(k)[s.id]||{}),reg=vals.filter(x=>x.st).length,ok=vals.filter(x=>x.st==='p'||x.st==='l').length,pct=reg?Math.round(ok*100/reg):0;
+    const cls=k===D.today?'t':(!reg||k>D.today||i===6?'h':''),h=cls==='h'?45:Math.max(pct,14);
+    return `<div class="bw"><div class="bz"><div class="bp ${cls}" style="height:${h}%" title="${WD[i]}: ${fa(pct)}٪">${cls==='h'?'':fa(pct)+'٪'}</div></div>${WD[i]}</div>`}).join('');
+  let c=0;
+  $('#donut').innerHTML='<svg viewBox="0 0 200 106"><path d="M20 100A80 80 0 0 1 180 100" fill="none" stroke="rgba(127,127,127,.25)" stroke-width="24" pathLength="100"/>'+
+    [[p,'var(--ok)'],[l,'var(--late)'],[a,'var(--bad)']].map(([v,col])=>{const f=T?v*100/T:0,x=`<path d="M20 100A80 80 0 0 1 180 100" fill="none" stroke="${col}" stroke-width="24" pathLength="100" stroke-dasharray="${f} 100" stroke-dashoffset="${-c}"/>`;c+=f;return x}).join('')+'</svg>';
+  $('#donutPct').textContent=fa(T?Math.round((p+l)*100/T):0)+'٪';
+  const sum=f=>V.reduce((t,x)=>t+(x[f]||0),0);
+  $('#dkStudy').textContent=sum('study')?dur(sum('study')):'۰ ساعت';$('#dkLes').textContent=fa(sum('lessons'));$('#dkTst').textContent=fa(sum('tests'));
+  $('#mx').innerHTML=!T?'<p class="muted">هنوز دانش‌آموزی ثبت نشده است.</p>':'<div></div>'+days.map((k,i)=>`<div class="dh ${k===D.today?'t':i===6?'w':''}">${WD[i]}<br>${pf(k,{day:'numeric'})}</div>`).join('')+
+    S().map(s=>`<div class="pn"><span class="av">${ini(s.name)}</span>${esc(s.name)}</div>`+days.map((k,i)=>{const r=wr(k)[s.id]||{};
+      return `<div class="c ${i===6?'w':r.st||''} ${k===D.today?'t':''}" title="${esc(s.name)}${r.st?' — '+stTxt[r.st]:''}">${r.study?fa(Math.round(r.study/6)/10):''}</div>`}).join('')).join('');
+  const top=S().map(s=>{let m=0,t=0;days.forEach(k=>{const r=wr(k)[s.id]||{};m+=r.study||0;t+=r.tests||0});return{s,m,t}}).filter(x=>x.m).sort((x,y)=>y.m-x.m).slice(0,5);
+  $('#top').innerHTML=top.length?top.map(x=>`<div class="li"><span class="av">${ini(x.s.name)}</span><b style="flex:1;font-weight:600;font-size:13.5px">${esc(x.s.name)}</b><span class="chip">${dur(x.m)}</span><span class="chip ok">${fa(x.t)} تست</span></div>`).join(''):'<p class="muted">هنوز مطالعه‌ای ثبت نشده است.</p>';
+  const rc=D.plans.slice().sort((x,y)=>y.id-x.id).slice(0,4);
+  $('#recent').innerHTML=rc.length?rc.map(q=>`<div class="li"><div style="flex:1"><b style="font-size:13.5px">${esc(q.title)}</b><div class="muted">${esc(nm(q.sid))}</div></div><span class="chip">${esc(q.type)}</span></div>`).join(''):'<p class="muted">هنوز برنامه‌ای ثبت نشده است.</p>';
+}
+
+/* ===================== عملیات مدیر (همه با RLS روی Supabase) ===================== */
+const setRec=async(id,patch)=>{
+  const row=toRow(patch);
+  if(patch.in&&row.in_time&&!Rc(id).st&&!('st' in patch))row.st='p'; /* ثبت ساعت ورود = حاضر */
+  const res=await db('POST','records?on_conflict=date,student_id',[{date:D.today,student_id:id,...row}],{Prefer:'resolution=merge-duplicates,return=representation'});
+  D.rec[id]=toC(res[0]);
+};
+$('#sq').oninput=render;
+$('#pStu').onchange=render;
+$('#tplAbs').oninput=$('#tplIO').oninput=render;
+$('#toSms').onclick=()=>show('sms');
+$('#attBody').onclick=safe(async e=>{const b=e.target.closest('button');if(!b)return;await setRec(+b.parentNode.dataset.id,{st:b.dataset.v});render()});
+$('#allP').onclick=safe(async()=>{
+  const rows=S().filter(s=>!Rc(s.id).st).map(s=>({date:D.today,student_id:s.id,st:'p'}));
+  if(rows.length){const res=await db('POST','records?on_conflict=date,student_id',rows,{Prefer:'resolution=merge-duplicates,return=representation'});res.forEach(r=>{D.rec[r.student_id]=toC(r)})}
+  render();toast('همه حاضر شدند');
+});
+const nowT=()=>{const n=new Date();return String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')};
+$('#ioBody').addEventListener('click',safe(async e=>{const b=e.target.closest('[data-now]');if(!b)return;
+  await setRec(+b.dataset.id,{[b.dataset.now]:nowT()});render();toast('ساعت ثبت شد')}));
+$('#ioBody').addEventListener('change',safe(async e=>{const i=e.target;if(!i.dataset.f)return;const f=i.dataset.f,id=+i.dataset.id;
+  if(f==='in'||f==='out'){
+    const t=normTime(i.value);
+    if(t===null){toast('ساعت را ۲۴ ساعته وارد کنید؛ مثلاً 14:00 یا 20:00');render();return}
+    const o=Rc(id),inT=f==='in'?t:o.in,outT=f==='out'?t:o.out;
+    await setRec(id,{[f]:t});render();
+    if(inT&&outT&&outT<=inT)toast('⚠️ ساعت خروج قبل از ورود است؛ لطفاً بررسی کنید');
+    return;
+  }
+  await setRec(id,{[f]:i.value.trim()})}));
+
+$('#nAdd').onclick=safe(async()=>{
+  const name=normName($('#nName').value),nid=enDigits($('#nNid').value),phone=enDigits($('#nPhone').value),par=enDigits($('#nPar').value);
+  if(name.length<2||!/^\d{10}$/.test(nid)||!/^09\d{9}$/.test(par)||(phone&&!/^09\d{9}$/.test(phone))){toast('نام، کد ملی (۱۰ رقم) و شماره‌ی ولی (۰۹…) را درست وارد کنید');return}
+  const res=await db('POST','students',[{name,nid,phone:phone||null,par}],{Prefer:'return=representation'});
+  const s=res[0];D.students.push({id:s.id,name:s.name,nid:s.nid,phone:s.phone||'',par:s.par});
+  ['#nName','#nNid','#nPhone','#nPar'].forEach(i=>$(i).value='');render();toast('دانش‌آموز اضافه شد');
+});
+/* ---- عکس برنامه: کوچک‌سازی در مرورگر + آپلود در Supabase Storage (باکت plan-images) ---- */
+const uuid=()=>crypto.randomUUID?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=crypto.getRandomValues(new Uint8Array(1))[0]&15;return(c==='x'?r:(r&3|8)).toString(16)});
+async function compressImage(file){
+  if(!/^image\/(jpeg|png|webp)$/.test(file.type))throw new Error('type');
+  const url=URL.createObjectURL(file);
+  try{
+    const img=await new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=()=>no(new Error('decode'));i.src=url});
+    const M=2000,r=Math.min(1,M/Math.max(img.naturalWidth,img.naturalHeight)),w=Math.round(img.naturalWidth*r),h=Math.round(img.naturalHeight*r);
+    const c=document.createElement('canvas');c.width=w;c.height=h;
+    const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(img,0,0,w,h);
+    const blob=await new Promise(ok=>c.toBlob(ok,'image/jpeg',.85));
+    if(!blob)throw new Error('encode');
+    if(blob.size>5*1024*1024)throw new Error('big');
+    return blob;
+  }finally{URL.revokeObjectURL(url)}
+}
+async function uploadPlanImage(sid,blob){
+  const tok=await sbToken(),path=sid+'/'+uuid()+'.jpg',fd=new FormData();
+  fd.append('cacheControl','3600');fd.append('',blob);
+  let r;
+  try{r=await fetch(SB_URL+'/storage/v1/object/plan-images/'+path,{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+tok,'x-upsert':'false'},body:fd})}
+  catch(e){toast('ارتباط با سرور برقرار نشد');throw 0}
+  if(!r.ok){toast(r.status===404?'باکت plan-images ساخته نشده؛ فایل supabase_update_images.sql را اجرا کنید':'آپلود عکس ناموفق بود');throw 0}
+  return path;
+}
+async function deleteImage(path){ /* بهترین تلاش؛ اگر نشد مهم نیست */
+  try{const tok=await sbToken();await fetch(SB_URL+'/storage/v1/object/plan-images/'+path,{method:'DELETE',headers:{apikey:SB_KEY,Authorization:'Bearer '+tok}})}catch(e){}
+}
+function clearPlanImg(){$('#pImg').value='';$('#pPrev').classList.add('hide');const i=$('#pPrevImg');if(i.dataset.u){URL.revokeObjectURL(i.dataset.u);i.dataset.u=''}i.removeAttribute('src')}
+$('#pImg').onchange=()=>{
+  const f=$('#pImg').files[0];if(!f){clearPlanImg();return}
+  const i=$('#pPrevImg');if(i.dataset.u)URL.revokeObjectURL(i.dataset.u);
+  i.dataset.u=URL.createObjectURL(f);i.src=i.dataset.u;$('#pPrev').classList.remove('hide');
+};
+$('#pImgClear').onclick=clearPlanImg;
+
+$('#stuBody').onclick=safe(async e=>{const b=e.target.closest('[data-delstu]');if(!b)return;const id=+b.dataset.delstu;
+  if(!confirm('این دانش‌آموز و همه‌ی برنامه‌ها، عکس‌ها و گزارش‌های او حذف شود؟'))return;
+  const imgs=D.plans.filter(p=>p.sid===id&&p.image).map(p=>p.image);
+  await db('DELETE','students?id=eq.'+id,undefined,{Prefer:'return=minimal'});
+  imgs.forEach(deleteImage);
+  D.students=D.students.filter(s=>s.id!==id);D.plans=D.plans.filter(p=>p.sid!==id);
+  for(const k in D.week.rec)delete D.week.rec[k][id];render()});
+
+$('#pAdd').onclick=safe(async()=>{
+  const sid=+$('#pStu').value,title=$('#pTitle').value.trim(),text=$('#pText').value.trim(),file=$('#pImg').files[0];
+  if(!sid||!title||(!text&&!file)){toast('دانش‌آموز، عنوان و (متن یا عکس) برنامه الزامی است');return}
+  const btn=$('#pAdd');btn.disabled=true;let path=null;
+  try{
+    if(file){
+      let blob;
+      try{blob=await compressImage(file)}
+      catch(e){toast(e.message==='big'?'حجم عکس بعد از کوچک‌سازی هم زیاد است':'این عکس خوانده نشد؛ JPG یا PNG انتخاب کنید');return}
+      path=await uploadPlanImage(sid,blob);
+    }
+    const res=await db('POST','plans',[{student_id:sid,type:$('#pType').value,title:title.slice(0,100),body:text.slice(0,3000),image_path:path}],{Prefer:'return=representation'});
+    const p=res[0];D.plans.push({id:p.id,sid:p.student_id,type:p.type,title:p.title,text:p.body,image:p.image_path||'',date:p.date});
+    $('#pTitle').value='';$('#pText').value='';clearPlanImg();render();toast('برنامه اضافه شد');
+  }catch(e){if(path)deleteImage(path);throw e}
+  finally{btn.disabled=false}
+});
+$('#pList').onclick=safe(async e=>{const b=e.target.closest('[data-delplan]');if(!b)return;const id=+b.dataset.delplan;
+  if(!confirm('این برنامه حذف شود؟'))return;
+  const img=(D.plans.find(p=>p.id===id)||{}).image;
+  await db('DELETE','plans?id=eq.'+id,undefined,{Prefer:'return=minimal'});
+  if(img)deleteImage(img);
+  D.plans=D.plans.filter(p=>p.id!==id);render()});
 </script>
 </body>
 </html>

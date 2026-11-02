@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#071629">
+<meta name="referrer" content="no-referrer">
+<title>سامانه پیگیری وضعیت دانش‌آموز</title>
+<link rel="icon" href="assets/Logo.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js" defer></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+/* پس‌زمینه: ترتیب عمداً این‌طور است تا نسخه‌ی استاندارد آخر بیاید و در همه‌ی مرورگرها جهت چپ‌به‌راست درست باشد */
+:root{--navy:#071629;--blue:#17345C;--steel:#9DB7D5;--mist:#EAF4FF;
+  --text:#071629;--soft:#3f5b7e;--dim:#5b7391;
+  --glass:rgba(255,255,255,.96);--glass-b:rgba(157,183,213,.55);--accent:#17345C;--accent-2:#17345C;--on-accent:#fff;
+  --input-bg:#fff;--input-b:#b9cde4;--card:rgba(255,255,255,.97);--card-b:rgba(23,52,92,.12);
+  --shadow:rgba(7,22,41,.38);--ok:#1f9d63;--bad:#d64545;--late:#d99a1b;--chip:#EAF4FF;--hover:rgba(23,52,92,.07)}
+html{min-height:100%}
+body{font-family:'Vazirmatn',Tahoma,sans-serif;min-height:100vh;padding:28px 16px 40px;color:var(--text);position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+background:#071629;
+  background:radial-gradient(900px 520px at 88% -8%,rgba(157,183,213,.38),transparent 62%),linear-gradient(180deg,#071629 0%,#17345C 100%);
+  background-attachment:fixed}
+.hide{display:none!important}
+.credit{display:flex;align-items:center;gap:14px;margin:34px auto 0;padding:6px 4px}
+.credit i{flex:1;min-width:16px;height:1px;background:linear-gradient(90deg,transparent,rgba(157,183,213,.75))}
+.credit i:last-child{transform:scaleX(-1)}
+.credit span{flex:0 1 auto;text-align:center;font-size:clamp(13px,3.8vw,17px);font-weight:800;line-height:1.9;
+  background:linear-gradient(90deg,#9DB7D5,#fff 45%,#9DB7D5);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.ltr{direction:ltr;text-align:right}
+.container{max-width:720px;margin:0 auto;position:relative;z-index:1}
+
+/* hero + cards */
+.hero{text-align:center;padding:18px 8px 18px}
+.logo{width:130px;height:150px;margin:0 auto 10px;display:grid;place-items:center;font-size:48px}
+.logo img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 8px 14px rgba(10,22,71,.28))}
+.ap-logo{height:58px;width:auto;object-fit:contain;filter:drop-shadow(0 3px 6px rgba(10,22,71,.3));flex:none}
+.hero h1{font-size:25px;font-weight:800;margin-bottom:8px;color:#fff}
+.hero p{color:var(--steel);font-size:14px;line-height:2}
+.card{background:var(--card);border:1px solid var(--card-b);border-radius:22px;padding:20px;margin-bottom:16px;box-shadow:0 14px 40px var(--shadow);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--soft)}
+input,select,textarea{font:inherit;color:var(--text);padding:12px 14px;border:1px solid var(--input-b);border-radius:13px;background:var(--input-bg);outline:none;width:100%;transition:.15s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(23,52,92,.22)}
+select option{color:#111}
+.btn{font:inherit;cursor:pointer;border:0;padding:13px 18px;border-radius:13px;background:var(--accent);color:var(--on-accent);font-size:15px;font-weight:700;width:100%;margin-top:14px;transition:.15s}
+.btn:hover{filter:brightness(1.12)}.btn:disabled{opacity:.6;cursor:wait}
+.err{color:var(--bad);font-size:13.5px;margin-top:12px;line-height:1.9;min-height:4px}
+.note{font-size:12px;color:var(--steel);line-height:1.9;text-align:center;margin-top:8px}
+.name{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.name i{width:48px;height:48px;border-radius:15px;background:var(--chip);border:1px solid var(--card-b);display:grid;place-items:center;font-style:normal;font-size:22px}
+.name h2{font-size:18px}.name span{font-size:12.5px;color:var(--soft)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.item{background:var(--chip);border:1px solid var(--card-b);border-radius:15px;padding:13px 14px}
+.item span{font-size:12px;color:var(--soft);display:block;margin-bottom:4px}.item b{font-size:17px}.item.wide{grid-column:1/-1}
+.st-p b{color:var(--ok)}.st-a b{color:var(--bad)}.st-l b{color:var(--late)}
+h3{font-size:15px;margin:2px 0 12px;color:var(--accent-2)}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
+th{font-weight:600;color:var(--soft);font-size:12px;text-align:right;padding:8px;border-bottom:1px solid var(--card-b)}
+td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:last-child td{border-bottom:0}
+.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;color:#fff}
+.pill.p{background:#10916a}.pill.a{background:#c43d3d}.pill.l{background:#c98a10}.pill.t{background:var(--accent);color:var(--on-accent)}
+.plan{background:var(--chip);border:1px solid var(--card-b);border-radius:15px;padding:13px 14px;margin-bottom:10px}
+.pimg{display:block;width:100%;max-width:100%;border-radius:12px;margin-top:10px;border:1px solid var(--card-b);background:#fff}
+.thumb{width:140px;max-width:100%;border-radius:10px;margin-top:8px;border:1px solid var(--card-b);display:block;background:#fff}
+.plan p{white-space:pre-wrap;line-height:1.9;font-size:13.5px;margin-top:6px}.plan small{color:var(--dim);margin-inline-start:8px}
+.sum{font-size:14px;line-height:2;margin:10px 0 12px;color:var(--soft)}
+
+@media(max-width:520px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="hero">
+    <div class="logo"><img src="assets/Logo.png" alt="لوگوی دبیرستان شهید حسن باقری" onerror="this.parentNode.textContent='🏫'"></div>
+    <h1>پیگیری وضعیت دانش‌آموز</h1>
+    <p>برای مشاهده‌ی حضور و غیاب، ساعت ورود و خروج و زمان مطالعه‌ی فرزندتان،<br>نام کامل و کد ملی او را وارد کنید.</p>
+  </div>
+
+  <form class="card" id="f" autocomplete="off">
+    <div class="row">
+      <label class="f">نام و نام خانوادگی دانش‌آموز<input id="q" placeholder="مثلاً علی رضایی" required></label>
+      <label class="f">کد ملی دانش‌آموز<input id="nid" inputmode="numeric" maxlength="10" class="ltr" placeholder="۱۰ رقم" required></label>
+    </div>
+    <button class="btn" id="go">مشاهده‌ی اطلاعات</button>
+    <div class="err" id="err" role="alert"></div>
+  </form>
+
+  <div id="res" class="hide">
+    <div class="card">
+      <div class="name"><i>🎓</i><div><h2 id="rName"></h2><span id="rDate"></span></div></div>
+      <div class="grid">
+        <div class="item" id="rSt"><span>وضعیت امروز</span><b></b></div>
+        <div class="item"><span>زمان مطالعه</span><b id="rStudy">—</b></div>
+        <div class="item wide"><span>ورود و خروج امروز</span><b id="rIO" style="font-size:15px;font-weight:600;line-height:1.9">—</b></div>
+        <div class="item"><span>درس‌های امروز</span><b id="rLes">—</b></div>
+        <div class="item"><span>تست‌های امروز</span><b id="rTst">—</b></div>
+        <div class="item wide"><span>توضیحات</span><b id="rNote" style="font-size:14px;font-weight:500">—</b></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>گزارش روزهای اخیر</h3>
+      <div class="tw"><table><thead><tr><th>تاریخ</th><th>وضعیت</th><th>ورود</th><th>خروج</th><th>مطالعه</th><th>درس</th><th>تست</th><th>توضیح</th></tr></thead><tbody id="hist"></tbody></table></div>
+      <div class="card"><h3>برنامه‌های مشاوره و راهبردی</h3><div id="plans"></div></div>
+    <div class="card">
+      <h3>خلاصه‌ی هفتگی</h3>
+      <select id="wk"><option value="0">هفته‌ی جاری</option><option value="1">هفته‌ی قبل</option><option value="2">دو هفته‌ی قبل</option><option value="3">سه هفته‌ی قبل</option></select>
+      <p class="sum" id="wSum"></p>
+      <div class="grid">
+        <div class="item st-p"><span>روزهای حاضر</span><b id="wP"></b></div>
+        <div class="item st-a"><span>روزهای غایب</span><b id="wA"></b></div>
+        <div class="item st-l"><span>روزهای تأخیر</span><b id="wL"></b></div>
+        <div class="item"><span>مطالعه</span><b id="wM"></b></div>
+        <div class="item"><span>درس خوانده‌شده</span><b id="wLes"></b></div>
+        <div class="item"><span>تست زده‌شده</span><b id="wT"></b></div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <p class="note">اطلاعات هر دانش‌آموز فقط با نام کامل و کد ملی او نمایش داده می‌شود.</p>
+  <footer class="credit"><i></i><span>طراحی و توسعه توسط تیم پشتیبانی دبیرستان باقری</span><i></i></footer>
+</div>
+
+<script>
+/* ===================== تنظیمات Supabase =====================
+   این دو مقدار عمومی‌اند و اشکالی ندارد در سایت دیده شوند؛ امنیت را RLS و تابع parent_lookup تأمین می‌کند.
+   (کلید secret / service_role را هرگز اینجا نگذارید.) */
+var SB_URL = 'https://qqfmlwwqfelzrzedjyih.supabase.co';
+var SB_KEY = 'sb_publishable_jkoeFIXATb1DeJ_VE8IQQw_c5evfe_r';
+var CONFIGURED = SB_URL.indexOf('YOUR-') === -1 && SB_KEY.indexOf('YOUR_') === -1;
+
+/* ===================== ابزارها ===================== */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const fa=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const imgUrl=p=>SB_URL+'/storage/v1/object/public/plan-images/'+p;
+const pf=(k,o)=>new Intl.DateTimeFormat('fa-IR-u-ca-persian',o).format(new Date(k+'T12:00:00'));
+const tehranToday=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tehran'}).format(new Date());
+const addDays=(k,n)=>{const d=new Date(k+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
+const dur=m=>{if(!m)return '—';const h=Math.floor(m/60),r=m%60;return fa([h&&h+' ساعت',r&&r+' دقیقه'].filter(Boolean).join(' و '))};
+const cnt=n=>n?fa(n):'—';
+const enDigits=s=>String(s||'').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).trim();
+const normName=s=>String(s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/\u200c/g,' ').replace(/\s+/g,' ').trim();
+const stTxt={p:'حاضر',a:'غایب',l:'تأخیر'};
+/* جمله‌ی ورود و خروج: «ساعت ۱۴:۰۰ وارد مدرسه شد و ساعت ۲۰:۰۰ از مدرسه خارج شد» (در صفحه‌ی اولیا و پیامک یکسان) */
+const inOutSentence=r=>{
+  r=r||{};
+  if(r.in&&r.out)return `ساعت ${fa(r.in)} وارد مدرسه شد و ساعت ${fa(r.out)} از مدرسه خارج شد`;
+  if(r.in)return `ساعت ${fa(r.in)} وارد مدرسه شد و هنوز خارج نشده است`;
+  if(r.out)return `ساعت ${fa(r.out)} از مدرسه خارج شد`;
+  return '';
+};
+/* ساعت ۲۴ ساعته: 14:00 ، 1400 ، 14 ، ۱۴:۰۰ ، 8:30 همگی پذیرفته می‌شوند. خالی = پاک‌کردن، null = نامعتبر */
+function normTime(v){
+  v=enDigits(String(v||'')).replace(/[:٫.\s]/g,'');
+  if(!v)return '';
+  if(!/^\d{1,4}$/.test(v))return null;
+  const h=v.length<=2?+v:+v.slice(0,-2),m=v.length<=2?0:+v.slice(-2);
+  if(h>23||m>59)return null;
+  return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+}
+const toast=t=>{const x=$('#toast');x.textContent=t;x.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>x.classList.remove('show'),2400)};
+const fake=t=>toast(t+' (نمایشی) ارسال شد ✓');
+const safe=f=>async function(...a){try{return await f.apply(this,a)}catch(e){if(e)console.error(e)}};
+
+
+/* ===================== انیمیشن‌های کوتاه ===================== */
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function animIn(root){
+  if(!window.gsap||reduceMotion)return;
+  const els=[...(root||document).querySelectorAll('.stat,.card,.panel-card,.item,.plan,.dk')].filter(e=>e.offsetParent!==null);
+  if(els.length)gsap.from(els,{y:8,opacity:0,duration:.22,stagger:.015,ease:'power2.out',clearProps:'all'});
+}
+function animText(sel){ /* فارسی حروف چسبیده دارد؛ فقط «کلمه» شکسته می‌شود نه «حرف» */
+  if(!window.gsap||!window.SplitText||reduceMotion)return;
+  document.querySelectorAll(sel).forEach(el=>{
+    if(el.offsetParent===null)return;
+    if(el._st)el._st.revert();
+    el._st=SplitText.create(el,{type:'words',autoSplit:true,onSplit:s=>gsap.from(s.words,{yPercent:35,opacity:0,duration:.25,stagger:.02,ease:'power2.out'})});
+  });
+}
+window.addEventListener('load',()=>{if(window.gsap&&window.SplitText)gsap.registerPlugin(SplitText);animText('.hero h1');animIn($('#f'))});
+
+/* ===================== استعلام اولیا ===================== */
+async function lookup(week){
+  if(!CONFIGURED)throw new Error('cfg');
+  const r=await fetch(SB_URL+'/rest/v1/rpc/parent_lookup',{method:'POST',headers:{apikey:SB_KEY,'Content-Type':'application/json'},
+    body:JSON.stringify({p_name:$('#q').value,p_nid:$('#nid').value,p_week:week})});
+  const d=await r.json().catch(()=>null);
+  if(r.status===404)throw new Error('nofn');
+  if(!r.ok||!d)throw new Error('net');
+  return d;
+}
+async function load(week){
+  const d=await lookup(week);
+  if(d.error){
+    $('#err').textContent=d.error==='blocked'?'تعداد تلاش بیش از حد مجاز است. چند دقیقه بعد دوباره امتحان کنید.':'دانش‌آموزی با این مشخصات پیدا نشد. نام کامل و کد ملی را دقیق وارد کنید.';
+    $('#res').classList.add('hide');return;
+  }
+  const x=d.rec||{};
+  $('#rName').textContent=d.name;
+  $('#rDate').textContent=pf(d.today,{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const box=$('#rSt');box.className='item'+(x.st?' st-'+x.st:'');box.querySelector('b').textContent=x.st?stTxt[x.st]:'هنوز ثبت نشده';
+  $('#rStudy').textContent=dur(x.study);$('#rLes').textContent=cnt(x.lessons);$('#rTst').textContent=cnt(x.tests);
+  $('#rIO').textContent=inOutSentence(x)?inOutSentence(x)+'.':'—';
+  $('#rNote').textContent=x.note||'—';
+
+  const w=d.week,fmt={year:'numeric',month:'long',day:'numeric'};
+  $('#wSum').textContent=`دانش‌آموز ${d.name} از تاریخ ${pf(w.from,fmt)} تا ${pf(w.to,fmt)} در مجموع ${w.minutes?dur(w.minutes):'۰ ساعت'} مطالعه داشته، ${fa(w.lessons)} درس خوانده و ${fa(w.tests)} تست زده است.`;
+  $('#wP').textContent=fa(w.p);$('#wA').textContent=fa(w.a);$('#wL').textContent=fa(w.l);
+  $('#wM').textContent=dur(w.minutes);$('#wLes').textContent=fa(w.lessons);$('#wT').textContent=fa(w.tests);
+  $('#wk').value=String(week);
+
+  $('#plans').innerHTML=d.plans.length?d.plans.map(p=>`<div class="plan"><b>${esc(p.title)}</b> <span class="pill t">${esc(p.type)}</span><small>${pf(p.date,{year:'numeric',month:'long',day:'numeric'})}</small>${p.text?`<p>${esc(p.text)}</p>`:''}${p.image?`<a href="${esc(imgUrl(p.image))}" target="_blank" rel="noopener"><img class="pimg" loading="lazy" src="${esc(imgUrl(p.image))}" alt="تصویر برنامه"></a>`:''}</div>`).join(''):'<p class="note">هنوز برنامه‌ای ثبت نشده است.</p>';
+  $('#hist').innerHTML=d.hist.map(h=>`<tr><td>${pf(h.date,{month:'long',day:'numeric'})}</td><td>${h.st?`<span class="pill ${h.st}">${stTxt[h.st]}</span>`:'—'}</td><td>${h.in?fa(h.in):'—'}</td><td>${h.out?fa(h.out):'—'}</td><td>${dur(h.study)}</td><td>${cnt(h.lessons)}</td><td>${cnt(h.tests)}</td><td>${esc(h.note||'—')}</td></tr>`).join('')||'<tr><td colspan="8" class="muted">گزارشی ثبت نشده است.</td></tr>';
+  $('#err').textContent='';$('#res').classList.remove('hide');animText('#rName');animIn($('#res'));
+}
+$('#f').onsubmit=async e=>{
+  e.preventDefault();$('#err').textContent='';const b=$('#go');b.disabled=true;
+  try{await load(0)}
+  catch(x){$('#err').textContent=x.message==='cfg'?'اتصال به Supabase تنظیم نشده است (SB_URL و SB_KEY در index.html).':x.message==='nofn'?'دیتابیس هنوز آماده نیست؛ فایل supabase_final.sql را در Supabase اجرا کنید.':'ارتباط با سرور برقرار نشد.';$('#res').classList.add('hide')}
+  finally{b.disabled=false}
+};
+$('#wk').onchange=()=>load(+$('#wk').value).catch(()=>{$('#err').textContent='ارتباط با سرور برقرار نشد.'});
+
+</script>
+</body>
+</html>

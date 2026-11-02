@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#071629">
 <meta name="referrer" content="no-referrer">
-<title>پنل مدیریت — سامانه پیگیری وضعیت دانش‌آموز</title>
+<title>پنل مدیریت | سامانه پیگیری وضعیت دانش‌آموز</title>
 <link rel="icon" href="assets/Logo.png">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
@@ -14,158 +14,137 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js" defer></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-/* پس‌زمینه: ترتیب عمداً این‌طور است تا نسخه‌ی استاندارد آخر بیاید و در همه‌ی مرورگرها جهت چپ‌به‌راست درست باشد */
-:root{--navy:#071629;--blue:#17345C;--steel:#9DB7D5;--mist:#EAF4FF;
-  --text:#071629;--soft:#3f5b7e;--dim:#5b7391;
-  --glass:rgba(255,255,255,.96);--glass-b:rgba(157,183,213,.55);--accent:#17345C;--accent-2:#17345C;--on-accent:#fff;
-  --input-bg:#fff;--input-b:#b9cde4;--card:rgba(255,255,255,.97);--card-b:rgba(23,52,92,.12);
-  --shadow:rgba(7,22,41,.38);--ok:#1f9d63;--bad:#d64545;--late:#d99a1b;--chip:#EAF4FF;--hover:rgba(23,52,92,.07)}
+/* پالت: Frost Navy / Deep Winter Blue / Icy Steel / Frost Mist / Snow White */
+:root{
+  --navy:#071629;--blue:#17345C;--steel:#9DB7D5;--mist:#EAF4FF;--snow:#FFFFFF;
+  --text:#071629;--soft:#3a5578;--dim:#5b7391;
+  --accent:#17345C;--accent-2:#17345C;--on-accent:#FFFFFF;
+  --input-bg:#FFFFFF;--input-b:#9DB7D5;
+  --card:#FFFFFF;--card-b:rgba(23,52,92,.14);--chip:#EAF4FF;--line:rgba(23,52,92,.14);--hover:rgba(157,183,213,.16);
+  --ok:#14774a;--bad:#b73232;--late:#8f6208;
+  --shadow:rgba(7,22,41,.45);--r-card:28px;--r-in:16px}
 html{min-height:100%}
 body{font-family:'Vazirmatn',Tahoma,sans-serif;min-height:100vh;padding:28px 16px 40px;color:var(--text);position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased;
-background:#071629;
-  background:radial-gradient(900px 520px at 88% -8%,rgba(157,183,213,.38),transparent 62%),linear-gradient(180deg,#071629 0%,#17345C 100%);
+  background:#071629;
+  background:radial-gradient(900px 520px at 88% -8%,rgba(157,183,213,.34),transparent 62%),
+             radial-gradient(700px 420px at 4% 108%,rgba(157,183,213,.22),transparent 65%),
+             linear-gradient(180deg,#071629 0%,#17345C 100%);
   background-attachment:fixed}
 .hide{display:none!important}
-.admin-link{all:unset;cursor:pointer;display:block;text-align:center;margin:22px auto 0;font-size:12.5px;color:var(--steel);padding:6px 14px;border-radius:999px;text-decoration:none}
-.admin-link:hover{background:rgba(255,255,255,.12);color:#fff}
 .ltr{direction:ltr;text-align:right}
+:focus-visible{outline:3px solid var(--steel);outline-offset:2px}
 .container{max-width:720px;margin:0 auto;position:relative;z-index:1}
-
-/* hero + cards */
-.hero{text-align:center;padding:18px 8px 18px}
 .logo{width:130px;height:150px;margin:0 auto 10px;display:grid;place-items:center;font-size:48px}
-.logo img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 8px 14px rgba(10,22,71,.28))}
-.ap-logo{height:58px;width:auto;object-fit:contain;filter:drop-shadow(0 3px 6px rgba(10,22,71,.3));flex:none}
-.hero h1{font-size:25px;font-weight:800;margin-bottom:8px;color:#fff}
-.hero p{color:var(--steel);font-size:14px;line-height:2}
-.card{background:var(--card);border:1px solid var(--card-b);border-radius:22px;padding:20px;margin-bottom:16px;box-shadow:0 14px 40px var(--shadow);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.logo img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 10px 18px rgba(7,22,41,.5))}
+.card{background:var(--card);border:1px solid var(--card-b);border-radius:var(--r-card);padding:22px;margin-bottom:16px;box-shadow:0 18px 44px var(--shadow)}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 label.f{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--soft)}
-input,select,textarea{font:inherit;color:var(--text);padding:12px 14px;border:1px solid var(--input-b);border-radius:13px;background:var(--input-bg);outline:none;width:100%;transition:.15s}
-input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(23,52,92,.22)}
-select option{color:#111}
-.btn{font:inherit;cursor:pointer;border:0;padding:13px 18px;border-radius:13px;background:var(--accent);color:var(--on-accent);font-size:15px;font-weight:700;width:100%;margin-top:14px;transition:.15s}
-.btn:hover{filter:brightness(1.12)}.btn:disabled{opacity:.6;cursor:wait}
+input,select,textarea{font:inherit;color:var(--navy);padding:13px 15px;border:1px solid var(--input-b);border-radius:var(--r-in);background:var(--input-bg);outline:none;width:100%;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(157,183,213,.55)}
+input::placeholder,textarea::placeholder{color:#7d93ad}
+select option{color:var(--navy)}
+.btn{font:inherit;cursor:pointer;border:0;padding:14px 18px;border-radius:var(--r-in);background:var(--blue);color:var(--on-accent);font-size:15px;font-weight:700;width:100%;margin-top:14px;transition:background .15s}
+.btn:hover{background:var(--navy)}.btn:disabled{opacity:.6;cursor:wait}
 .err{color:var(--bad);font-size:13.5px;margin-top:12px;line-height:1.9;min-height:4px}
-.note{font-size:12px;color:var(--steel);line-height:1.9;text-align:center;margin-top:8px}
-.name{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.name i{width:48px;height:48px;border-radius:15px;background:var(--chip);border:1px solid var(--card-b);display:grid;place-items:center;font-style:normal;font-size:22px}
-.name h2{font-size:18px}.name span{font-size:12.5px;color:var(--soft)}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.item{background:var(--chip);border:1px solid var(--card-b);border-radius:15px;padding:13px 14px}
-.item span{font-size:12px;color:var(--soft);display:block;margin-bottom:4px}.item b{font-size:17px}.item.wide{grid-column:1/-1}
-.st-p b{color:var(--ok)}.st-a b{color:var(--bad)}.st-l b{color:var(--late)}
-h3{font-size:15px;margin:2px 0 12px;color:var(--accent-2)}
-.tw{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
-th{font-weight:600;color:var(--soft);font-size:12px;text-align:right;padding:8px;border-bottom:1px solid var(--card-b)}
-td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:last-child td{border-bottom:0}
+.muted{color:var(--dim);font-size:12.5px;line-height:1.9}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--mist);color:var(--navy);padding:11px 20px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:90vw;text-align:center;box-shadow:0 10px 30px var(--shadow)}
+.toast.show{opacity:1}
 .pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;color:#fff}
-.pill.p{background:#10916a}.pill.a{background:#c43d3d}.pill.l{background:#c98a10}.pill.t{background:var(--accent);color:var(--on-accent)}
-.plan{background:var(--chip);border:1px solid var(--card-b);border-radius:15px;padding:13px 14px;margin-bottom:10px}
-.pimg{display:block;width:100%;max-width:100%;border-radius:12px;margin-top:10px;border:1px solid var(--card-b);background:#fff}
+.pill.p{background:#14774a}.pill.a{background:#b73232}.pill.l{background:#8f6208}.pill.t{background:var(--blue);color:#fff}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{font-weight:600;color:var(--soft);font-size:12px;text-align:right;padding:8px;border-bottom:1px solid var(--line)}
+td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}tr:last-child td{border-bottom:0}
+h3,h4{color:var(--blue)}
+.plan{background:var(--chip);border:1px solid var(--card-b);border-radius:18px;padding:13px 14px;margin-bottom:10px}
+.pimg{display:block;width:100%;max-width:100%;border-radius:14px;margin-top:10px;border:1px solid var(--card-b);background:#fff}
 .thumb{width:140px;max-width:100%;border-radius:10px;margin-top:8px;border:1px solid var(--card-b);display:block;background:#fff}
 .plan p{white-space:pre-wrap;line-height:1.9;font-size:13.5px;margin-top:6px}.plan small{color:var(--dim);margin-inline-start:8px}
-.sum{font-size:14px;line-height:2;margin:10px 0 12px;color:var(--soft)}
 
-/* login modal */
-.modal{position:fixed;inset:0;z-index:70;display:none;place-items:center;padding:20px;background:transparent}
-.modal.show{display:grid}
-.lg-card{position:relative;width:100%;max-width:380px;background:var(--glass);border:1px solid var(--glass-b);border-radius:26px;padding:28px 22px 22px;box-shadow:0 24px 70px var(--shadow);text-align:center}
-.x{all:unset;cursor:pointer;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:22px;color:var(--soft)}.x:hover{background:var(--hover)}
-.lg-card .x{position:absolute;top:12px;inset-inline-start:12px}
-.lg-badge{width:56px;height:56px;border-radius:18px;margin:0 auto 12px;display:grid;place-items:center;background:var(--chip);color:var(--accent-2);border:1px solid var(--card-b)}
-.lg-badge svg{width:28px;height:28px}
-.lg-card h2{font-size:19px;margin-bottom:6px}.lg-sub{font-size:13px;color:var(--soft);line-height:1.9;margin-bottom:16px}
+body{padding:0}
+/* ---- صفحه‌ی ورود ---- */
+.login-view{min-height:100vh;display:grid;place-items:center;padding:24px 16px}
+.lg-card{position:relative;width:100%;max-width:400px;background:var(--snow);border:1px solid var(--card-b);border-radius:var(--r-card);padding:30px 24px 24px;box-shadow:0 24px 70px var(--shadow);text-align:center}
+.lg-card .logo{width:96px;height:110px;margin-bottom:6px}
+.lg-card h1{font-size:20px;margin-bottom:6px;color:var(--navy)}
+.lg-sub{font-size:13px;color:var(--soft);line-height:1.9;margin-bottom:16px}
 .lg-card input{margin-bottom:10px;text-align:right}
-.lg-cancel{all:unset;cursor:pointer;display:block;margin:10px auto 0;font-size:13px;color:var(--dim)}
+.lg-back{display:block;margin:14px auto 0;font-size:13px;color:var(--dim);text-decoration:none}
+.lg-back:hover{color:var(--blue)}
 
-/* admin panel */
-.admin-panel{position:fixed;inset:0;z-index:60;display:none;grid-template-columns:232px 1fr;color:var(--text);background:#071629;background:radial-gradient(900px 520px at 88% -8%,rgba(157,183,213,.38),transparent 62%),linear-gradient(180deg,#071629 0%,#17345C 100%)}
+/* ---- پنل ---- */
+.admin-panel{position:fixed;inset:0;z-index:60;display:none;grid-template-columns:232px 1fr;color:var(--text);
+  background:radial-gradient(900px 520px at 90% -10%,rgba(157,183,213,.28),transparent 62%),linear-gradient(160deg,#17345C 0%,#071629 100%)}
 .admin-panel.open{display:grid}
-.ap-side{background:var(--glass);border-inline-end:1px solid var(--glass-b);padding:18px 12px;display:flex;flex-direction:column;gap:6px;overflow:auto}
-.ap-brand{font-weight:800;font-size:16px;padding:6px 10px 12px;color:var(--accent-2)}
-.ap-side button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:13px;font-size:14px;color:var(--soft);transition:.12s}
-.ap-side button:hover{background:var(--hover);color:var(--text)}
-.ap-side button.on{background:var(--accent);color:var(--on-accent);font-weight:700}
+.ap-side{background:rgba(7,22,41,.72);border-inline-end:1px solid rgba(157,183,213,.2);padding:18px 12px;display:flex;flex-direction:column;gap:6px;overflow:auto}
+.ap-brand{font-weight:800;font-size:16px;padding:6px 10px 12px;color:var(--snow)}
+.ap-side button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:var(--r-in);font-size:14px;color:var(--steel);transition:background .12s,color .12s}
+.ap-side button:hover{background:var(--hover);color:var(--snow)}
+.ap-side button:focus-visible{outline:3px solid var(--steel)}
+.ap-side button.on{background:var(--steel);color:var(--navy);font-weight:700}
 .ap-main{overflow:auto;padding:16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.ap-main section>.muted,.ap-main>.muted{color:var(--steel)}
 .ap-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.ap-top h2{font-size:22px;font-weight:800;margin-inline-end:auto;color:#fff}
+.ap-top h2{font-size:22px;font-weight:800;margin-inline-end:auto;color:var(--snow)}
 .ap-top input{max-width:300px;padding:9px 14px;border-radius:999px}
-.chipd{background:var(--chip);padding:7px 14px;border-radius:999px;font-size:12.5px;color:var(--soft)}
-.abtn{font:inherit;cursor:pointer;border:0;padding:9px 16px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:13.5px;font-weight:700;white-space:nowrap}
-.abtn:hover{filter:brightness(1.12)}.abtn.ghost{background:var(--chip);color:var(--text);border:1px solid var(--card-b)}.abtn.danger{background:var(--bad);color:#fff}.abtn.sm{padding:6px 12px;font-size:12px}
-.panel-card{background:var(--card);border:1px solid var(--card-b);border-radius:20px;padding:18px;overflow-x:auto}
-.panel-card h4{font-size:15px;margin-bottom:12px;color:var(--accent-2)}
+.ap-logo{height:58px;width:auto;object-fit:contain;filter:drop-shadow(0 3px 8px rgba(7,22,41,.5));flex:none}
+.chipd{background:rgba(234,244,255,.14);color:var(--mist);padding:7px 14px;border-radius:999px;font-size:12.5px}
+.abtn{font:inherit;cursor:pointer;border:0;padding:9px 16px;border-radius:999px;background:var(--blue);color:var(--on-accent);font-size:13.5px;font-weight:700;white-space:nowrap;display:inline-block;transition:background .15s}
+.abtn:hover{background:var(--navy)}
+.abtn.ghost{background:var(--mist);color:var(--navy);border:1px solid rgba(157,183,213,.7)}.abtn.ghost:hover{background:var(--steel)}
+.abtn.danger{background:var(--bad);color:#fff}.abtn.danger:hover{background:#8f2323}.abtn.sm{padding:6px 12px;font-size:12px}
+.panel-card{background:var(--card);border:1px solid var(--card-b);border-radius:24px;padding:18px;overflow-x:auto;box-shadow:0 12px 32px rgba(7,22,41,.28)}
+.panel-card h4{font-size:15px;margin-bottom:12px}
 .g{display:grid;gap:14px}.g3{grid-template-columns:1.7fr 1fr 1fr}.g2{grid-template-columns:1fr 1fr}
 .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-.stat{position:relative;background:var(--card);border:1px solid var(--card-b);border-radius:18px;padding:14px}
+.stat{position:relative;background:var(--card);border:1px solid var(--card-b);border-radius:22px;padding:14px;box-shadow:0 12px 32px rgba(7,22,41,.28)}
 .stat span{font-size:13px;font-weight:600;color:var(--soft)}.stat b{display:block;font-size:34px;font-weight:800;margin:6px 0 6px;line-height:1}.stat small{font-size:11.5px;color:var(--dim)}
 .stat.ok b{color:var(--ok)}.stat.bad b{color:var(--bad)}.stat.late b{color:var(--late)}
-.stat.hl{background:var(--accent);border-color:var(--steel);color:var(--on-accent)}.stat.hl span,.stat.hl small{color:inherit;opacity:.85}
+.stat.hl{background:var(--steel);border-color:var(--steel);color:var(--navy)}.stat.hl span,.stat.hl small{color:inherit;opacity:.85}
 .bars{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;height:200px}
 .bw{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;color:var(--soft)}
 .bz{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}
-.bp{width:100%;max-width:50px;border-radius:999px;background:linear-gradient(#2c4f80,var(--accent));color:var(--on-accent);font-size:11px;display:flex;justify-content:center;padding-top:8px}
-.bp.t{outline:2px solid var(--accent-2);outline-offset:2px}
-.bp.h{background:repeating-linear-gradient(135deg,var(--dim) 0 3px,transparent 3px 7px);border:1.5px solid var(--card-b)}
+.bp{width:100%;max-width:50px;border-radius:999px;background:linear-gradient(#17345C,#071629);color:#fff;font-size:11px;display:flex;justify-content:center;padding-top:8px}
+.bp.t{outline:2px solid var(--steel);outline-offset:2px}
+.bp.h{background:repeating-linear-gradient(135deg,var(--steel) 0 3px,transparent 3px 7px);border:1.5px solid var(--card-b)}
 .dn{position:relative;max-width:240px;margin:6px auto 0}.dn svg{width:100%;display:block}
 .dpct{position:absolute;inset-inline:0;bottom:2px;text-align:center}.dpct b{font-size:28px;font-weight:800;display:block;line-height:1.1}.dpct span{font-size:12px;color:var(--soft)}
 .lg{display:flex;justify-content:center;gap:12px;font-size:12px;color:var(--soft);margin-top:10px;flex-wrap:wrap}
 .lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-inline-end:5px}
-.dk{border:1px solid rgba(157,183,213,.45);border-radius:18px;padding:18px;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;background:var(--accent);color:var(--on-accent)}
+.dk{border-radius:22px;padding:18px;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(160deg,#17345C,#071629);border:1px solid rgba(157,183,213,.35);color:var(--snow);box-shadow:0 12px 32px rgba(7,22,41,.28)}
 .dk h4{color:inherit;margin:0}.dk big{display:block;font-size:28px;font-weight:800;line-height:1.4}
-.dk .r{display:flex;gap:10px}.dk .r div{flex:1;background:rgba(255,255,255,.18);border-radius:13px;padding:10px 12px;font-size:12px}.dk .r b{display:block;font-size:20px}
+.dk .r{display:flex;gap:10px}.dk .r div{flex:1;background:rgba(157,183,213,.18);border-radius:14px;padding:10px 12px;font-size:12px}.dk .r b{display:block;font-size:20px}
 .mx{display:grid;grid-template-columns:170px repeat(7,minmax(46px,1fr));gap:6px;min-width:560px;align-items:center}
 .dh{background:var(--chip);border:1px solid var(--card-b);border-radius:11px;text-align:center;font-size:11.5px;padding:5px 0;line-height:1.5}
-.dh.t{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}.dh.w{opacity:.6}
+.dh.t{background:var(--blue);color:#fff;border-color:var(--blue)}.dh.w{opacity:.6}
 .pn{display:flex;align-items:center;gap:8px;font-size:13px;white-space:nowrap}
 .av{width:30px;height:30px;border-radius:50%;background:var(--chip);border:1px solid var(--card-b);display:inline-grid;place-items:center;font-size:12px;font-weight:700;flex:none}
 .c{height:38px;border-radius:11px;background:var(--chip);display:grid;place-items:center;font-size:11px;color:#fff;font-weight:600}
-.c.p{background:#10916a}.c.a{background:#c43d3d}.c.l{background:#c98a10}
-.c.w{background:repeating-linear-gradient(135deg,var(--chip) 0 4px,transparent 4px 8px)}.c.t{outline:2px dashed var(--accent);outline-offset:2px}
-.li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--chip)}.li:last-child{border:0}
+.c.p{background:#14774a}.c.a{background:#b73232}.c.l{background:#8f6208}
+.c.w{background:repeating-linear-gradient(135deg,var(--chip) 0 4px,transparent 4px 8px)}.c.t{outline:2px dashed var(--blue);outline-offset:2px}
+.li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}.li:last-child{border:0}
 .chip{font-size:11.5px;padding:3px 10px;border-radius:999px;background:var(--chip);color:var(--soft);white-space:nowrap}.chip.ok{color:var(--ok)}
 .arow{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
 .arow label{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--soft);flex:1;min-width:140px}
-.panel-card input,.panel-card select,.panel-card textarea{padding:9px 11px;font-size:13.5px}
+.panel-card input,.panel-card select,.panel-card textarea{padding:9px 11px;font-size:13.5px;border-radius:13px}
 .tm{display:flex;gap:4px;align-items:center;min-width:150px}
 .tinp{width:84px;min-width:84px;text-align:center;direction:ltr;font-variant-numeric:tabular-nums}
 .seg{display:inline-flex;background:var(--chip);border-radius:999px;padding:3px;gap:2px}
 .seg button{font:inherit;font-size:13px;border:0;background:transparent;padding:6px 14px;border-radius:999px;cursor:pointer;color:var(--soft)}
-.seg button.p.on{background:#10916a;color:#fff}.seg button.a.on{background:#c43d3d;color:#fff}.seg button.l.on{background:#c98a10;color:#fff}
+.seg button.p.on{background:#14774a;color:#fff}.seg button.a.on{background:#b73232;color:#fff}.seg button.l.on{background:#8f6208;color:#fff}
 .tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;background:var(--chip);margin:3px}
-.sms{background:var(--chip);border:1px dashed var(--card-b);border-radius:14px;padding:12px;font-size:13.5px;line-height:1.9;margin-bottom:10px}
+.sms{background:var(--chip);border:1px dashed var(--steel);border-radius:16px;padding:12px;font-size:13.5px;line-height:1.9;margin-bottom:10px}
 .sms em{font-style:normal;color:var(--dim);font-size:12px;display:block;margin-bottom:4px}
 .plan .h{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.plan .h b{flex:1}
-.muted{color:var(--dim);font-size:12.5px;line-height:1.9}
-.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--mist);color:var(--navy);box-shadow:0 8px 24px var(--shadow);padding:11px 20px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:90vw;text-align:center}
-.toast.show{opacity:1}
-/* نمودارها، گزارش روزها و قفل غیبت */
-.seg button.n.on{background:var(--accent);color:var(--on-accent)}
-.trh{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-.trh h4{margin:0;margin-inline-end:auto}
-.goal{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--soft)}
-.goal input{width:74px;padding:6px 8px;text-align:center;direction:ltr}
-.trs .stat:not(.hl){background:var(--chip)}
-.trs .stat b{font-size:26px}
-.chb{background:var(--chip);border:1px solid var(--card-b);border-radius:16px;padding:14px}
-.chb h4 .chip{margin-inline-start:8px;background:var(--card)}
-.cht svg{width:100%;height:auto;display:block}
-.cht .gl{stroke:var(--card-b);stroke-width:1}
-.cht text{font-family:inherit;fill:var(--soft);font-size:11px;text-anchor:middle}
-.cht text.gv{fill:var(--text);font-weight:700;font-size:12px}
-tr.sel td{background:var(--hover)}
-tr.lk td:first-child{color:var(--bad)}
-.abtn:disabled,.panel-card input:disabled{opacity:.45;cursor:not-allowed}
-a.abtn{text-decoration:none;display:inline-block}
-.ap-main section>.muted{color:var(--steel)}
-.lg-card .back{display:block;margin:12px auto 0;font-size:13px;color:var(--dim);text-decoration:none}
-.lg-card .back:hover{color:var(--accent)}
-.panel-card input:disabled{background:var(--chip)}
+.seg button.r.on{background:var(--blue);color:#fff}
+input:disabled{opacity:.55;background:var(--chip);cursor:not-allowed}.abtn:disabled{opacity:.45;cursor:not-allowed}
+.chh{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.chh h4{margin:0;margin-inline-end:auto}
+.chh input{width:84px}.ch svg{width:100%;height:auto;display:block}.dr{cursor:pointer}.dr:hover td{background:var(--hover)}
+.stat.sm b{font-size:26px}.pb{height:8px;border-radius:99px;background:var(--chip);min-width:70px}.pb i{display:block;height:100%;border-radius:99px;background:var(--ok)}
+.al{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px}.al:last-child{border:0}
+@media print{body{background:#fff!important;overflow:visible!important}.admin-panel{position:static!important;display:block!important;background:#fff!important}.ap-side,.ap-top,.seg,.abtn,.chh label,#hDate{display:none!important}.ap-main{overflow:visible!important}.panel-card,.stat{box-shadow:none!important;break-inside:avoid}}
 @media(max-width:960px){
   .admin-panel.open{display:block}
-  .ap-side{position:fixed;bottom:0;inset-inline:0;z-index:5;flex-direction:row;padding:6px;border-radius:20px 20px 0 0;border-inline-end:0;border-top:1px solid var(--glass-b);overflow-x:auto}
+  .ap-side{position:fixed;bottom:0;inset-inline:0;z-index:5;flex-direction:row;padding:6px;border-radius:22px 22px 0 0;border-inline-end:0;border-top:1px solid rgba(157,183,213,.25);overflow-x:auto;background:rgba(7,22,41,.94)}
   .ap-brand{display:none}.ap-side button{flex:1;flex-direction:column;gap:2px;font-size:11px;padding:8px 4px;justify-content:center;text-align:center;white-space:nowrap}
   .ap-main{position:absolute;inset:0;padding-bottom:90px}
   .g3,.g2{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.hide-sm{display:none}
@@ -176,20 +155,19 @@ a.abtn{text-decoration:none;display:inline-block}
 <body>
 
 <!-- ورود مدیر -->
-<div class="modal show" id="loginModal">
-  <form class="lg-card" id="lf" role="dialog" aria-modal="true" aria-labelledby="lgTitle" onsubmit="adminLogin();return false">
-    <div class="lg-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 8.2-8 9-4.8-.8-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
-    <h2 id="lgTitle">ورود به پنل مدیریت</h2>
+<main class="login-view" id="loginView">
+  <form class="lg-card" id="loginCard" onsubmit="adminLogin();return false">
+    <div class="logo"><img src="assets/Logo.png" alt="لوگوی دبیرستان شهید حسن باقری" onerror="this.parentNode.textContent='🏫'"></div>
+    <h1>ورود به پنل مدیریت</h1>
     <p class="lg-sub">برای ثبت حضور و غیاب و مدیریت دانش‌آموزان، وارد حساب مدیر شوید.</p>
     <input id="adminUsername" class="ltr" type="email" autocomplete="username" placeholder="ایمیل مدیر" autocapitalize="off" spellcheck="false">
     <input id="adminPassword" class="ltr" type="password" autocomplete="current-password" placeholder="رمز عبور">
     <div class="err" id="adminLoginError" role="alert"></div>
     <button class="btn" id="lgBtn">ورود</button>
-    <a class="back" href="index.html">بازگشت به سایت اولیا</a>
+    <a class="lg-back" href="index.html">بازگشت به صفحه‌ی اولیا</a>
   </form>
-</div>
+</main>
 
-<!-- پنل مدیریت -->
 <div class="admin-panel" id="adminPanel">
   <aside class="ap-side">
     <div class="ap-brand">⚙️ پنل مدیریت</div>
@@ -197,9 +175,11 @@ a.abtn{text-decoration:none;display:inline-block}
       <button data-p="dash" class="on">📊 <span>داشبورد</span></button>
       <button data-p="att">✅ <span>حضور و غیاب</span></button>
       <button data-p="io">🚪 <span>ورود و خروج</span></button>
-      <button data-p="rep">📅 <span>گزارش روزها</span></button>
+      <button data-p="hist">📅 <span>تاریخچه</span></button>
       <button data-p="plan">🗂️ <span>برنامه‌ریزی</span></button>
       <button data-p="stu">👥 <span>دانش‌آموزان</span></button>
+      <button data-p="fin">💰 <span>مالی پانسیون</span></button>
+      <button data-p="log">🧾 <span>گزارش تغییرات</span></button>
       <button data-p="sms">💬 <span>پیامک اولیا</span></button>
     </nav>
   </aside>
@@ -208,12 +188,12 @@ a.abtn{text-decoration:none;display:inline-block}
       <h2 id="title">داشبورد</h2>
       <input id="sq" placeholder="🔍 جستجوی دانش‌آموز (نام یا کد ملی)">
       <span class="chipd hide-sm" id="date"></span>
-      <a class="abtn ghost hide-sm" href="index.html">سایت اولیا</a>
-      <button class="abtn ghost" onclick="closePanel()">خروج از حساب</button>
+      <a class="abtn ghost" href="index.html" style="text-decoration:none">صفحه‌ی اولیا</a><button class="abtn ghost" onclick="closePanel()">خروج از حساب</button>
       <img class="ap-logo" src="assets/Logo.png" alt="لوگو" onerror="this.remove()">
     </div>
 
     <section id="dash">
+      <div class="panel-card hide" id="alerts" style="margin-bottom:14px"></div>
       <div class="stats">
         <div class="stat hl"><span>کل دانش‌آموزان</span><b id="sT">۰</b><small id="sT2"></small></div>
         <div class="stat ok"><span>حاضر</span><b id="sP">۰</b><small id="sP2"></small></div>
@@ -229,17 +209,14 @@ a.abtn{text-decoration:none;display:inline-block}
         <div class="dk"><h4>مطالعه‌ی امروز (کل)</h4><big id="dkStudy">۰</big>
           <div class="r"><div>درس<b id="dkLes">۰</b></div><div>تست<b id="dkTst">۰</b></div></div></div>
       </div>
-      <div class="panel-card" style="margin-top:14px" id="trendBox">
-        <div class="trh"><h4>آمار و روند روزهای گذشته</h4><span id="rngA"></span>
-          <label class="goal">هدف مطالعه‌ی روزانه <input id="goal" inputmode="numeric" maxlength="4" autocomplete="off"> دقیقه</label></div>
-        <div class="stats trs" id="trSum"></div>
-        <div class="g g2" style="margin-top:14px">
-          <div class="chb"><h4>درصد پیشرفت حضور<span class="chip" id="chAttAvg"></span></h4><div class="cht" id="chAtt"></div></div>
-          <div class="chb"><h4>درصد پیشرفت مطالعه<span class="chip" id="chStuAvg"></span></h4><div class="cht" id="chStu"></div></div>
+      <div class="panel-card" style="margin-top:14px"><div class="chh"><h4>نمودارهای پیشرفت</h4>
+        <div class="seg" id="chRange"><button class="r" data-r="7">۷ روز</button><button class="r" data-r="14">۱۴ روز</button><button class="r" data-r="30">۳۰ روز</button></div></div>
+        <div class="g g2">
+          <div><div class="chh"><b style="font-size:14px;color:var(--blue)">درصد پیشرفت مطالعه</b><label class="muted">هدف روزانه (دقیقه) <input id="goal" type="number" min="30" max="1440"></label></div><div class="ch" id="chStudy"></div></div>
+          <div><div class="chh"><b style="font-size:14px;color:var(--blue)">درصد پیشرفت حضور</b></div><div class="ch" id="chAtt"></div></div>
         </div>
-        <p class="muted" style="margin-top:12px">درصد پیشرفت حضور = (حاضر + تأخیر) ÷ دانش‌آموزانی که در آن روز وضعیتشان ثبت شده. درصد پیشرفت مطالعه = میانگین نسبت مطالعه‌ی هر دانش‌آموز حاضر به هدف روزانه (برای هر نفر حداکثر ۱۰۰٪). روزهای بدون ثبت در نمودار نمی‌آیند. هدف روزانه فقط روی همین دستگاه ذخیره می‌شود.</p>
-        <button class="abtn ghost sm" style="margin-top:10px" onclick="show('rep')">مشاهده‌ی جزئیات روزها ←</button>
-      </div>
+        <p class="muted" style="margin-top:8px">پیشرفت مطالعه = مجموع مطالعه‌ی هر دانش‌آموز (حداکثر تا هدف روزانه) نسبت به هدف کل. جمعه‌ها و روزهای بدون ثبت نمایش داده نمی‌شوند.</p></div>
+      <div class="panel-card" style="margin-top:14px"><div class="chh"><h4>آمار کلی روزهای گذشته</h4><button class="abtn ghost sm" onclick="show('hist')">جزئیات روزها ←</button></div><div class="stats" id="dSum"></div></div>
       <div class="panel-card" style="margin-top:14px"><h4>ماتریس حضور و غیاب هفته</h4><div class="mx" id="mx"></div></div>
       <div class="g g2" style="margin-top:14px">
         <div class="panel-card"><h4>غایبین امروز</h4><div id="absList" class="muted"></div></div>
@@ -252,7 +229,7 @@ a.abtn{text-decoration:none;display:inline-block}
     <section id="att" class="hide">
       <div class="panel-card">
         <div class="arow" style="margin-bottom:12px"><button class="abtn ghost" id="allP">همه حاضر</button><button class="abtn" id="toSms">پیامک غایبین ←</button></div>
-        <table><thead><tr><th>#</th><th>نام</th><th class="hide-sm">کد ملی</th><th>وضعیت</th></tr></thead><tbody id="attBody"></tbody></table>
+        <table><thead><tr><th>#</th><th>نام</th><th class="hide-sm">کد ملی</th><th>وضعیت</th><th>نوع غیبت</th></tr></thead><tbody id="attBody"></tbody></table>
       </div>
     </section>
 
@@ -264,13 +241,15 @@ a.abtn{text-decoration:none;display:inline-block}
       </div>
     </section>
 
-    <section id="rep" class="hide">
-      <div class="panel-card hide" id="dayDetail" style="margin-bottom:14px"></div>
+    <section id="hist" class="hide">
       <div class="panel-card">
-        <div class="trh"><h4>گزارش روزهای گذشته</h4><span id="rngB"></span></div>
-        <table><thead><tr><th>تاریخ</th><th>حاضر</th><th>تأخیر</th><th>غایب</th><th>درصد حضور</th><th>مطالعه</th><th>پیشرفت مطالعه</th><th>درس</th><th>تست</th><th></th></tr></thead><tbody id="repBody"></tbody></table>
-        <p class="muted" style="margin-top:10px">برای دیدن وضعیت تک‌تک دانش‌آموزان در هر روز، روی «جزئیات» همان روز بزنید. بازه‌ی ۹۰ روز اخیر با اولین انتخاب از سرور دریافت می‌شود.</p>
+        <div class="chh"><h4>آمار کلی</h4><div class="seg" id="hRange"><button class="r" data-r="7">۷ روز</button><button class="r" data-r="30">۳۰ روز</button><button class="r" data-r="90">۹۰ روز</button><button class="r" data-r="0">همه</button></div><button class="abtn ghost sm" id="hXls">⬇️ Excel</button><button class="abtn ghost sm" onclick="window.print()">🖨️ PDF</button></div>
+        <div class="stats" id="hStats"></div>
+        <p class="muted" id="hTop" style="margin-top:10px"></p>
       </div>
+      <div class="panel-card" style="margin-top:14px"><div class="chh"><h4>روزهای ثبت‌شده</h4><label class="muted">رفتن به تاریخ <input type="date" id="hDate" style="width:auto"></label></div>
+        <table><thead><tr><th>روز</th><th>حاضر</th><th>غایب</th><th>تأخیر</th><th>حضور</th><th class="hide-sm">مطالعه</th><th class="hide-sm">پیشرفت مطالعه</th></tr></thead><tbody id="hBody"></tbody></table></div>
+      <div class="panel-card hide" id="hDetail" style="margin-top:14px"></div>
     </section>
 
     <section id="plan" class="hide">
@@ -307,6 +286,23 @@ a.abtn{text-decoration:none;display:inline-block}
         <table><thead><tr><th>نام</th><th class="hide-sm">کد ملی</th><th class="hide-sm">تماس دانش‌آموز</th><th>تماس ولی</th><th></th></tr></thead><tbody id="stuBody"></tbody></table>
       </div>
     </section>
+
+    <section id="fin" class="hide">
+      <div class="panel-card hide" id="finWarn"><b style="color:var(--bad)">جدول‌های مالی هنوز ساخته نشده‌اند.</b> <span class="muted">فایل supabase_update_v2.sql را در SQL Editor سوپابیس اجرا کنید.</span></div>
+      <div class="stats" id="fStats"></div>
+      <div class="panel-card" style="margin-top:14px"><h4>ثبت پرداخت جدید</h4>
+        <div class="arow"><label>دانش‌آموز<select id="fStu"></select></label><label>مبلغ (تومان)<input id="fAmt" inputmode="numeric" class="ltr" placeholder="5,000,000"></label><label>تاریخ پرداخت<input type="date" id="fDate"></label></div>
+        <div class="arow" style="margin-top:10px"><label>توضیح (اختیاری)<input id="fNote" maxlength="200" placeholder="مثلاً قسط مهر"></label>
+          <div><button type="button" class="abtn ghost" id="fRcBtn">📎 افزودن عکس رسید</button><input type="file" id="fRc" class="hide" accept="image/jpeg,image/png,image/webp"> <span class="muted" id="fRcName"></span></div></div>
+        <button class="abtn" id="fAdd" style="margin-top:12px">ثبت پرداخت</button></div>
+      <div class="panel-card" style="margin-top:14px"><div class="chh"><h4>وضعیت پرداخت دانش‌آموزان</h4><button class="abtn ghost sm" id="fX1">⬇️ Excel</button></div>
+        <table><thead><tr><th>نام</th><th>کل شهریه (تومان)</th><th>پرداختی</th><th>مانده</th><th class="hide-sm">پیشرفت</th><th>وضعیت</th><th class="hide-sm">آخرین پرداخت</th></tr></thead><tbody id="fBody"></tbody></table></div>
+      <div class="panel-card" style="margin-top:14px"><div class="chh"><h4>پرداخت‌ها و رسیدها</h4><button class="abtn ghost sm" id="fX2">⬇️ Excel</button></div>
+        <table><thead><tr><th>تاریخ</th><th>دانش‌آموز</th><th>مبلغ</th><th class="hide-sm">توضیح</th><th>رسید</th><th></th></tr></thead><tbody id="fPay"></tbody></table></div>
+    </section>
+
+    <section id="log" class="hide"><div class="panel-card"><h4>گزارش تغییرات (۲۰۰ مورد آخر)</h4>
+      <table><thead><tr><th>زمان</th><th>کاربر</th><th>تغییر</th></tr></thead><tbody id="logBody"></tbody></table></div></section>
 
     <section id="sms" class="hide">
       <div class="panel-card">
@@ -370,7 +366,6 @@ const toast=t=>{const x=$('#toast');x.textContent=t;x.classList.add('show');clea
 const fake=t=>toast(t+' (نمایشی) ارسال شد ✓');
 const safe=f=>async function(...a){try{return await f.apply(this,a)}catch(e){if(e)console.error(e)}};
 
-
 /* ===================== انیمیشن‌های کوتاه ===================== */
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function animIn(root){
@@ -386,7 +381,7 @@ function animText(sel){ /* فارسی حروف چسبیده دارد؛ فقط «
     el._st=SplitText.create(el,{type:'words',autoSplit:true,onSplit:s=>gsap.from(s.words,{yPercent:35,opacity:0,duration:.25,stagger:.02,ease:'power2.out'})});
   });
 }
-window.addEventListener('load',()=>{if(window.gsap&&window.SplitText)gsap.registerPlugin(SplitText);animText('#lgTitle')});
+window.addEventListener('load',()=>{if(window.gsap&&window.SplitText)gsap.registerPlugin(SplitText);animIn($('#loginCard'))});
 
 /* ===================== ورود مدیر (Supabase Auth) ===================== */
 const SK='sd_admin_session';
@@ -404,7 +399,7 @@ async function sbLogin(email,pass){
   setSess(s);
   const r=await fetch(SB_URL+'/rest/v1/rpc/is_admin',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+s.access_token,'Content-Type':'application/json'},body:'{}'});
   const ok=r.ok?await r.json():false;
-  if(ok!==true){sbLogout();const e=new Error('forbidden');e.code='forbidden';throw e}
+  if(ok!==true&&!(await getRole())){sbLogout();const e=new Error('forbidden');e.code='forbidden';throw e}
 }
 function sbLogout(){
   const s=getSess();setSess(null);
@@ -429,7 +424,7 @@ async function db(method,path,body,extra){
   catch(e){toast('ارتباط با سرور برقرار نشد');throw 0}
   if(r.status===401){panelLoggedOut();throw 0}
   const j=await r.json().catch(()=>null);
-  if(!r.ok){toast(dbMsg(j));throw 0}
+  if(!r.ok){if(!QUIET)toast(dbMsg(j));throw 0}
   return j;
 }
 async function dbAll(path){ /* صفحه‌بندی؛ Supabase در هر درخواست حداکثر ۱۰۰۰ ردیف می‌دهد */
@@ -437,33 +432,31 @@ async function dbAll(path){ /* صفحه‌بندی؛ Supabase در هر درخو
   for(;;){const part=await db('GET',path+`&limit=1000&offset=${i}`);out=out.concat(part||[]);if(!part||part.length<1000)return out;i+=1000}
 }
 
-function initAdmin(){
-  if(!CONFIGURED){showLogin();$('#adminLoginError').textContent='اتصال به Supabase تنظیم نشده است (SB_URL و SB_KEY در admin.html).';return}
-  if(getSess()){openPanel().catch(()=>showLogin());return}
-  showLogin();
+const EMPTY=()=>({today:'',students:[],rec:{},plans:[],all:{},pay:[],finOK:true,week:{days:[],rec:{}}});
+function setView(panel){
+  $('#loginView').classList.toggle('hide',panel);
+  $('#adminPanel').classList.toggle('open',panel);
+  document.body.style.overflow=panel?'hidden':'';
 }
-function showLogin(){$('#loginModal').classList.add('show');$('#adminLoginError').textContent='';setTimeout(()=>$('#adminUsername').focus(),50)}
-function closeLogin(){$('#loginModal').classList.remove('show');$('#adminPassword').value=''}
+function showLogin(){setView(false);$('#adminLoginError').textContent='';setTimeout(()=>$('#adminUsername').focus(),50)}
 let loginBusy=false;
 async function adminLogin(){
   if(loginBusy)return;
+  if(!CONFIGURED){toast('اتصال به Supabase تنظیم نشده است');return}
   const email=$('#adminUsername').value.trim(),pw=$('#adminPassword').value,err=$('#adminLoginError');
   if(!email||!pw){err.textContent='ایمیل و رمز عبور را وارد کنید.';return}
   loginBusy=true;$('#lgBtn').disabled=true;err.textContent='';
-  try{await sbLogin(email,pw);closeLogin();await openPanel()}
+  try{await sbLogin(email,pw);$('#adminPassword').value='';await openPanel()}
   catch(e){
-    showLogin();
     err.textContent=e.code==='forbidden'?'این حساب دسترسی مدیر ندارد.':e.code==='auth'?'ایمیل یا رمز عبور اشتباه است.':'ارتباط با سرور برقرار نشد.';
     $('#adminPassword').value='';
   }finally{loginBusy=false;$('#lgBtn').disabled=false}
 }
 
 /* ===================== داده‌ی پنل مدیر ===================== */
-let SEL='',RNG=30; /* SEL: روز انتخاب‌شده در گزارش روزها ، RNG: بازه‌ی نمودار (روز) */
-const emptyD=()=>({today:'',students:[],rec:{},plans:[],week:{days:[],rec:{}},loaded:''});
-let D=emptyD();
-const toC=r=>({st:r.st||'',in:r.in_time||'',out:r.out_time||'',study:r.study||0,lessons:r.lessons||0,tests:r.tests||0,note:r.note||''});
-const COL={st:'st',in:'in_time',out:'out_time',study:'study',lessons:'lessons',tests:'tests',note:'note'};
+let D={today:'',students:[],rec:{},plans:[],all:{},pay:[],finOK:true,week:{days:[],rec:{}}};
+const toC=r=>({st:r.st||'',in:r.in_time||'',out:r.out_time||'',study:r.study||0,lessons:r.lessons||0,tests:r.tests||0,note:r.note||'',reason:r.absence_reason||''});
+const COL={st:'st',in:'in_time',out:'out_time',study:'study',lessons:'lessons',tests:'tests',note:'note',reason:'absence_reason'};
 const CAP={study:1440,lessons:100,tests:2000};
 function toRow(patch){
   const o={};
@@ -472,6 +465,7 @@ function toRow(patch){
     if(k==='st')v=['p','a','l'].includes(v)?v:null;
     else if(k==='in'||k==='out')v=/^([01]\d|2[0-3]):[0-5]\d$/.test(v)?v:null;
     else if(k in CAP){v=Math.round(Number(enDigits(v)));v=v>0?Math.min(v,CAP[k]):0}
+    else if(k==='reason')v=REASONS.includes(v)?v:null;
     else if(k==='note')v=String(v||'').slice(0,200);
     o[COL[k]]=v;
   }
@@ -479,34 +473,36 @@ function toRow(patch){
 }
 async function loadAdmin(){
   const today=tehranToday(),dow=new Date(today+'T12:00:00Z').getUTCDay(),from=addDays(today,-((dow+1)%7)),to=addDays(from,6);
-  const days=[...Array(7)].map((_,i)=>addDays(from,i)),from30=addDays(today,-29);
-  const [st,rc,pl]=await Promise.all([
+  const days=[...Array(7)].map((_,i)=>addDays(from,i));
+  const [st,rc,pl,pay]=await Promise.all([
     dbAll('students?select=*&order=id'),
-    dbAll(`records?select=*&date=gte.${from30}&date=lte.${to}&order=date,student_id`),
-    dbAll('plans?select=*&order=id.desc')]);
-  const wr={};days.forEach(k=>wr[k]={});
-  rc.forEach(r=>{(wr[r.date]||(wr[r.date]={}))[r.student_id]=toC(r)});
-  D={today,students:st.map(s=>({id:s.id,name:s.name,nid:s.nid,phone:s.phone||'',par:s.par})),
+    dbAll(`records?select=*&date=gte.${addDays(today,-365)}&date=lte.${today}&order=date,student_id`),
+    dbAll('plans?select=*&order=id.desc'),can('fin')?tryAll('payments?select=*&order=paid_on.desc,id.desc'):Promise.resolve([])]);
+  const all={};rc.forEach(r=>{(all[r.date]||(all[r.date]={}))[r.student_id]=toC(r)});
+  const wr={};days.forEach(k=>wr[k]=all[k]||(all[k]={}));
+  D={today,students:st.map(s=>({id:s.id,name:s.name,nid:s.nid,phone:s.phone||'',par:s.par,fee:+s.boarding_fee||0})),
      plans:pl.map(p=>({id:p.id,sid:p.student_id,type:p.type,title:p.title,text:p.body,image:p.image_path||'',date:p.date})),
-     week:{days,rec:wr},rec:wr[today]||(wr[today]={}),loaded:from30};
+     all,pay:pay||[],finOK:pay!==null,week:{days,rec:wr},rec:wr[today]};
   $('#date').textContent=todayFa();
 }
 const todayFa=()=>pf(D.today,{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 async function openPanel(){
-  await loadAdmin();SEL='';RNG=30;
-  $('#adminPanel').classList.add('open');document.body.style.overflow='hidden';
+  ACTOR=jwtOf(await sbToken()).email||'';ROLE=(await getRole())||'admin';
+  await loadAdmin();applyRole();
+  setView(true);
   show('dash');animIn($('.ap-side'));
 }
-function panelLoggedOut(){$('#adminPanel').classList.remove('open');document.body.style.overflow='';D=emptyD();SEL='';showLogin();toast('نشست پایان یافت؛ دوباره وارد شوید')}
-function closePanel(){sbLogout();$('#adminPanel').classList.remove('open');document.body.style.overflow='';D=emptyD();SEL='';showLogin()}
+function panelLoggedOut(){setView(false);D=EMPTY();toast('نشست پایان یافت؛ دوباره وارد شوید')}
+function closePanel(){sbLogout();setView(false);D=EMPTY();$('#adminPassword').value=''}
 
 /* ===================== رابط پنل ===================== */
-const titles={dash:'داشبورد',att:'حضور و غیاب',io:'ورود و خروج',rep:'گزارش روزها',plan:'برنامه‌ریزی',stu:'دانش‌آموزان',sms:'پیامک اولیا'};
+const titles={fin:'مالی پانسیون',log:'گزارش تغییرات',dash:'داشبورد',hist:'تاریخچه و آمار',att:'حضور و غیاب',io:'ورود و خروج',plan:'برنامه‌ریزی',stu:'دانش‌آموزان',sms:'پیامک اولیا'};
 const WD=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
 function show(p){
+  if(!can(p))p='dash';
   $$('.ap-main section').forEach(s=>s.classList.toggle('hide',s.id!==p));
   $$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
-  $('#title').textContent=titles[p];render();animText('#title');animIn($('#'+p));
+  $('#title').textContent=titles[p];render();if(p==='log')loadLog();animText('#title');animIn($('#'+p));
 }
 $('#nav').onclick=e=>{const b=e.target.closest('button');if(b)show(b.dataset.p)};
 const S=()=>D.students,Rc=id=>D.rec[id]||{};
@@ -515,9 +511,7 @@ const F=()=>{const q=enDigits($('#sq').value||'');return q?S().filter(s=>s.name.
 const ini=n=>esc([...n.trim()][0]||'؟');
 
 function render(){
-  dash();
-  if(!$('#dash').classList.contains('hide'))drawTrend();
-  if(!$('#rep').classList.contains('hide'))drawRep();
+  dash();charts();hist();fin();alerts();
   const v=S().map(s=>Rc(s.id));
   $('#sT').textContent=fa(S().length);
   $('#sP').textContent=fa(v.filter(x=>x.st==='p').length);$('#sA').textContent=fa(v.filter(x=>x.st==='a').length);
@@ -528,13 +522,13 @@ function render(){
   $('#exitMini').innerHTML=ex.length?ex.map(s=>`<span class="tag">${esc(s.name)} — ${fa(Rc(s.id).out)}</span>`).join(''):'موردی ثبت نشده است.';
 
   $('#attBody').innerHTML=F().map((s,i)=>{const st=Rc(s.id).st;return `<tr><td>${fa(i+1)}</td><td>${esc(s.name)}</td><td class="hide-sm ltr">${fa(esc(s.nid))}</td>
-    <td><div class="seg" data-id="${s.id}"><button class="p ${st==='p'?'on':''}" data-v="p">حاضر</button><button class="a ${st==='a'?'on':''}" data-v="a">غایب</button><button class="l ${st==='l'?'on':''}" data-v="l">تأخیر</button></div></td></tr>`}).join('');
+    <td><div class="seg" data-id="${s.id}"><button class="p ${st==='p'?'on':''}" data-v="p">حاضر</button><button class="a ${st==='a'?'on':''}" data-v="a">غایب</button><button class="l ${st==='l'?'on':''}" data-v="l">تأخیر</button></div></td><td>${st==='a'?reasonSel(s.id,Rc(s.id).reason):''}</td></tr>`}).join('');
 
   const nf=(s,f,r,ph)=>`<input type="number" min="0" data-id="${s.id}" data-f="${f}" value="${r[f]||''}" placeholder="${ph}" style="min-width:70px">`;
-  $('#ioBody').innerHTML=F().map(s=>{const r=Rc(s.id),ab=r.st==='a',dis=ab?' disabled title="دانش‌آموز غایب است؛ ورود و خروج قفل شده"':'';return `<tr class="${ab?'lk':''}">
-    <td>${esc(s.name)}${ab?' <span class="chip">🔒 غایب</span>':''}</td>
-    <td><div class="tm"><input class="tinp" inputmode="numeric" maxlength="5" autocomplete="off" placeholder="14:00" data-id="${s.id}" data-f="in" value="${esc(r.in||'')}"${dis}><button class="abtn ghost sm" data-now="in" data-id="${s.id}"${dis}>اکنون</button></div></td>
-    <td><div class="tm"><input class="tinp" inputmode="numeric" maxlength="5" autocomplete="off" placeholder="20:00" data-id="${s.id}" data-f="out" value="${esc(r.out||'')}"${dis}><button class="abtn ghost sm" data-now="out" data-id="${s.id}"${dis}>اکنون</button></div></td>
+  $('#ioBody').innerHTML=F().map(s=>{const r=Rc(s.id),lk=r.st==='a'?' disabled':'';return `<tr>
+    <td>${esc(s.name)}${lk?' <span class="chip" title="غایب؛ ورود و خروج قفل است">🔒 غایب</span>':''}</td>
+    <td><div class="tm"><input class="tinp" inputmode="numeric" maxlength="5" autocomplete="off" placeholder="14:00" data-id="${s.id}" data-f="in" value="${esc(r.in||'')}"${lk}><button class="abtn ghost sm" data-now="in" data-id="${s.id}"${lk}>اکنون</button></div></td>
+    <td><div class="tm"><input class="tinp" inputmode="numeric" maxlength="5" autocomplete="off" placeholder="20:00" data-id="${s.id}" data-f="out" value="${esc(r.out||'')}"${lk}><button class="abtn ghost sm" data-now="out" data-id="${s.id}"${lk}>اکنون</button></div></td>
     <td>${nf(s,'study',r,'مثلاً ۱۲۰')}</td><td>${nf(s,'lessons',r,'۰')}</td><td>${nf(s,'tests',r,'۰')}</td>
     <td><input data-id="${s.id}" data-f="note" maxlength="200" value="${esc(r.note||'')}" placeholder="توضیح"></td></tr>`}).join('');
 
@@ -548,7 +542,7 @@ function render(){
 
   const ta=$('#tplAbs').value,ti=$('#tplIO').value,td=todayFa();
   $('#absSms').innerHTML=abs.length?abs.map(s=>`<div class="sms"><em>به: ${fa(esc(s.par))} (ولی ${esc(s.name)})</em>${esc(ta.replaceAll('{نام}',s.name).replaceAll('{تاریخ}',td))}</div>`).join(''):'<p class="muted" style="margin-bottom:10px">غایبی ثبت نشده است.</p>';
-  const withIO=S().filter(s=>{const r=Rc(s.id);return r.st!=='a'&&(r.in||r.out)});
+  const withIO=S().filter(s=>{const r=Rc(s.id);return r.in||r.out});
   $('#ioSms').innerHTML=withIO.length?withIO.map(s=>{const r=Rc(s.id);return `<div class="sms"><em>به: ${fa(esc(s.par))} (ولی ${esc(s.name)})</em>${esc(ti.replaceAll('{نام}',s.name).replaceAll('{ورود_و_خروج}',inOutSentence(r)).replaceAll('{ورود}',r.in?fa(r.in):'—').replaceAll('{خروج}',r.out?fa(r.out):'—').replaceAll('{مطالعه}',dur(r.study)))}</div>`}).join(''):'<p class="muted" style="margin-bottom:10px">ورود یا خروجی ثبت نشده است.</p>';
 }
 
@@ -563,7 +557,7 @@ function dash(){
     const cls=k===D.today?'t':(!reg||k>D.today||i===6?'h':''),h=cls==='h'?45:Math.max(pct,14);
     return `<div class="bw"><div class="bz"><div class="bp ${cls}" style="height:${h}%" title="${WD[i]}: ${fa(pct)}٪">${cls==='h'?'':fa(pct)+'٪'}</div></div>${WD[i]}</div>`}).join('');
   let c=0;
-  $('#donut').innerHTML='<svg viewBox="0 0 200 106"><path d="M20 100A80 80 0 0 1 180 100" fill="none" stroke="rgba(23,52,92,.14)" stroke-width="24" pathLength="100"/>'+
+  $('#donut').innerHTML='<svg viewBox="0 0 200 106"><path d="M20 100A80 80 0 0 1 180 100" fill="none" stroke="rgba(127,127,127,.25)" stroke-width="24" pathLength="100"/>'+
     [[p,'var(--ok)'],[l,'var(--late)'],[a,'var(--bad)']].map(([v,col])=>{const f=T?v*100/T:0,x=`<path d="M20 100A80 80 0 0 1 180 100" fill="none" stroke="${col}" stroke-width="24" pathLength="100" stroke-dasharray="${f} 100" stroke-dashoffset="${-c}"/>`;c+=f;return x}).join('')+'</svg>';
   $('#donutPct').textContent=fa(T?Math.round((p+l)*100/T):0)+'٪';
   const sum=f=>V.reduce((t,x)=>t+(x[f]||0),0);
@@ -577,149 +571,197 @@ function dash(){
   $('#recent').innerHTML=rc.length?rc.map(q=>`<div class="li"><div style="flex:1"><b style="font-size:13.5px">${esc(q.title)}</b><div class="muted">${esc(nm(q.sid))}</div></div><span class="chip">${esc(q.type)}</span></div>`).join(''):'<p class="muted">هنوز برنامه‌ای ثبت نشده است.</p>';
 }
 
-/* ===================== غیبت: قفل ورود و خروج + توضیح خودکار ===================== */
-const AUTO_ABS='کل روز غایب بود';
-async function setAtt(id,v){
-  const o=Rc(id),patch={st:v};
-  if(v==='a'){
-    if((o.in||o.out)&&!confirm('برای این دانش‌آموز ساعت ورود یا خروج ثبت شده است. با ثبت غیبت، این ساعت‌ها پاک می‌شوند. ادامه می‌دهید؟'))return;
-    patch.in='';patch.out='';
-    if(!o.note)patch.note=AUTO_ABS; /* توضیح دستی قبلی حفظ می‌شود */
-  }else if(o.st==='a'&&o.note===AUTO_ABS)patch.note='';
-  await setRec(id,patch);
-}
 
-/* ===================== آمار و نمودار روزهای گذشته ===================== */
-const GOAL_K='sd_study_goal';
-const getGoal=()=>{try{const g=Math.round(+enDigits(localStorage.getItem(GOAL_K)));return g>=30&&g<=1440?g:240}catch(e){return 240}};
-const rangeDays=n=>[...Array(n)].map((_,i)=>addDays(D.today,i-(n-1)));
-function dayStats(k,goal){
-  const r=D.week.rec[k]||{},o={k,p:0,l:0,a:0,reg:0,att:0,prog:0,study:0,les:0,tst:0};
-  S().forEach(s=>{const x=r[s.id];if(!x)return;
-    if(x.st==='p')o.p++;else if(x.st==='l')o.l++;else if(x.st==='a')o.a++;
-    o.study+=x.study||0;o.les+=x.lessons||0;o.tst+=x.tests||0;
-    if(x.st==='p'||x.st==='l'){o.att++;o.prog+=Math.min((x.study||0)/goal,1)}
+/* ===================== نمودارها و تاریخچه ===================== */
+let RNG=14,HR=30,HD='';
+const GOAL=()=>{try{return Math.min(1440,Math.max(30,+localStorage.getItem('sd_goal')||300))}catch(e){return 300}};
+function dayStat(k){
+  const g=GOAL(),T=S().length,rc=D.all[k]||{},v=S().map(x=>rc[x.id]||{}),n=t=>v.filter(r=>r.st===t).length,sm=f=>v.reduce((a,r)=>a+(r[f]||0),0),
+    p=n('p'),a=n('a'),l=n('l'),reg=p+a+l,min=sm('study'),cap=v.reduce((a,r)=>a+Math.min(r.study||0,g),0);
+  return{k,p,a,l,reg,min,les:sm('lessons'),tst:sm('tests'),has:reg>0||min>0,att:reg?Math.round((p+l)*100/reg):null,stu:T&&(reg||min)?Math.round(cap*100/(T*g)):null};
+}
+const noFri=k=>new Date(k+'T12:00:00Z').getUTCDay()!==5;
+const lastDays=n=>{const o=[];for(let i=0;o.length<n&&i<n*2;i++){const k=addDays(D.today,-i);if(noFri(k))o.push(k)}return o.reverse()};
+function lineSVG(pts,col){
+  if(!pts.some(x=>x.v!=null))return '<p class="muted">در این بازه هنوز داده‌ای ثبت نشده است.</p>';
+  const W=600,H=230,R=38,L=12,T=14,B=30,n=pts.length,iw=W-L-R,ih=H-T-B,st=n>1?iw/(n-1):0,
+    X=i=>W-R-(n>1?i*st:iw/2),Y=v=>T+ih*(1-v/100),every=Math.ceil(n/8);
+  let g='',d='',pen=false,dots='',lb='';
+  [0,25,50,75,100].forEach(v=>{g+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="rgba(23,52,92,.13)"/><text x="${W-R+6}" y="${Y(v)+4}" font-size="10" fill="#5b7391">${fa(v)}٪</text>`});
+  pts.forEach((q,i)=>{
+    if(i%every===0||i===n-1)lb+=`<text x="${X(i)}" y="${H-10}" font-size="10" text-anchor="middle" fill="#5b7391">${pf(q.k,{month:'numeric',day:'numeric'})}</text>`;
+    if(q.v==null){pen=false;return}
+    d+=(pen?'L':'M')+X(i).toFixed(1)+' '+Y(q.v).toFixed(1)+' ';pen=true;
+    dots+=`<circle cx="${X(i)}" cy="${Y(q.v)}" r="4.5" fill="${col}" stroke="#fff" stroke-width="2"><title>${pf(q.k,{weekday:'long',month:'long',day:'numeric'})}: ${fa(q.v)}٪</title></circle>`;
+    if(n<=14)dots+=`<text x="${X(i)}" y="${Y(q.v)-9}" font-size="10" font-weight="700" text-anchor="middle" fill="${col}">${fa(q.v)}</text>`;
   });
-  o.reg=o.p+o.l+o.a;
-  o.attPct=o.reg?Math.round(o.att*100/o.reg):null;
-  o.stuPct=o.att?Math.round(o.prog*100/o.att):null;
-  o.has=o.reg>0||o.study>0;
-  return o;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="نمودار">${g}<path d="${d}" fill="none" stroke="${col}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>${dots}${lb}</svg>`;
 }
-const dayList=()=>{const g=getGoal();return rangeDays(RNG).map(k=>dayStats(k,g)).filter(d=>d.has)};
-const pcT=v=>v==null?'—':fa(v)+'٪';
-const rngSeg=()=>'<div class="seg">'+[[7,'۷ روز اخیر'],[30,'۳۰ روز اخیر'],[90,'۹۰ روز اخیر']].map(([n,t])=>`<button class="n ${RNG===n?'on':''}" data-rng="${n}">${t}</button>`).join('')+'</div>';
+const avg=a=>{a=a.filter(x=>x!=null);return a.length?Math.round(a.reduce((x,y)=>x+y,0)/a.length):null};
+const pc=v=>v==null?'—':fa(v)+'٪';
+function sumHTML(list){
+  const L=list.filter(x=>x.has),sum=f=>L.reduce((a,x)=>a+x[f],0);
+  const c=(t,b,sm,cls)=>`<div class="stat sm ${cls||''}"><span>${t}</span><b>${b}</b><small>${sm||'&nbsp;'}</small></div>`;
+  return c('روزهای ثبت‌شده',fa(L.length),'',' hl')+c('میانگین حضور',pc(avg(L.map(x=>x.att))),'','ok')+
+    c('میانگین پیشرفت مطالعه',pc(avg(L.map(x=>x.stu))),'مجموع: '+dur(sum('min')))+c('مجموع غیبت',fa(sum('a')),'','bad')+c('مجموع تأخیر',fa(sum('l')),'','late');
+}
+function charts(){
+  if(!D.today)return;
+  $$('#chRange button').forEach(b=>b.classList.toggle('on',+b.dataset.r===RNG));
+  if(document.activeElement!==$('#goal'))$('#goal').value=GOAL();
+  const L=lastDays(RNG).map(dayStat);
+  $('#chStudy').innerHTML=lineSVG(L.map(x=>({k:x.k,v:x.stu})),'#17345C');
+  $('#chAtt').innerHTML=lineSVG(L.map(x=>({k:x.k,v:x.att})),'#14774a');
+  $('#dSum').innerHTML=sumHTML(L);
+}
+function hist(){
+  if(!D.today)return;
+  $$('#hRange button').forEach(b=>b.classList.toggle('on',+b.dataset.r===HR));
+  const from=HR?addDays(D.today,-HR+1):'0000',ks=Object.keys(D.all).filter(k=>k>=from&&k<=D.today&&noFri(k)).sort().reverse(),L=ks.map(dayStat).filter(x=>x.has);
+  HLIST=L;$('#hDate').max=D.today;
+  $('#hStats').innerHTML=sumHTML(L);
+  const ab={};L.forEach(x=>S().forEach(s=>{if(((D.all[x.k]||{})[s.id]||{}).st==='a')ab[s.id]=(ab[s.id]||0)+1}));
+  const top=Object.entries(ab).sort((x,y)=>y[1]-x[1]).slice(0,5);
+  const rs={};L.forEach(x=>S().forEach(q=>{const r=recOf(q.id,x.k);if(r.st==='a'){const k=r.reason||'بدون علت';rs[k]=(rs[k]||0)+1}}));
+  $('#hTop').innerHTML=(Object.keys(rs).length?'نوع غیبت‌ها: '+Object.entries(rs).map(([k,c])=>`<span class="tag">${k} — ${fa(c)}</span>`).join('')+'<br>':'')+(top.length?'بیشترین غیبت: '+top.map(([id,c])=>`<span class="tag">${esc(nm(id))} — ${fa(c)} روز</span>`).join(''):'');
+  $('#hBody').innerHTML=L.length?L.map(x=>`<tr class="dr" data-day="${x.k}"><td><b>${pf(x.k,{weekday:'long',month:'long',day:'numeric'})}</b></td><td>${fa(x.p)}</td><td>${fa(x.a)}</td><td>${fa(x.l)}</td><td>${pc(x.att)}</td><td class="hide-sm">${dur(x.min)}</td><td class="hide-sm">${pc(x.stu)}</td></tr>`).join(''):'<tr><td colspan="7" class="muted">در این بازه روزی ثبت نشده است.</td></tr>';
+  const dt=$('#hDetail');
+  if(!HD){dt.classList.add('hide');return}
+  const x=dayStat(HD),rc=D.all[HD]||{};dt.classList.remove('hide');
+  dt.innerHTML=`<div class="chh"><h4>جزئیات و ویرایش ${pf(HD,{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</h4><button class="abtn ghost sm" id="hCsv">⬇️ Excel</button><button class="abtn ghost sm" id="hClose">بستن</button></div>
+  <div class="stats" style="margin-bottom:12px">${sumHTML([x])}</div>
+  <table><thead><tr><th>نام</th><th>وضعیت</th><th>ورود</th><th>خروج</th><th>مطالعه</th><th>درس</th><th>تست</th><th>توضیح</th></tr></thead><tbody>`+
+  S().map(s=>{const r=rc[s.id]||{},lk=r.st==='a'?' disabled':'',ti=f=>`<input class="tinp" data-id="${s.id}" data-f="${f}" value="${esc(r[f]||'')}"${lk}>`,ni=f=>`<input type="number" min="0" data-id="${s.id}" data-f="${f}" value="${r[f]||''}" style="min-width:64px">`;
+    return `<tr><td>${esc(s.name)}</td><td><select data-id="${s.id}" data-f="st"><option value="">—</option>${['p','a','l'].map(v=>`<option value="${v}"${r.st===v?' selected':''}>${stTxt[v]}</option>`).join('')}</select>${r.st==='a'?' '+reasonSel(s.id,r.reason):''}</td><td>${ti('in')}</td><td>${ti('out')}</td><td>${ni('study')}</td><td>${ni('lessons')}</td><td>${ni('tests')}</td><td><input data-id="${s.id}" data-f="note" maxlength="200" value="${esc(r.note||'')}"></td></tr>`}).join('')+'</tbody></table><p class="muted" style="margin-top:8px">همه‌ی فیلدهای این روز قابل ویرایش‌اند و هر تغییر در «گزارش تغییرات» ثبت می‌شود.</p>';
+}
+function openDay(k){HD=k;hist();const e=$('#hDetail');if(e&&!e.classList.contains('hide'))e.scrollIntoView({behavior:'smooth',block:'nearest'})}
+$('#chRange').onclick=e=>{const b=e.target.closest('button');if(b){RNG=+b.dataset.r;charts()}};
+$('#hRange').onclick=e=>{const b=e.target.closest('button');if(b){HR=+b.dataset.r;hist()}};
+$('#goal').onchange=()=>{try{localStorage.setItem('sd_goal',String(Math.min(1440,Math.max(30,Math.round(+enDigits($('#goal').value))||300))))}catch(e){}render();toast('هدف مطالعه ذخیره شد')};
+$('#hBody').onclick=e=>{const r=e.target.closest('[data-day]');if(r)openDay(r.dataset.day)};
+$('#hDate').onchange=()=>{const v=$('#hDate').value;if(v&&v<=D.today)openDay(v)};
+$('#hDetail').onclick=e=>{if(e.target.id==='hClose'){HD='';hist()}
+  if(e.target.id==='hCsv'){const rc=D.all[HD]||{};csv('day-'+HD,[['نام','وضعیت','علت غیبت','ورود','خروج','مطالعه (دقیقه)','درس','تست','توضیح']].concat(S().map(q=>{const r=rc[q.id]||{};return [q.name,stTxt[r.st]||'',r.reason,r.in,r.out,r.study,r.lessons,r.tests,r.note]})))}};
+$('#hDetail').addEventListener('change',safe(async e=>{const i=e.target,id=+(i.dataset.id||i.dataset.reason);if(!id)return;
+  if(i.dataset.reason){await setRec(id,{reason:i.value},HD);render();return}
+  const f=i.dataset.f;let patch;
+  if(f==='st')patch=stPatch(id,i.value,HD);
+  else if(f==='in'||f==='out'){const t=normTime(i.value);if(t===null){toast('ساعت را ۲۴ ساعته وارد کنید');render();return}patch={[f]:t}}
+  else patch={[f]:i.value.trim()};
+  await setRec(id,patch,HD);render()}));
+$('#hXls').onclick=()=>{const rows=[['نام','روز حاضر','روز تأخیر','غیبت مجاز','غیبت غیرمجاز','غیبت بیماری','غیبت بدون علت','مطالعه (دقیقه)','درس','تست']];
+  S().forEach(q=>{let p=0,l=0,m=0,le=0,t=0;const a={};HLIST.forEach(x=>{const r=recOf(q.id,x.k);if(r.st==='p')p++;else if(r.st==='l')l++;else if(r.st==='a'){const k=r.reason||'-';a[k]=(a[k]||0)+1}m+=r.study||0;le+=r.lessons||0;t+=r.tests||0});
+    rows.push([q.name,p,l,a['مجاز']||0,a['غیرمجاز']||0,a['بیماری']||0,a['-']||0,m,le,t])});csv('karnameh-'+D.today,rows)};
 
-/* نمودار خطی (قدیمی‌ترین روز سمت راست، جدیدترین سمت چپ؛ مثل بقیه‌ی پنل) */
-function lineChart(pts,id,col){
-  if(!pts.length)return '<p class="muted">در این بازه هنوز داده‌ای ثبت نشده است.</p>';
-  const W=560,H=230,pl=26,pr=40,pt=18,pb=30,pw=W-pl-pr,ph=H-pt-pb,n=pts.length;
-  const X=i=>n===1?pl+pw/2:W-pr-i*pw/(n-1),Y=v=>pt+ph-v*ph/100;
-  const grid=[0,25,50,75,100].map(v=>`<line class="gl" x1="${pl}" x2="${W-pr}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${W-pr+20}" y="${Y(v)+4}">${fa(v)}٪</text>`).join('');
-  const line=pts.map((p,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(p.v).toFixed(1)).join(' ');
-  const area=line+` L${X(n-1).toFixed(1)} ${Y(0)} L${X(0).toFixed(1)} ${Y(0)} Z`;
-  const idx=[...new Set([0,1,2,3,4].map(j=>Math.round(j*(n-1)/4)))];
-  const xl=idx.map(i=>`<text x="${X(i).toFixed(1)}" y="${H-8}">${pf(pts[i].k,{month:'short',day:'numeric'})}</text>`).join('');
-  const dots=pts.map((p,i)=>(n<=40||i===n-1)?`<circle cx="${X(i).toFixed(1)}" cy="${Y(p.v).toFixed(1)}" r="${i===n-1?4.5:3}" fill="${col}"><title>${pf(p.k,{weekday:'long',month:'long',day:'numeric'})}: ${fa(p.v)}٪</title></circle>`:'').join('');
-  const last=pts[n-1];
-  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="نمودار روند درصد"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:${col};stop-opacity:.28"/><stop offset="1" style="stop-color:${col};stop-opacity:0"/></linearGradient></defs>`+
-    grid+`<path d="${area}" fill="url(#${id})"/><path d="${line}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`+dots+
-    `<text class="gv" x="${X(n-1).toFixed(1)}" y="${(Y(last.v)-9).toFixed(1)}">${fa(last.v)}٪</text>`+xl+'</svg>';
-}
 
-function drawTrend(){
-  if(!D.week.days.length)return;
-  const ds=dayList(),g=getGoal(),gi=$('#goal');
-  $('#rngA').innerHTML=rngSeg();
-  if(document.activeElement!==gi)gi.value=g;
-  const t=ds.reduce((a,d)=>{a.reg+=d.reg;a.att+=d.att;a.a+=d.a;a.prog+=d.prog;a.study+=d.study;return a},{reg:0,att:0,a:0,prog:0,study:0});
-  const attAvg=t.reg?Math.round(t.att*100/t.reg):null,stuAvg=t.att?Math.round(t.prog*100/t.att):null;
-  const tile=(c,l,v,s)=>`<div class="stat ${c}"><span>${l}</span><b>${v}</b><small>${s}</small></div>`;
-  $('#trSum').innerHTML=tile('hl','روزهای ثبت‌شده',fa(ds.length),'از '+fa(RNG)+' روز اخیر')+
-    tile('ok','میانگین حضور',pcT(attAvg),'حاضر و تأخیر')+
-    tile('','پیشرفت مطالعه',pcT(stuAvg),'نسبت به هدف '+dur(g))+
-    tile('bad','مجموع غیبت',fa(t.a),'نفر در روز')+
-    tile('','مجموع مطالعه',fa(Math.round(t.study/60))+' ساعت','همه‌ی دانش‌آموزان');
-  $('#chAttAvg').textContent='میانگین '+pcT(attAvg);$('#chStuAvg').textContent='میانگین '+pcT(stuAvg);
-  $('#chAtt').innerHTML=lineChart(ds.filter(d=>d.attPct!=null).map(d=>({k:d.k,v:d.attPct})),'gAtt','var(--ok)');
-  $('#chStu').innerHTML=lineChart(ds.filter(d=>d.stuPct!=null).map(d=>({k:d.k,v:d.stuPct})),'gStu','var(--accent)');
+/* ===================== نقش‌ها، گزارش تغییرات، هشدارها، خروجی ===================== */
+let QUIET=false,ROLE='admin',ACTOR='',HLIST=[];
+const REASONS=['مجاز','غیرمجاز','بیماری'],LBL={st:'وضعیت',in:'ورود',out:'خروج',study:'مطالعه',lessons:'درس',tests:'تست',note:'توضیح',reason:'علت غیبت'};
+const PERM={admin:null,nazem:['dash','att','io','hist','sms'],counselor:['dash','plan','hist']};
+const can=p=>!PERM[ROLE]||PERM[ROLE].includes(p);
+const applyRole=()=>$$('#nav button').forEach(b=>b.classList.toggle('hide',!can(b.dataset.p)));
+const jwtOf=t=>{try{return JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))}catch(e){return{}}};
+async function getRole(){QUIET=true;try{const u=jwtOf(await sbToken()).sub,r=await db('GET','staff_roles?select=role&user_id=eq.'+u);return r&&r[0]?r[0].role:null}catch(e){return null}finally{QUIET=false}}
+async function tryAll(path){QUIET=true;try{return await dbAll(path)}catch(e){return null}finally{QUIET=false}}
+function audit(t){QUIET=true;db('POST','audit_log',[{actor:ACTOR,action:String(t).slice(0,300)}],{Prefer:'return=minimal'}).catch(()=>{}).finally(()=>{QUIET=false})}
+async function loadLog(){QUIET=true;let r=null;try{r=await db('GET','audit_log?select=*&order=id.desc&limit=200')}catch(e){}finally{QUIET=false}
+  $('#logBody').innerHTML=r?(r.length?r.map(x=>`<tr><td>${esc(new Date(x.at).toLocaleString('fa-IR',{timeZone:'Asia/Tehran',dateStyle:'short',timeStyle:'short'}))}</td><td class="ltr">${esc(x.actor)}</td><td>${esc(x.action)}</td></tr>`).join(''):'<tr><td colspan="3" class="muted">هنوز تغییری ثبت نشده است.</td></tr>'):'<tr><td colspan="3" class="muted">جدول audit_log ساخته نشده؛ فایل supabase_update_v2.sql را اجرا کنید.</td></tr>'}
+const recOf=(id,date)=>((D.all[date]||{})[id])||{};
+const reasonSel=(id,v)=>`<select data-reason="${id}" style="min-width:104px"><option value="">علت غیبت…</option>${REASONS.map(x=>`<option${v===x?' selected':''}>${x}</option>`).join('')}</select>`;
+function stPatch(id,v,date){const o=recOf(id,date),old=o.note||'',p={st:v};
+  if(v==='a'){p.in='';p.out='';p.note=old.includes(ABS)?old:(old?ABS+' | '+old:ABS).slice(0,200)}
+  else{if(old.includes(ABS))p.note=stripAbs(old);if(o.reason)p.reason=null}
+  return p}
+function csv(name,rows){const q=c=>{let t=String(c==null?'':c);if(/^[=+\-@]/.test(t))t="'"+t;return '"'+t.replace(/"/g,'""')+'"'};
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+rows.map(r=>r.map(q).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'}));a.download=name+'.csv';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+/* ---- هشدارهای هوشمند ---- */
+function alerts(){
+  const el=$('#alerts');if(!el||!D.today)return;
+  const ks=Object.keys(D.all).filter(k=>k<=D.today&&noFri(k)&&dayStat(k).has).sort().reverse().slice(0,12),out=[];
+  S().forEach(s=>{
+    let n=0;for(const k of ks){if(recOf(s.id,k).st==='a')n++;else break}
+    if(n>=3)out.push('🔴 '+esc(s.name)+': '+fa(n)+' روز غیبت متوالی');
+    const sm=a=>a.reduce((t,k)=>t+(recOf(s.id,k).study||0),0),cu=sm(ks.slice(0,6)),pr=sm(ks.slice(6,12));
+    if(pr>=120&&cu<pr*.6)out.push('📉 '+esc(s.name)+': مطالعه '+fa(Math.round(100-cu*100/pr))+'٪ کمتر از هفته‌ی قبل');
+    const r=Rc(s.id);if(r.in&&!r.out&&nowT()>='20:00')out.push('🚪 '+esc(s.name)+': خروج ثبت نشده است');
+  });
+  el.classList.toggle('hide',!out.length);
+  el.innerHTML=out.length?'<h4>⚠️ هشدارها ('+fa(out.length)+')</h4>'+out.slice(0,10).map(t=>`<div class="al">${t}</div>`).join('')+(out.length>10?'<p class="muted">و '+fa(out.length-10)+' مورد دیگر…</p>':''):'';
 }
-
-function drawRep(){
-  if(!D.week.days.length)return;
-  $('#rngB').innerHTML=rngSeg();
-  const ds=dayList().reverse();
-  $('#repBody').innerHTML=ds.map(d=>`<tr class="${d.k===SEL?'sel':''}"><td>${pf(d.k,{weekday:'long',month:'long',day:'numeric'})}${d.k===D.today?' <span class="chip">امروز</span>':''}</td><td>${fa(d.p)}</td><td>${fa(d.l)}</td><td>${fa(d.a)}</td><td>${pcT(d.attPct)}</td><td>${d.study?dur(d.study):'—'}</td><td>${pcT(d.stuPct)}</td><td>${cnt(d.les)}</td><td>${cnt(d.tst)}</td><td><button class="abtn ghost sm" data-day="${d.k}">جزئیات</button></td></tr>`).join('')||'<tr><td colspan="10" class="muted">در این بازه روزی ثبت نشده است.</td></tr>';
-  drawDay();
+/* ---- امور مالی پانسیون ---- */
+const money=n=>fa(Math.round(n||0).toLocaleString('en-US').replace(/,/g,'٬'));
+const paidOf=id=>D.pay.filter(x=>x.student_id==id).reduce((a,x)=>a+x.amount,0);
+function finSt(s){const pd=paidOf(s.id),f=s.fee;
+  if(!f)return{t:'بدون شهریه',c:'t',pd,rem:0,pct:0};
+  const pct=Math.min(100,Math.round(pd*100/f));
+  return pd>=f?{t:'تسویه',c:'p',pd,rem:0,pct}:pd>0?{t:'پرداخت ناقص',c:'l',pd,rem:f-pd,pct}:{t:'بدهکار',c:'a',pd,rem:f,pct}}
+function fin(){
+  if(!D.today||!can('fin'))return;
+  $('#finWarn').classList.toggle('hide',D.finOK);
+  const A=S().map(s=>({s,...finSt(s)})),cn=t=>A.filter(x=>x.t===t).length,fee=A.reduce((a,x)=>a+x.s.fee,0),pd=D.pay.reduce((a,x)=>a+x.amount,0),rc=D.pay.filter(x=>x.receipt_path).length;
+  const c=(t,b,sm,cl)=>`<div class="stat sm ${cl||''}"><span>${t}</span><b>${b}</b><small>${sm||'&nbsp;'}</small></div>`;
+  $('#fStats').innerHTML=c('کل شهریه‌ها',money(fee),'تومان','hl')+c('دریافتی',money(pd),fee?fa(Math.min(100,Math.round(pd*100/fee)))+'٪ وصول‌شده':'','ok')+c('مانده',money(A.reduce((a,x)=>a+x.rem,0)),'تومان','bad')+
+    c('رسیدها',fa(rc)+' / '+fa(D.pay.length),'پرداخت دارای عکس رسید')+c('وضعیت دانش‌آموزان','',`تسویه ${fa(cn('تسویه'))} · ناقص ${fa(cn('پرداخت ناقص'))} · بدهکار ${fa(cn('بدهکار'))}`);
+  const cur=$('#fStu').value;$('#fStu').innerHTML=S().map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');if(cur&&S().some(s=>s.id==cur))$('#fStu').value=cur;
+  if(!$('#fDate').value)$('#fDate').value=D.today;
+  const q=enDigits($('#sq').value||''),last=id=>(D.pay.find(x=>x.student_id==id)||{}).paid_on;
+  $('#fBody').innerHTML=A.filter(x=>!q||x.s.name.includes(q)||x.s.nid.includes(q)).map(x=>`<tr><td>${esc(x.s.name)}</td><td><input class="ltr" inputmode="numeric" data-fee="${x.s.id}" value="${x.s.fee?x.s.fee.toLocaleString('en-US'):''}" placeholder="0" style="min-width:110px"></td><td>${money(x.pd)}</td><td>${money(x.rem)}</td><td class="hide-sm"><div class="pb"><i style="width:${x.pct}%"></i></div></td><td><span class="pill ${x.c}">${x.t}</span></td><td class="hide-sm">${last(x.s.id)?pf(last(x.s.id),{year:'numeric',month:'short',day:'numeric'}):'—'}</td></tr>`).join('')||'<tr><td colspan="7" class="muted">دانش‌آموزی یافت نشد.</td></tr>';
+  $('#fPay').innerHTML=D.pay.slice(0,150).map(x=>`<tr><td>${pf(x.paid_on,{year:'numeric',month:'short',day:'numeric'})}</td><td>${esc(nm(x.student_id))}</td><td>${money(x.amount)}</td><td class="hide-sm">${esc(x.note||'—')}</td><td>${x.receipt_path?`<button class="abtn ghost sm" data-rc="${esc(x.receipt_path)}">مشاهده</button>`:'<span class="muted">ندارد</span>'}</td><td><button class="abtn danger sm" data-delpay="${x.id}">حذف</button></td></tr>`).join('')||'<tr><td colspan="6" class="muted">پرداختی ثبت نشده است.</td></tr>';
 }
-function drawDay(){
-  const box=$('#dayDetail');
-  if(!SEL){box.classList.add('hide');return}
-  const g=getGoal(),d=dayStats(SEL,g),r=D.week.rec[SEL]||{};
-  const all=Object.keys(D.week.rec).filter(k=>dayStats(k,g).has).sort(),i=all.indexOf(SEL);
-  const rows=F().map((s,n)=>{const x=r[s.id];return `<tr><td>${fa(n+1)}</td><td>${esc(s.name)}</td><td>${x&&x.st?`<span class="pill ${x.st}">${stTxt[x.st]}</span>`:'<span class="muted">ثبت نشده</span>'}</td><td>${x&&x.in?fa(x.in):'—'}</td><td>${x&&x.out?fa(x.out):'—'}</td><td>${x?dur(x.study):'—'}</td><td>${x?cnt(x.lessons):'—'}</td><td>${x?cnt(x.tests):'—'}</td><td>${esc((x&&x.note)||'—')}</td></tr>`}).join('');
-  box.innerHTML=`<div class="trh"><h4>جزئیات ${pf(SEL,{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</h4>
-    <button class="abtn ghost sm" data-nav="${i>0?all[i-1]:''}" ${i>0?'':'disabled'}>روز قبل</button>
-    <button class="abtn ghost sm" data-nav="${i>=0&&i<all.length-1?all[i+1]:''}" ${i>=0&&i<all.length-1?'':'disabled'}>روز بعد</button>
-    <button class="abtn ghost sm" data-closeday="1">بستن</button></div>
-    <div class="arow" style="margin-bottom:12px"><span class="chip ok">حاضر: ${fa(d.p)}</span><span class="chip">تأخیر: ${fa(d.l)}</span><span class="chip">غایب: ${fa(d.a)}</span><span class="chip">درصد حضور: ${pcT(d.attPct)}</span><span class="chip">پیشرفت مطالعه: ${pcT(d.stuPct)}</span><span class="chip">مجموع مطالعه: ${d.study?dur(d.study):'—'}</span></div>
-    <table><thead><tr><th>#</th><th>نام</th><th>وضعیت</th><th>ورود</th><th>خروج</th><th>مطالعه</th><th>درس</th><th>تست</th><th>توضیح</th></tr></thead><tbody>${rows||'<tr><td colspan="9" class="muted">دانش‌آموزی پیدا نشد.</td></tr>'}</tbody></table>`;
-  box.classList.remove('hide');
-}
-$('#rep').addEventListener('click',e=>{
-  const b=e.target.closest('button');if(!b||b.disabled)return;
-  const k=b.dataset.day||b.dataset.nav;
-  if(k){SEL=k;drawRep();$('#dayDetail').scrollIntoView({behavior:'smooth',block:'start'})}
-  else if(b.dataset.closeday){SEL='';drawRep()}
-});
-
-/* دریافت روزهای قدیمی‌تر فقط وقتی لازم شد (بازه‌ی ۹۰ روز) */
-async function ensureRange(n){
-  const need=addDays(D.today,-(n-1));
-  if(!D.loaded||need>=D.loaded)return;
-  const rc=await dbAll(`records?select=*&date=gte.${need}&date=lt.${D.loaded}&order=date,student_id`);
-  rc.forEach(r=>{(D.week.rec[r.date]||(D.week.rec[r.date]={}))[r.student_id]=toC(r)});
-  D.loaded=need;
-}
-document.addEventListener('click',safe(async e=>{
-  const b=e.target.closest('[data-rng]');if(!b)return;
-  const n=+b.dataset.rng;if(n===RNG)return;
-  const prev=RNG;RNG=n;
+$('#fRcBtn').onclick=()=>$('#fRc').click();
+$('#fRc').onchange=()=>{$('#fRcName').textContent=($('#fRc').files[0]||{}).name||''};
+$('#fBody').onchange=safe(async e=>{const i=e.target;if(!i.dataset.fee)return;const id=+i.dataset.fee,v=Math.max(0,Math.round(Number(enDigits(i.value).replace(/[,٬]/g,''))||0));
+  await db('PATCH','students?id=eq.'+id,{boarding_fee:v},{Prefer:'return=minimal'});S().find(x=>x.id===id).fee=v;audit('شهریه پانسیون '+nm(id)+' = '+v);fin();toast('شهریه ذخیره شد')});
+$('#fAdd').onclick=safe(async()=>{
+  const sid=+$('#fStu').value,amount=Math.round(Number(enDigits($('#fAmt').value).replace(/[,٬]/g,''))),paid_on=$('#fDate').value,file=$('#fRc').files[0];
+  if(!sid||!(amount>0)||!paid_on){toast('دانش‌آموز، مبلغ و تاریخ پرداخت را درست وارد کنید');return}
+  const btn=$('#fAdd');btn.disabled=true;let path=null;
   try{
-    if(D.loaded&&addDays(D.today,-(n-1))<D.loaded)toast('در حال دریافت اطلاعات روزهای قبل…');
-    await ensureRange(n);
-  }catch(err){RNG=prev;render();throw err}
-  render();
-}));
-$('#goal').onchange=()=>{
-  const g=Math.round(+enDigits($('#goal').value));
-  if(g>=30&&g<=1440){try{localStorage.setItem(GOAL_K,String(g))}catch(e){}}
-  else toast('هدف روزانه را بین ۳۰ تا ۱۴۴۰ دقیقه وارد کنید');
-  $('#goal').value=getGoal();render();
-};
+    if(file){let blob;try{blob=await compressImage(file)}catch(e){toast('این عکس خوانده نشد؛ JPG یا PNG انتخاب کنید');return}path=await uploadPlanImage(sid,blob,'receipts')}
+    const res=await db('POST','payments',[{student_id:sid,amount,paid_on,note:$('#fNote').value.trim().slice(0,200)||null,receipt_path:path}],{Prefer:'return=representation'});
+    D.pay.push(res[0]);D.pay.sort((a,b)=>(b.paid_on>a.paid_on?1:b.paid_on<a.paid_on?-1:b.id-a.id));
+    audit('ثبت پرداخت '+nm(sid)+': '+amount+' تومان');
+    $('#fAmt').value='';$('#fNote').value='';$('#fRc').value='';$('#fRcName').textContent='';fin();toast('پرداخت ثبت شد');
+  }catch(e){if(path)deleteImage(path,'receipts');throw e}finally{btn.disabled=false}
+});
+$('#fPay').onclick=safe(async e=>{
+  const r=e.target.closest('[data-rc]'),d=e.target.closest('[data-delpay]');
+  if(r){const w=window.open('','_blank');let x;try{const tok=await sbToken();x=await fetch(SB_URL+'/storage/v1/object/sign/receipts/'+r.dataset.rc,{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+tok,'Content-Type':'application/json'},body:'{"expiresIn":300}'}).then(y=>y.json())}catch(_){}
+    if(x&&x.signedURL&&w)w.location=SB_URL+'/storage/v1'+x.signedURL;else{if(w)w.close();toast('باز کردن رسید ممکن نشد')}return}
+  if(d){const id=+d.dataset.delpay,p=D.pay.find(x=>x.id===id);if(!p||!confirm('این پرداخت حذف شود؟'))return;
+    await db('DELETE','payments?id=eq.'+id,undefined,{Prefer:'return=minimal'});if(p.receipt_path)deleteImage(p.receipt_path,'receipts');
+    audit('حذف پرداخت '+nm(p.student_id)+': '+p.amount+' تومان');D.pay=D.pay.filter(x=>x.id!==id);fin()}});
+$('#fX1').onclick=()=>csv('payment-status-'+D.today,[['نام','کل شهریه','پرداختی','مانده','وضعیت']].concat(S().map(x=>{const f=finSt(x);return [x.name,x.fee,f.pd,f.rem,f.t]})));
+$('#fX2').onclick=()=>csv('payments-'+D.today,[['تاریخ (میلادی)','دانش‌آموز','مبلغ','توضیح','رسید']].concat(D.pay.map(x=>[x.paid_on,nm(x.student_id),x.amount,x.note,x.receipt_path?'دارد':'ندارد'])));
 
 /* ===================== عملیات مدیر (همه با RLS روی Supabase) ===================== */
-const setRec=async(id,patch)=>{
+const ABS='کل روز غایب بود';
+const stripAbs=n=>String(n||'').replace(ABS+' | ','').replace(ABS,'').trim();
+const setRec=async(id,patch,date=D.today)=>{
+  const o=recOf(id,date);
+  if(o.st==='a'&&!('st' in patch)&&('in' in patch||'out' in patch))return; /* غایب: ورود و خروج قفل است */
   const row=toRow(patch);
-  if(patch.in&&row.in_time&&!Rc(id).st&&!('st' in patch))row.st='p'; /* ثبت ساعت ورود = حاضر */
-  const res=await db('POST','records?on_conflict=date,student_id',[{date:D.today,student_id:id,...row}],{Prefer:'resolution=merge-duplicates,return=representation'});
-  D.rec[id]=toC(res[0]);
+  if(patch.in&&row.in_time&&!o.st&&!('st' in patch))row.st='p'; /* ثبت ساعت ورود = حاضر */
+  const res=await db('POST','records?on_conflict=date,student_id',[{date,student_id:id,...row}],{Prefer:'resolution=merge-duplicates,return=representation'});
+  (D.all[date]||(D.all[date]={}))[id]=toC(res[0]);
+  audit(nm(id)+' — '+pf(date,{month:'numeric',day:'numeric'})+': '+Object.entries(patch).map(([k,v])=>LBL[k]+'='+(k==='st'?stTxt[v]||'—':v||'—')).join('، '));
 };
 $('#sq').oninput=render;
 $('#pStu').onchange=render;
 $('#tplAbs').oninput=$('#tplIO').oninput=render;
 $('#toSms').onclick=()=>show('sms');
-$('#attBody').onclick=safe(async e=>{const b=e.target.closest('button');if(!b)return;await setAtt(+b.parentNode.dataset.id,b.dataset.v);render()});
+$('#attBody').onclick=safe(async e=>{const b=e.target.closest('button');if(!b)return;const id=+b.parentNode.dataset.id,v=b.dataset.v;
+  await setRec(id,stPatch(id,v,D.today));render();if(v==='a')toast('غیبت ثبت شد؛ ورود و خروج قفل شد')});
+$('#attBody').onchange=safe(async e=>{const i=e.target;if(!i.dataset.reason)return;await setRec(+i.dataset.reason,{reason:i.value});render()});
 $('#allP').onclick=safe(async()=>{
   const rows=S().filter(s=>!Rc(s.id).st).map(s=>({date:D.today,student_id:s.id,st:'p'}));
   if(rows.length){const res=await db('POST','records?on_conflict=date,student_id',rows,{Prefer:'resolution=merge-duplicates,return=representation'});res.forEach(r=>{D.rec[r.student_id]=toC(r)})}
   render();toast('همه حاضر شدند');
 });
 const nowT=()=>{const n=new Date();return String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')};
-$('#ioBody').addEventListener('click',safe(async e=>{const b=e.target.closest('[data-now]');if(!b||Rc(+b.dataset.id).st==='a')return;
+$('#ioBody').addEventListener('click',safe(async e=>{const b=e.target.closest('[data-now]');if(!b)return;
   await setRec(+b.dataset.id,{[b.dataset.now]:nowT()});render();toast('ساعت ثبت شد')}));
 $('#ioBody').addEventListener('change',safe(async e=>{const i=e.target;if(!i.dataset.f)return;const f=i.dataset.f,id=+i.dataset.id;
-  if((f==='in'||f==='out')&&Rc(id).st==='a')return; /* غایب = ورود و خروج قفل */
   if(f==='in'||f==='out'){
     const t=normTime(i.value);
     if(t===null){toast('ساعت را ۲۴ ساعته وارد کنید؛ مثلاً 14:00 یا 20:00');render();return}
@@ -753,17 +795,17 @@ async function compressImage(file){
     return blob;
   }finally{URL.revokeObjectURL(url)}
 }
-async function uploadPlanImage(sid,blob){
+async function uploadPlanImage(sid,blob,bucket='plan-images'){
   const tok=await sbToken(),path=sid+'/'+uuid()+'.jpg',fd=new FormData();
   fd.append('cacheControl','3600');fd.append('',blob);
   let r;
-  try{r=await fetch(SB_URL+'/storage/v1/object/plan-images/'+path,{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+tok,'x-upsert':'false'},body:fd})}
+  try{r=await fetch(SB_URL+'/storage/v1/object/'+bucket+'/'+path,{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+tok,'x-upsert':'false'},body:fd})}
   catch(e){toast('ارتباط با سرور برقرار نشد');throw 0}
   if(!r.ok){toast(r.status===404?'باکت plan-images ساخته نشده؛ فایل supabase_update_images.sql را اجرا کنید':'آپلود عکس ناموفق بود');throw 0}
   return path;
 }
-async function deleteImage(path){ /* بهترین تلاش؛ اگر نشد مهم نیست */
-  try{const tok=await sbToken();await fetch(SB_URL+'/storage/v1/object/plan-images/'+path,{method:'DELETE',headers:{apikey:SB_KEY,Authorization:'Bearer '+tok}})}catch(e){}
+async function deleteImage(path,bucket='plan-images'){ /* بهترین تلاش؛ اگر نشد مهم نیست */
+  try{const tok=await sbToken();await fetch(SB_URL+'/storage/v1/object/'+bucket+'/'+path,{method:'DELETE',headers:{apikey:SB_KEY,Authorization:'Bearer '+tok}})}catch(e){}
 }
 function clearPlanImg(){$('#pImg').value='';$('#pPrev').classList.add('hide');const i=$('#pPrevImg');if(i.dataset.u){URL.revokeObjectURL(i.dataset.u);i.dataset.u=''}i.removeAttribute('src')}
 $('#pImg').onchange=()=>{
@@ -776,10 +818,10 @@ $('#pImgClear').onclick=clearPlanImg;
 $('#stuBody').onclick=safe(async e=>{const b=e.target.closest('[data-delstu]');if(!b)return;const id=+b.dataset.delstu;
   if(!confirm('این دانش‌آموز و همه‌ی برنامه‌ها، عکس‌ها و گزارش‌های او حذف شود؟'))return;
   const imgs=D.plans.filter(p=>p.sid===id&&p.image).map(p=>p.image);
-  await db('DELETE','students?id=eq.'+id,undefined,{Prefer:'return=minimal'});
-  imgs.forEach(deleteImage);
+  const nmx=nm(id);await db('DELETE','students?id=eq.'+id,undefined,{Prefer:'return=minimal'});audit('حذف دانش‌آموز: '+nmx);
+  imgs.forEach(q=>deleteImage(q));D.pay.filter(q=>q.student_id===id&&q.receipt_path).forEach(q=>deleteImage(q.receipt_path,'receipts'));D.pay=D.pay.filter(q=>q.student_id!==id);
   D.students=D.students.filter(s=>s.id!==id);D.plans=D.plans.filter(p=>p.sid!==id);
-  for(const k in D.week.rec)delete D.week.rec[k][id];render()});
+  for(const k in D.all)delete D.all[k][id];render()});
 
 $('#pAdd').onclick=safe(async()=>{
   const sid=+$('#pStu').value,title=$('#pTitle').value.trim(),text=$('#pText').value.trim(),file=$('#pImg').files[0];
@@ -805,7 +847,9 @@ $('#pList').onclick=safe(async e=>{const b=e.target.closest('[data-delplan]');if
   if(img)deleteImage(img);
   D.plans=D.plans.filter(p=>p.id!==id);render()});
 
-initAdmin();
+/* ===================== شروع ===================== */
+if(getSess()){$('#loginView').classList.add('hide');openPanel().catch(()=>showLogin())}
+else showLogin();
 </script>
 </body>
 </html>

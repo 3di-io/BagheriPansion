@@ -556,8 +556,34 @@
       margin-bottom: 0 !important
     }
 
+    /* فاصله‌گذاری (مارجین) بخش قلمچی؛ چیدمان خطی تب‌ها (حضور و غیاب / مالی / افراد) دست‌نخورده می‌ماند */
+    #qal {
+      margin: 8px 10px 24px;
+      padding: 6px
+    }
+
+    #qal #qTabs {
+      display: flex;
+      width: 100%;
+      overflow-x: auto;
+      white-space: nowrap;
+      margin-bottom: 18px
+    }
+
+    #qal #qTabs button {
+      flex: 1 1 0;
+      min-width: max-content
+    }
+
+    #qal .stats+.panel-card,
+    #qal .panel-card+.panel-card {
+      margin-top: 18px !important
+    }
+
     @media (max-width: 640px) {
-      #fin {
+
+      #fin,
+      #qal {
         margin: 4px 2px 18px;
         padding: 2px
       }

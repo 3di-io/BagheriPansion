@@ -539,6 +539,48 @@
       margin-bottom: 20px;
     }
 
+    /* فاصله‌گذاری (مارجین) تب مالی پانسیون و کل بخش قلمچی */
+    #fin,
+    #qal {
+      margin: 8px 10px 24px;
+      padding: 6px
+    }
+
+    #fin:not(.hide),
+    #qal>div:not(.hide) {
+      display: flex;
+      flex-direction: column;
+      gap: 20px
+    }
+
+    #qal:not(.hide) {
+      display: flex;
+      flex-direction: column;
+      gap: 20px
+    }
+
+    #fin>*,
+    #qal>*,
+    #qal>div>* {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important
+    }
+
+    #qal #qTabs {
+      align-self: flex-start;
+      margin-bottom: 4px !important
+    }
+
+    @media (max-width: 640px) {
+
+      #fin,
+      #qal {
+        margin: 4px 2px 18px;
+        padding: 2px
+      }
+    }
+
+
     .panel-card h4 {
       font-size: 15px;
       margin-bottom: 12px

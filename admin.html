@@ -1170,6 +1170,7 @@
         <button data-p="plan">🗂️ <span>برنامه‌ریزی</span></button>
         <button data-p="stu">👥 <span>دانش‌آموزان</span></button>
         <button data-p="fin">💰 <span>مالی پانسیون</span></button>
+        <button data-p="qal">📝 <span>قلمچی</span></button>
         <button data-p="log">🧾 <span>گزارش تغییرات</span></button>
         <button data-p="sms">💬 <span>پیامک اولیا</span></button>
       </nav>
@@ -1457,6 +1458,72 @@
         </div>
       </section>
 
+      <section id="qal" class="hide">
+        <div class="panel-card hide" id="qWarn"><b style="color:var(--bad)">جدول‌های قلمچی هنوز ساخته نشده‌اند.</b>
+          <span class="muted">فایل supabase_qalamchi.sql را در SQL Editor سوپابیس اجرا کنید.</span>
+        </div>
+        <div class="seg" id="qTabs" style="margin-bottom:14px"><button class="on" data-qt="att">✅ حضور و غیاب</button><button data-qt="fin">💰 مالی</button><button data-qt="ppl">👥 افراد</button></div>
+
+        <div id="qt-att">
+          <div class="stats" id="qStats"></div>
+          <div class="panel-card" style="margin-top:14px">
+            <div class="arow" style="margin-bottom:12px">
+              <label>تاریخ<input type="date" id="qDate"></label>
+              <button class="abtn ghost" id="qAllP">همه حاضر</button>
+              <button class="abtn ghost" id="qToday">امروز</button>
+            </div>
+            <p class="muted" id="qDateFa" style="margin-bottom:8px"></p>
+            <table>
+              <thead><tr><th>#</th><th>نام</th><th>وضعیت</th></tr></thead>
+              <tbody id="qAttBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="qt-fin" class="hide">
+          <div class="stats" id="qfStats"></div>
+          <div class="panel-card" style="margin-top:14px">
+            <h4>ثبت پرداخت جدید (قلمچی)</h4>
+            <div class="arow"><label>نام<select id="qfStu"></select></label><label>مبلغ (تومان)<input id="qfAmt" inputmode="numeric" class="ltr" placeholder="5,000,000"></label><label>تاریخ پرداخت<input type="date" id="qfDate"></label></div>
+            <div class="arow" style="margin-top:10px"><label>توضیح (اختیاری)<input id="qfNote" maxlength="200" placeholder="مثلاً قسط مهر"></label></div>
+            <button class="abtn" id="qfAdd" style="margin-top:12px">ثبت پرداخت</button>
+          </div>
+          <div class="panel-card" style="margin-top:14px">
+            <div class="chh"><h4>وضعیت پرداخت</h4><button class="abtn ghost sm" id="qfX1">⬇️ Excel</button></div>
+            <table>
+              <thead><tr><th>نام</th><th>کل شهریه (تومان)</th><th>پرداختی</th><th>مانده</th><th class="hide-sm">پیشرفت</th><th>وضعیت</th></tr></thead>
+              <tbody id="qfBody"></tbody>
+            </table>
+          </div>
+          <div class="panel-card" style="margin-top:14px">
+            <div class="chh"><h4>پرداخت‌ها</h4><button class="abtn ghost sm" id="qfX2">⬇️ Excel</button></div>
+            <table>
+              <thead><tr><th>تاریخ</th><th>نام</th><th>مبلغ</th><th class="hide-sm">توضیح</th><th></th></tr></thead>
+              <tbody id="qfPay"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="qt-ppl" class="hide">
+          <div class="panel-card">
+            <h4>افزودن نفر به قلمچی</h4>
+            <div class="arow">
+              <label>نام و نام خانوادگی<input id="qName" maxlength="100"></label>
+              <label>شماره تماس (اختیاری)<input id="qPhone" inputmode="tel" class="ltr" placeholder="09..."></label>
+              <button class="abtn" id="qAdd">افزودن</button>
+            </div>
+            <p class="muted" style="margin-top:10px">این لیست کاملاً جدا از «دانش‌آموزان» پانسیون است و با آن یکی نمی‌شود.</p>
+          </div>
+          <div class="panel-card" style="margin-top:14px">
+            <h4>لیست قلمچی</h4>
+            <table>
+              <thead><tr><th>نام</th><th class="hide-sm">تماس</th><th></th></tr></thead>
+              <tbody id="qPplBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <section id="log" class="hide">
         <div class="panel-card">
           <h4>گزارش تغییرات (۲۰۰ مورد آخر)</h4>
@@ -1605,7 +1672,7 @@
       for (; ;) {const part = await db('GET', path + `&limit=1000&offset=${i}`); out = out.concat(part || []); if (!part || part.length < 1000) return out; i += 1000}
     }
 
-    const EMPTY = () => ({today: '', students: [], rec: {}, plans: [], all: {}, pay: [], finOK: true, week: {days: [], rec: {}}});
+    const EMPTY = () => ({today: '', students: [], rec: {}, plans: [], all: {}, pay: [], finOK: true, week: {days: [], rec: {}}, q: {students: [], rec: {}, pay: [], ok: true}});
     function setView(panel) {
       $('#loginView').classList.toggle('hide', panel);
       $('#adminPanel').classList.toggle('open', panel);
@@ -1627,7 +1694,7 @@
     }
 
     /* ===================== داده‌ی پنل مدیر ===================== */
-    let D = {today: '', students: [], rec: {}, plans: [], all: {}, pay: [], finOK: true, week: {days: [], rec: {}}};
+    let D = {today: '', students: [], rec: {}, plans: [], all: {}, pay: [], finOK: true, week: {days: [], rec: {}}, q: {students: [], rec: {}, pay: [], ok: true}};
     const toC = r => ({st: r.st || '', in: r.in_time || '', out: r.out_time || '', study: r.study || 0, lessons: r.lessons || 0, tests: r.tests || 0, note: r.note || '', reason: r.absence_reason || ''});
     const COL = {st: 'st', in: 'in_time', out: 'out_time', study: 'study', lessons: 'lessons', tests: 'tests', note: 'note', reason: 'absence_reason'};
     const CAP = {study: 1440, lessons: 100, tests: 2000};
@@ -1647,16 +1714,21 @@
     async function loadAdmin() {
       const today = tehranToday(), dow = new Date(today + 'T12:00:00Z').getUTCDay(), from = addDays(today, -((dow + 1) % 7)), to = addDays(from, 6);
       const days = [...Array(7)].map((_, i) => addDays(from, i));
-      const [st, rc, pl, pay] = await Promise.all([
+      const [st, rc, pl, pay, qs, qr, qp] = await Promise.all([
         dbAll('students?select=*&order=id'),
         dbAll(`records?select=*&date=gte.${addDays(today, -365)}&date=lte.${today}&order=date,student_id`),
-        dbAll('plans?select=*&order=id.desc'), can('fin') ? tryAll('payments?select=*&order=paid_on.desc,id.desc') : Promise.resolve([])]);
+        dbAll('plans?select=*&order=id.desc'), can('fin') ? tryAll('payments?select=*&order=paid_on.desc,id.desc') : Promise.resolve([]),
+        can('qal') ? tryAll('qalamchi_students?select=*&order=id') : Promise.resolve([]),
+        can('qal') ? tryAll('qalamchi_records?select=*&order=date,student_id') : Promise.resolve([]),
+        can('qal') ? tryAll('qalamchi_payments?select=*&order=paid_on.desc,id.desc') : Promise.resolve([])]);
+      const qrec = {}; (qr || []).forEach(r => {(qrec[r.date] || (qrec[r.date] = {}))[r.student_id] = r.st});
       const all = {}; rc.forEach(r => {(all[r.date] || (all[r.date] = {}))[r.student_id] = toC(r)});
       const wr = {}; days.forEach(k => wr[k] = all[k] || (all[k] = {}));
       D = {
         today, students: st.map(s => ({id: s.id, name: s.name, nid: s.nid, phone: s.phone || '', par: s.par, fee: +s.boarding_fee || 0})),
         plans: pl.map(p => ({id: p.id, sid: p.student_id, type: p.type, title: p.title, text: p.body, image: p.image_path || '', date: p.date})),
-        all, pay: pay || [], finOK: pay !== null, week: {days, rec: wr}, rec: wr[today]
+        all, pay: pay || [], finOK: pay !== null, week: {days, rec: wr}, rec: wr[today],
+        q: {students: (qs || []).map(x => ({id: x.id, name: x.name, phone: x.phone || '', fee: +x.fee || 0})), rec: qrec, pay: qp || [], ok: qs !== null && qr !== null && qp !== null}
       };
       $('#date').textContent = todayFa();
     }
@@ -1671,7 +1743,7 @@
     function closePanel() {sbLogout(); setView(false); D = EMPTY(); $('#adminPassword').value = ''}
 
     /* ===================== رابط پنل ===================== */
-    const titles = {fin: 'مالی پانسیون', log: 'گزارش تغییرات', dash: 'داشبورد', hist: 'تاریخچه و آمار', att: 'حضور و غیاب', io: 'ورود و خروج', plan: 'برنامه‌ریزی', stu: 'دانش‌آموزان', sms: 'پیامک اولیا'};
+    const titles = {fin: 'مالی پانسیون', qal: 'قلمچی', log: 'گزارش تغییرات', dash: 'داشبورد', hist: 'تاریخچه و آمار', att: 'حضور و غیاب', io: 'ورود و خروج', plan: 'برنامه‌ریزی', stu: 'دانش‌آموزان', sms: 'پیامک اولیا'};
     const WD = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'];
     function show(p) {
       if (!can(p)) p = 'dash';
@@ -1686,7 +1758,7 @@
     const ini = n => esc([...n.trim()][0] || '؟');
 
     function render() {
-      dash(); charts(); hist(); fin(); alerts();
+      dash(); charts(); hist(); fin(); qal(); alerts();
       const v = S().map(s => Rc(s.id));
       $('#sT').textContent = fa(S().length);
       $('#sP').textContent = fa(v.filter(x => x.st === 'p').length); $('#sA').textContent = fa(v.filter(x => x.st === 'a').length);
@@ -2063,6 +2135,95 @@
       if (img) deleteImage(img);
       D.plans = D.plans.filter(p => p.id !== id); render()
     });
+
+    /* ===================== قلمچی (جدا از پانسیون: جدول‌های مستقل) ===================== */
+    let QTAB = 'att', QD = '';
+    const QS = () => D.q.students, qnm = id => (QS().find(x => x.id == id) || {name: '؟'}).name;
+    const qRc = (id, k) => ((D.q.rec[k] || {})[id]) || '';
+    const qPaid = id => D.q.pay.filter(x => x.student_id == id).reduce((a, x) => a + x.amount, 0);
+    function qFinSt(s) {
+      const pd = qPaid(s.id), f = s.fee;
+      if (!f) return {t: 'بدون شهریه', c: 't', pd, rem: 0, pct: 0};
+      const pct = Math.min(100, Math.round(pd * 100 / f));
+      return pd >= f ? {t: 'تسویه', c: 'p', pd, rem: 0, pct} : pd > 0 ? {t: 'پرداخت ناقص', c: 'l', pd, rem: f - pd, pct} : {t: 'بدهکار', c: 'a', pd, rem: f, pct}
+    }
+    function qal() {
+      if (!D.today || !can('qal')) return;
+      $('#qWarn').classList.toggle('hide', D.q.ok);
+      ['att', 'fin', 'ppl'].forEach(t => $('#qt-' + t).classList.toggle('hide', t !== QTAB));
+      $$('#qTabs button').forEach(b => b.classList.toggle('on', b.dataset.qt === QTAB));
+      if (!QD) QD = D.today;
+      if (!$('#qDate').value) $('#qDate').value = QD;
+      const Q = QS(), q = enDigits($('#sq').value || ''), FQ = q ? Q.filter(x => x.name.includes(q)) : Q;
+      /* ---- افراد ---- */
+      $('#qPplBody').innerHTML = FQ.map(x => `<tr><td>${esc(x.name)}</td><td class="hide-sm ltr">${fa(esc(x.phone || '—'))}</td><td><button class="abtn danger sm" data-qdel="${x.id}">حذف</button></td></tr>`).join('') || '<tr><td colspan="3" class="muted">هنوز کسی ثبت نشده است.</td></tr>';
+      /* ---- حضور و غیاب ---- */
+      const v = Q.map(x => qRc(x.id, QD)), cn = t => v.filter(y => y === t).length;
+      $('#qStats').innerHTML = `<div class="stat hl"><span>کل افراد</span><b>${fa(Q.length)}</b></div><div class="stat ok"><span>حاضر</span><b>${fa(cn('p'))}</b></div><div class="stat bad"><span>غایب</span><b>${fa(cn('a'))}</b></div><div class="stat late"><span>تأخیر</span><b>${fa(cn('l'))}</b></div><div class="stat"><span>ثبت‌نشده</span><b>${fa(v.filter(y => !y).length)}</b></div>`;
+      $('#qDateFa').textContent = pf(QD, {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
+      $('#qAttBody').innerHTML = FQ.map((x, i) => {const st = qRc(x.id, QD); return `<tr><td>${fa(i + 1)}</td><td>${esc(x.name)}</td><td><div class="seg" data-id="${x.id}"><button class="p ${st === 'p' ? 'on' : ''}" data-v="p">حاضر</button><button class="a ${st === 'a' ? 'on' : ''}" data-v="a">غایب</button><button class="l ${st === 'l' ? 'on' : ''}" data-v="l">تأخیر</button></div></td></tr>`}).join('') || '<tr><td colspan="3" class="muted">ابتدا از تب «افراد» نام‌ها را اضافه کنید.</td></tr>';
+      /* ---- مالی ---- */
+      const A = Q.map(s => ({s, ...qFinSt(s)})), ca = t => A.filter(x => x.t === t).length, fee = A.reduce((a, x) => a + x.s.fee, 0), pd = D.q.pay.reduce((a, x) => a + x.amount, 0);
+      const c = (t, b, sm, cl) => `<div class="stat sm ${cl || ''}"><span>${t}</span><b>${b}</b><small>${sm || '&nbsp;'}</small></div>`;
+      $('#qfStats').innerHTML = c('کل شهریه‌ها', money(fee), 'تومان', 'hl') + c('دریافتی', money(pd), fee ? fa(Math.min(100, Math.round(pd * 100 / fee))) + '٪ وصول‌شده' : '', 'ok') + c('مانده', money(A.reduce((a, x) => a + x.rem, 0)), 'تومان', 'bad') + c('وضعیت افراد', '', `تسویه ${fa(ca('تسویه'))} · ناقص ${fa(ca('پرداخت ناقص'))} · بدهکار ${fa(ca('بدهکار'))}`);
+      const cur = $('#qfStu').value; $('#qfStu').innerHTML = Q.map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join(''); if (cur && Q.some(s => s.id == cur)) $('#qfStu').value = cur;
+      if (!$('#qfDate').value) $('#qfDate').value = D.today;
+      $('#qfBody').innerHTML = A.filter(x => !q || x.s.name.includes(q)).map(x => `<tr><td>${esc(x.s.name)}</td><td><input class="ltr" inputmode="numeric" data-qfee="${x.s.id}" value="${x.s.fee ? x.s.fee.toLocaleString('en-US') : ''}" placeholder="0" style="min-width:110px"></td><td>${money(x.pd)}</td><td>${money(x.rem)}</td><td class="hide-sm"><div class="pb"><i style="width:${x.pct}%"></i></div></td><td><span class="pill ${x.c}">${x.t}</span></td></tr>`).join('') || '<tr><td colspan="6" class="muted">کسی یافت نشد.</td></tr>';
+      $('#qfPay').innerHTML = D.q.pay.slice(0, 150).map(x => `<tr><td>${pf(x.paid_on, {year: 'numeric', month: 'short', day: 'numeric'})}</td><td>${esc(qnm(x.student_id))}</td><td>${money(x.amount)}</td><td class="hide-sm">${esc(x.note || '—')}</td><td><button class="abtn danger sm" data-qdelpay="${x.id}">حذف</button></td></tr>`).join('') || '<tr><td colspan="5" class="muted">پرداختی ثبت نشده است.</td></tr>';
+    }
+    $('#qTabs').onclick = e => {const b = e.target.closest('button'); if (!b) return; QTAB = b.dataset.qt; qal(); animIn($('#qt-' + QTAB))};
+    $('#qDate').onchange = () => {QD = $('#qDate').value || D.today; qal()};
+    $('#qToday').onclick = () => {QD = D.today; $('#qDate').value = QD; qal()};
+    $('#qAdd').onclick = safe(async () => {
+      const name = normName($('#qName').value), phone = enDigits($('#qPhone').value);
+      if (name.length < 2 || (phone && !/^09\d{9}$/.test(phone))) {toast('نام را درست وارد کنید (شماره‌ی تماس اختیاری و به‌شکل ۰۹…)'); return }
+      const res = await db('POST', 'qalamchi_students', [{name, phone: phone || null}], {Prefer: 'return=representation'});
+      D.q.students.push({id: res[0].id, name: res[0].name, phone: res[0].phone || '', fee: 0});
+      audit('قلمچی — افزودن: ' + name); $('#qName').value = ''; $('#qPhone').value = ''; qal(); toast('به لیست قلمچی اضافه شد');
+    });
+    $('#qPplBody').onclick = safe(async e => {
+      const b = e.target.closest('[data-qdel]'); if (!b) return; const id = +b.dataset.qdel, n = qnm(id);
+      if (!confirm('«' + n + '» با همه‌ی حضور و غیاب و پرداخت‌هایش از قلمچی حذف شود؟')) return;
+      await db('DELETE', 'qalamchi_students?id=eq.' + id, undefined, {Prefer: 'return=minimal'}); audit('قلمچی — حذف: ' + n);
+      D.q.students = D.q.students.filter(x => x.id !== id); D.q.pay = D.q.pay.filter(x => x.student_id !== id);
+      for (const k in D.q.rec) delete D.q.rec[k][id]; qal();
+    });
+    async function qSet(rows) {
+      const res = await db('POST', 'qalamchi_records?on_conflict=date,student_id', rows, {Prefer: 'resolution=merge-duplicates,return=representation'});
+      res.forEach(r => {(D.q.rec[r.date] || (D.q.rec[r.date] = {}))[r.student_id] = r.st});
+    }
+    $('#qAttBody').onclick = safe(async e => {
+      const b = e.target.closest('button'); if (!b) return; const id = +b.parentNode.dataset.id, v = b.dataset.v;
+      await qSet([{date: QD, student_id: id, st: v}]);
+      audit('قلمچی — ' + qnm(id) + ' — ' + pf(QD, {month: 'numeric', day: 'numeric'}) + ': ' + stTxt[v]); qal();
+    });
+    $('#qAllP').onclick = safe(async () => {
+      const rows = QS().filter(x => !qRc(x.id, QD)).map(x => ({date: QD, student_id: x.id, st: 'p'}));
+      if (rows.length) await qSet(rows); qal(); toast('همه حاضر شدند');
+    });
+    $('#qfBody').onchange = safe(async e => {
+      const i = e.target; if (!i.dataset.qfee) return; const id = +i.dataset.qfee, val = Math.max(0, Math.round(Number(enDigits(i.value).replace(/[,٬]/g, '')) || 0));
+      await db('PATCH', 'qalamchi_students?id=eq.' + id, {fee: val}, {Prefer: 'return=minimal'}); QS().find(x => x.id === id).fee = val;
+      audit('قلمچی — شهریه ' + qnm(id) + ' = ' + val); qal(); toast('شهریه ذخیره شد');
+    });
+    $('#qfAdd').onclick = safe(async () => {
+      const sid = +$('#qfStu').value, amount = Math.round(Number(enDigits($('#qfAmt').value).replace(/[,٬]/g, ''))), paid_on = $('#qfDate').value;
+      if (!sid || !(amount > 0) || !paid_on) {toast('نام، مبلغ و تاریخ پرداخت را درست وارد کنید'); return }
+      const btn = $('#qfAdd'); btn.disabled = true;
+      try {
+        const res = await db('POST', 'qalamchi_payments', [{student_id: sid, amount, paid_on, note: $('#qfNote').value.trim().slice(0, 200) || null}], {Prefer: 'return=representation'});
+        D.q.pay.push(res[0]); D.q.pay.sort((a, b) => (b.paid_on > a.paid_on ? 1 : b.paid_on < a.paid_on ? -1 : b.id - a.id));
+        audit('قلمچی — ثبت پرداخت ' + qnm(sid) + ': ' + amount + ' تومان'); $('#qfAmt').value = ''; $('#qfNote').value = ''; qal(); toast('پرداخت ثبت شد');
+      } finally {btn.disabled = false}
+    });
+    $('#qfPay').onclick = safe(async e => {
+      const d = e.target.closest('[data-qdelpay]'); if (!d) return; const id = +d.dataset.qdelpay, p = D.q.pay.find(x => x.id === id);
+      if (!p || !confirm('این پرداخت حذف شود؟')) return;
+      await db('DELETE', 'qalamchi_payments?id=eq.' + id, undefined, {Prefer: 'return=minimal'});
+      audit('قلمچی — حذف پرداخت ' + qnm(p.student_id) + ': ' + p.amount + ' تومان'); D.q.pay = D.q.pay.filter(x => x.id !== id); qal();
+    });
+    $('#qfX1').onclick = () => csv('qalamchi-payment-status-' + D.today, [['نام', 'کل شهریه', 'پرداختی', 'مانده', 'وضعیت']].concat(QS().map(x => {const f = qFinSt(x); return [x.name, x.fee, f.pd, f.rem, f.t]})));
+    $('#qfX2').onclick = () => csv('qalamchi-payments-' + D.today, [['تاریخ (میلادی)', 'نام', 'مبلغ', 'توضیح']].concat(D.q.pay.map(x => [x.paid_on, qnm(x.student_id), x.amount, x.note])));
 
     /* ===================== شروع ===================== */
     if (getSess()) {$('#loginView').classList.add('hide'); openPanel().catch(() => showLogin())}

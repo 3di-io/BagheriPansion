@@ -539,47 +539,29 @@
       margin-bottom: 20px;
     }
 
-    /* فاصله‌گذاری (مارجین) تب مالی پانسیون و کل بخش قلمچی */
-    #fin,
-    #qal {
+    /* فاصله‌گذاری (مارجین) تب مالی پانسیون */
+    #fin {
       margin: 8px 10px 24px;
       padding: 6px
     }
 
-    #fin:not(.hide),
-    #qal>div:not(.hide) {
+    #fin:not(.hide) {
       display: flex;
       flex-direction: column;
       gap: 20px
     }
 
-    #qal:not(.hide) {
-      display: flex;
-      flex-direction: column;
-      gap: 20px
-    }
-
-    #fin>*,
-    #qal>*,
-    #qal>div>* {
+    #fin>* {
       margin-top: 0 !important;
       margin-bottom: 0 !important
     }
 
-    #qal #qTabs {
-      align-self: flex-start;
-      margin-bottom: 4px !important
-    }
-
     @media (max-width: 640px) {
-
-      #fin,
-      #qal {
+      #fin {
         margin: 4px 2px 18px;
         padding: 2px
       }
     }
-
 
     .panel-card h4 {
       font-size: 15px;
@@ -1321,6 +1303,7 @@
                 <th class="hide-sm">کد ملی</th>
                 <th>وضعیت</th>
                 <th>نوع غیبت</th>
+                <th></th>
               </tr>
             </thead>
             <tbody id="attBody"></tbody>
@@ -1516,7 +1499,7 @@
             </div>
             <p class="muted" id="qDateFa" style="margin-bottom:8px"></p>
             <table>
-              <thead><tr><th>#</th><th>نام</th><th>وضعیت</th></tr></thead>
+              <thead><tr><th>#</th><th>نام</th><th>وضعیت</th><th></th></tr></thead>
               <tbody id="qAttBody"></tbody>
             </table>
           </div>
@@ -1810,10 +1793,7 @@
       const ex = S().filter(s => Rc(s.id).out);
       $('#exitMini').innerHTML = ex.length ? ex.map(s => `<span class="tag">${esc(s.name)} — ${fa(Rc(s.id).out)}</span>`).join('') : 'موردی ثبت نشده است.';
 
-      $('#attBody').innerHTML = F().map((s, i) => {
-        const st = Rc(s.id).st; return `<tr><td>${fa(i + 1)}</td><td>${esc(s.name)}</td><td class="hide-sm ltr">${fa(esc(s.nid))}</td>
-    <td><div class="seg" data-id="${s.id}"><button class="p ${st === 'p' ? 'on' : ''}" data-v="p">حاضر</button><button class="a ${st === 'a' ? 'on' : ''}" data-v="a">غایب</button><button class="l ${st === 'l' ? 'on' : ''}" data-v="l">تأخیر</button></div></td><td>${st === 'a' ? reasonSel(s.id, Rc(s.id).reason) : ''}</td></tr>`
-      }).join('');
+      renderAtt();
 
       const nf = (s, f, r, ph) => `<input type="number" min="0" data-id="${s.id}" data-f="${f}" value="${r[f] || ''}" placeholder="${ph}" style="min-width:70px">`;
       $('#ioBody').innerHTML = F().map(s => {
@@ -1929,7 +1909,7 @@
   <table><thead><tr><th>نام</th><th>وضعیت</th><th>ورود</th><th>خروج</th><th>مطالعه</th><th>درس</th><th>تست</th><th>توضیح</th></tr></thead><tbody>`+
         S().map(s => {
           const r = rc[s.id] || {}, lk = r.st === 'a' ? ' disabled' : '', ti = f => `<input class="tinp" data-id="${s.id}" data-f="${f}" value="${esc(r[f] || '')}"${lk}>`, ni = f => `<input type="number" min="0" data-id="${s.id}" data-f="${f}" value="${r[f] || ''}" style="min-width:64px">`;
-          return `<tr><td>${esc(s.name)}</td><td><select data-id="${s.id}" data-f="st"><option value="">—</option>${['p', 'a', 'l'].map(v => `<option value="${v}"${r.st === v ? ' selected' : ''}>${stTxt[v]}</option>`).join('')}</select>${r.st === 'a' ? ' ' + reasonSel(s.id, r.reason) : ''}</td><td>${ti('in')}</td><td>${ti('out')}</td><td>${ni('study')}</td><td>${ni('lessons')}</td><td>${ni('tests')}</td><td><input data-id="${s.id}" data-f="note" maxlength="200" value="${esc(r.note || '')}"></td></tr>`
+          return `<tr><td>${esc(s.name)}</td><td><select data-id="${s.id}" data-f="st"><option value="">—</option>${['p', 'a', 'l'].map(v => `<option value="${v}"${r.st === v ? ' selected' : ''}>${stTxt[v]}</option>`).join('')}</select>${r.st === 'a' ? ' ' + reasonSel(s.id, r.reason) : ''}${r.st ? ` <button class="abtn danger sm" data-clr="${s.id}">حذف</button>` : ''}</td><td>${ti('in')}</td><td>${ti('out')}</td><td>${ni('study')}</td><td>${ni('lessons')}</td><td>${ni('tests')}</td><td><input data-id="${s.id}" data-f="note" maxlength="200" value="${esc(r.note || '')}"></td></tr>`
         }).join('') + '</tbody></table><p class="muted" style="margin-top:8px">همه‌ی فیلدهای این روز قابل ویرایش‌اند و هر تغییر در «گزارش تغییرات» ثبت می‌شود.</p>';
     }
     function openDay(k) {HD = k; hist(); const e = $('#hDetail'); if (e && !e.classList.contains('hide')) e.scrollIntoView({behavior: 'smooth', block: 'nearest'})}
@@ -1940,16 +1920,17 @@
     $('#hDate').onchange = () => {const v = $('#hDate').value; if (v && v <= D.today) openDay(v)};
     $('#hDetail').onclick = e => {
       if (e.target.id === 'hClose') {HD = ''; hist()}
+      const c = e.target.closest('[data-clr]'); if (c) {const id = +c.dataset.clr; setRecFast(id, stPatch(id, '', HD), HD); hist(); toast('وضعیت حذف شد')}
       if (e.target.id === 'hCsv') {const rc = D.all[HD] || {}; csv('day-' + HD, [['نام', 'وضعیت', 'علت غیبت', 'ورود', 'خروج', 'مطالعه (دقیقه)', 'درس', 'تست', 'توضیح']].concat(S().map(q => {const r = rc[q.id] || {}; return [q.name, stTxt[r.st] || '', r.reason, r.in, r.out, r.study, r.lessons, r.tests, r.note]})))}
     };
     $('#hDetail').addEventListener('change', safe(async e => {
       const i = e.target, id = +(i.dataset.id || i.dataset.reason); if (!id) return;
-      if (i.dataset.reason) {await setRec(id, {reason: i.value}, HD); render(); return }
+      if (i.dataset.reason) {setRecFast(id, {reason: i.value}, HD); hist(); return }
       const f = i.dataset.f; let patch;
       if (f === 'st') patch = stPatch(id, i.value, HD);
       else if (f === 'in' || f === 'out') {const t = normTime(i.value); if (t === null) {toast('ساعت را ۲۴ ساعته وارد کنید'); render(); return } patch = {[f]: t}}
       else patch = {[f]: i.value.trim()};
-      await setRec(id, patch, HD); render()
+      setRecFast(id, patch, HD); hist()
     }));
     $('#hXls').onclick = () => {
       const rows = [['نام', 'روز حاضر', 'روز تأخیر', 'غیبت مجاز', 'غیبت غیرمجاز', 'غیبت بیماری', 'غیبت بدون علت', 'مطالعه (دقیقه)', 'درس', 'تست']];
@@ -2067,24 +2048,55 @@
       (D.all[date] || (D.all[date] = {}))[id] = toC(res[0]);
       audit(nm(id) + ' — ' + pf(date, {month: 'numeric', day: 'numeric'}) + ': ' + Object.entries(patch).map(([k, v]) => LBL[k] + '=' + (k === 'st' ? stTxt[v] || '—' : v || '—')).join('، '));
     };
+
+    /* ===================== ثبت سریع (خوش‌بینانه) و حذف حضور و غیاب ===================== */
+    const OPQ = {p: Promise.resolve()}, enq = f => {OPQ.p = OPQ.p.then(f).catch(() => { })};
+    const snap = (date, ids) => ids.map(id => [id, (D.all[date] || {})[id]]);
+    const restore = (date, sn) => sn.forEach(([id, v]) => {const m = D.all[date] || (D.all[date] = {}); if (v) m[id] = v; else delete m[id]});
+    const curSec = () => ($$('.ap-main section').find(x => !x.classList.contains('hide')) || {}).id;
+    const refreshNow = () => curSec() === 'att' ? renderAtt() : render();
+    function renderAtt() {
+      $('#attBody').innerHTML = F().map((s, i) => {
+        const st = Rc(s.id).st; return `<tr><td>${fa(i + 1)}</td><td>${esc(s.name)}</td><td class="hide-sm ltr">${fa(esc(s.nid))}</td>
+    <td><div class="seg" data-id="${s.id}"><button class="p ${st === 'p' ? 'on' : ''}" data-v="p">حاضر</button><button class="a ${st === 'a' ? 'on' : ''}" data-v="a">غایب</button><button class="l ${st === 'l' ? 'on' : ''}" data-v="l">تأخیر</button></div></td><td>${st === 'a' ? reasonSel(s.id, Rc(s.id).reason) : ''}</td><td>${st ? `<button class="abtn danger sm" data-clr="${s.id}">حذف</button>` : ''}</td></tr>`
+      }).join('');
+    }
+    function setRecFast(id, patch, date = D.today) { /* اول روی صفحه اعمال می‌شود، بعد در پس‌زمینه ذخیره؛ اگر خطا شد برمی‌گردد */
+      const o = recOf(id, date);
+      if (o.st === 'a' && !('st' in patch) && ('in' in patch || 'out' in patch)) return;
+      const row = toRow(patch), sn = snap(date, [id]);
+      if (patch.in && row.in_time && !o.st && !('st' in patch)) row.st = 'p';
+      const loc = {...toC({}), ...o};
+      for (const k in COL) if (COL[k] in row) {const v = row[COL[k]]; loc[k] = v == null ? (k in CAP ? 0 : '') : v}
+      (D.all[date] || (D.all[date] = {}))[id] = loc;
+      enq(async () => {
+        try {
+          await db('POST', 'records?on_conflict=date,student_id', [{date, student_id: id, ...row}], {Prefer: 'resolution=merge-duplicates,return=minimal'});
+          audit(nm(id) + ' — ' + pf(date, {month: 'numeric', day: 'numeric'}) + ': ' + Object.entries(patch).map(([k, v]) => LBL[k] + '=' + (k === 'st' ? stTxt[v] || 'حذف شد' : v || '—')).join('، '));
+        } catch (e) {restore(date, sn); refreshNow()}
+      });
+    }
     $('#sq').oninput = render;
     $('#pStu').onchange = render;
     $('#tplAbs').oninput = $('#tplIO').oninput = render;
     $('#toSms').onclick = () => show('sms');
     $('#attBody').onclick = safe(async e => {
-      const b = e.target.closest('button'); if (!b) return; const id = +b.parentNode.dataset.id, v = b.dataset.v;
-      await setRec(id, stPatch(id, v, D.today)); render(); if (v === 'a') toast('غیبت ثبت شد؛ ورود و خروج قفل شد')
+      const b = e.target.closest('button'); if (!b) return;
+      if (b.dataset.clr) {const id = +b.dataset.clr; setRecFast(id, stPatch(id, '', D.today)); renderAtt(); toast('وضعیت حذف شد'); return }
+      const id = +b.parentNode.dataset.id, v = b.dataset.v; if (!v) return;
+      setRecFast(id, stPatch(id, v, D.today)); renderAtt(); if (v === 'a') toast('غیبت ثبت شد؛ ورود و خروج قفل شد')
     });
-    $('#attBody').onchange = safe(async e => {const i = e.target; if (!i.dataset.reason) return; await setRec(+i.dataset.reason, {reason: i.value}); render()});
-    $('#allP').onclick = safe(async () => {
-      const rows = S().filter(s => !Rc(s.id).st).map(s => ({date: D.today, student_id: s.id, st: 'p'}));
-      if (rows.length) {const res = await db('POST', 'records?on_conflict=date,student_id', rows, {Prefer: 'resolution=merge-duplicates,return=representation'}); res.forEach(r => {D.rec[r.student_id] = toC(r)})}
-      render(); toast('همه حاضر شدند');
-    });
+    $('#attBody').onchange = safe(async e => {const i = e.target; if (!i.dataset.reason) return; setRecFast(+i.dataset.reason, {reason: i.value}); renderAtt()});
+    $('#allP').onclick = () => {
+      const ids = S().filter(x => !Rc(x.id).st).map(x => x.id); if (!ids.length) {toast('همه قبلاً ثبت شده‌اند'); return }
+      const sn = snap(D.today, ids), m = D.all[D.today] || (D.all[D.today] = {});
+      ids.forEach(id => {m[id] = {...toC({}), ...recOf(id, D.today), st: 'p'}}); renderAtt(); toast('همه حاضر شدند');
+      enq(async () => {try {await db('POST', 'records?on_conflict=date,student_id', ids.map(id => ({date: D.today, student_id: id, st: 'p'})), {Prefer: 'resolution=merge-duplicates,return=minimal'})} catch (e) {restore(D.today, sn); refreshNow()} });
+    };
     const nowT = () => {const n = new Date(); return String(n.getHours()).padStart(2, '0') + ':' + String(n.getMinutes()).padStart(2, '0')};
     $('#ioBody').addEventListener('click', safe(async e => {
       const b = e.target.closest('[data-now]'); if (!b) return;
-      await setRec(+b.dataset.id, {[b.dataset.now]: nowT()}); render(); toast('ساعت ثبت شد')
+      setRecFast(+b.dataset.id, {[b.dataset.now]: nowT()}); render(); toast('ساعت ثبت شد')
     }));
     $('#ioBody').addEventListener('change', safe(async e => {
       const i = e.target; if (!i.dataset.f) return; const f = i.dataset.f, id = +i.dataset.id;
@@ -2092,11 +2104,11 @@
         const t = normTime(i.value);
         if (t === null) {toast('ساعت را ۲۴ ساعته وارد کنید؛ مثلاً 14:00 یا 20:00'); render(); return }
         const o = Rc(id), inT = f === 'in' ? t : o.in, outT = f === 'out' ? t : o.out;
-        await setRec(id, {[f]: t}); render();
+        setRecFast(id, {[f]: t}); render();
         if (inT && outT && outT <= inT) toast('⚠️ ساعت خروج قبل از ورود است؛ لطفاً بررسی کنید');
         return;
       }
-      await setRec(id, {[f]: i.value.trim()})
+      setRecFast(id, {[f]: i.value.trim()})
     }));
 
     $('#nAdd').onclick = safe(async () => {
@@ -2203,7 +2215,7 @@
       const v = Q.map(x => qRc(x.id, QD)), cn = t => v.filter(y => y === t).length;
       $('#qStats').innerHTML = `<div class="stat hl"><span>کل افراد</span><b>${fa(Q.length)}</b></div><div class="stat ok"><span>حاضر</span><b>${fa(cn('p'))}</b></div><div class="stat bad"><span>غایب</span><b>${fa(cn('a'))}</b></div><div class="stat late"><span>تأخیر</span><b>${fa(cn('l'))}</b></div><div class="stat"><span>ثبت‌نشده</span><b>${fa(v.filter(y => !y).length)}</b></div>`;
       $('#qDateFa').textContent = pf(QD, {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
-      $('#qAttBody').innerHTML = FQ.map((x, i) => {const st = qRc(x.id, QD); return `<tr><td>${fa(i + 1)}</td><td>${esc(x.name)}</td><td><div class="seg" data-id="${x.id}"><button class="p ${st === 'p' ? 'on' : ''}" data-v="p">حاضر</button><button class="a ${st === 'a' ? 'on' : ''}" data-v="a">غایب</button><button class="l ${st === 'l' ? 'on' : ''}" data-v="l">تأخیر</button></div></td></tr>`}).join('') || '<tr><td colspan="3" class="muted">ابتدا از تب «افراد» نام‌ها را اضافه کنید.</td></tr>';
+      $('#qAttBody').innerHTML = FQ.map((x, i) => {const st = qRc(x.id, QD); return `<tr><td>${fa(i + 1)}</td><td>${esc(x.name)}</td><td><div class="seg" data-id="${x.id}"><button class="p ${st === 'p' ? 'on' : ''}" data-v="p">حاضر</button><button class="a ${st === 'a' ? 'on' : ''}" data-v="a">غایب</button><button class="l ${st === 'l' ? 'on' : ''}" data-v="l">تأخیر</button></div></td><td>${st ? `<button class="abtn danger sm" data-qclr="${x.id}">حذف</button>` : ''}</td></tr>`}).join('') || '<tr><td colspan="4" class="muted">ابتدا از تب «افراد» نام‌ها را اضافه کنید.</td></tr>';
       /* ---- مالی ---- */
       const A = Q.map(s => ({s, ...qFinSt(s)})), ca = t => A.filter(x => x.t === t).length, fee = A.reduce((a, x) => a + x.s.fee, 0), pd = D.q.pay.reduce((a, x) => a + x.amount, 0);
       const c = (t, b, sm, cl) => `<div class="stat sm ${cl || ''}"><span>${t}</span><b>${b}</b><small>${sm || '&nbsp;'}</small></div>`;
@@ -2230,19 +2242,27 @@
       D.q.students = D.q.students.filter(x => x.id !== id); D.q.pay = D.q.pay.filter(x => x.student_id !== id);
       for (const k in D.q.rec) delete D.q.rec[k][id]; qal();
     });
-    async function qSet(rows) {
-      const res = await db('POST', 'qalamchi_records?on_conflict=date,student_id', rows, {Prefer: 'resolution=merge-duplicates,return=representation'});
-      res.forEach(r => {(D.q.rec[r.date] || (D.q.rec[r.date] = {}))[r.student_id] = r.st});
+    function qSetFast(id, v) { /* v = 'p' | 'a' | 'l' یا null برای حذف */
+      const date = QD, m = D.q.rec[date] || (D.q.rec[date] = {}), prev = m[id];
+      if (v) m[id] = v; else delete m[id]; qal();
+      enq(async () => {
+        try {
+          if (v) await db('POST', 'qalamchi_records?on_conflict=date,student_id', [{date, student_id: id, st: v}], {Prefer: 'resolution=merge-duplicates,return=minimal'});
+          else await db('DELETE', 'qalamchi_records?date=eq.' + date + '&student_id=eq.' + id, undefined, {Prefer: 'return=minimal'});
+          audit('قلمچی — ' + qnm(id) + ' — ' + pf(date, {month: 'numeric', day: 'numeric'}) + ': ' + (v ? stTxt[v] : 'حذف شد'));
+        } catch (e) {if (prev) m[id] = prev; else delete m[id]; qal()}
+      });
     }
-    $('#qAttBody').onclick = safe(async e => {
-      const b = e.target.closest('button'); if (!b) return; const id = +b.parentNode.dataset.id, v = b.dataset.v;
-      await qSet([{date: QD, student_id: id, st: v}]);
-      audit('قلمچی — ' + qnm(id) + ' — ' + pf(QD, {month: 'numeric', day: 'numeric'}) + ': ' + stTxt[v]); qal();
-    });
-    $('#qAllP').onclick = safe(async () => {
-      const rows = QS().filter(x => !qRc(x.id, QD)).map(x => ({date: QD, student_id: x.id, st: 'p'}));
-      if (rows.length) await qSet(rows); qal(); toast('همه حاضر شدند');
-    });
+    $('#qAttBody').onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      if (b.dataset.qclr) {qSetFast(+b.dataset.qclr, null); toast('وضعیت حذف شد'); return }
+      if (b.dataset.v) qSetFast(+b.parentNode.dataset.id, b.dataset.v);
+    };
+    $('#qAllP').onclick = () => {
+      const ids = QS().filter(x => !qRc(x.id, QD)).map(x => x.id); if (!ids.length) {toast('همه قبلاً ثبت شده‌اند'); return }
+      const date = QD, m = D.q.rec[date] || (D.q.rec[date] = {}); ids.forEach(id => m[id] = 'p'); qal(); toast('همه حاضر شدند');
+      enq(async () => {try {await db('POST', 'qalamchi_records?on_conflict=date,student_id', ids.map(id => ({date, student_id: id, st: 'p'})), {Prefer: 'resolution=merge-duplicates,return=minimal'})} catch (e) {ids.forEach(id => delete m[id]); qal()} });
+    };
     $('#qfBody').onchange = safe(async e => {
       const i = e.target; if (!i.dataset.qfee) return; const id = +i.dataset.qfee, val = Math.max(0, Math.round(Number(enDigits(i.value).replace(/[,٬]/g, '')) || 0));
       await db('PATCH', 'qalamchi_students?id=eq.' + id, {fee: val}, {Prefer: 'return=minimal'}); QS().find(x => x.id === id).fee = val;

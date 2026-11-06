@@ -1981,6 +1981,7 @@
             <h4>افزودن نفر به قلمچی</h4>
             <div class="arow">
               <label>نام و نام خانوادگی<input id="qName" maxlength="100"></label>
+              <label>کد ملی (برای دیدن حساب کانون توسط اولیا)<input id="qNid" inputmode="numeric" maxlength="10" class="ltr" placeholder="۱۰ رقم"></label>
               <label>شماره تماس (اختیاری)<input id="qPhone" inputmode="tel" class="ltr" placeholder="09..."></label>
               <button class="abtn" id="qAdd">افزودن</button>
             </div>
@@ -1989,7 +1990,7 @@
           <div class="panel-card" style="margin-top:14px">
             <h4>لیست قلمچی</h4>
             <table>
-              <thead><tr><th>نام</th><th class="hide-sm">تماس</th><th></th></tr></thead>
+              <thead><tr><th>نام</th><th>کد ملی</th><th class="hide-sm">تماس</th><th></th></tr></thead>
               <tbody id="qPplBody"></tbody>
             </table>
           </div>
@@ -2004,7 +2005,7 @@
             <h4>نام کاربری و رمز عبور سایت کانون (kanoon.ir)</h4>
             <p class="muted" style="margin-bottom:12px">برای هر نفر از لیست قلمچی نام کاربری و رمز عبور کانون را وارد و «ذخیره» کنید (یا Enter بزنید). اولیا با نام کامل و کد ملی دانش‌آموز در بخش «قلمچی» صفحه‌ی اصلی سایت آن‌ها را می‌بینند. برای یافتن دانش‌آموز از کادر جستجوی بالای صفحه (نام یا کد ملی) استفاده کنید.</p>
             <table>
-              <thead><tr><th>نام</th><th class="hide-sm">تماس</th><th>نام کاربری</th><th>رمز عبور</th><th></th></tr></thead>
+              <thead><tr><th>نام</th><th class="hide-sm">کد ملی</th><th>نام کاربری</th><th>رمز عبور</th><th></th></tr></thead>
               <tbody id="kanBody"></tbody>
             </table>
           </div>
@@ -2366,7 +2367,7 @@ const JAL = (() => {
         today, students: st.map(s => ({id: s.id, name: s.name, nid: s.nid, phone: s.phone || '', par: s.par, fee: +s.boarding_fee || 0})),
         plans: pl.map(p => ({id: p.id, sid: p.student_id, type: p.type, title: p.title, text: p.body, image: p.image_path || '', date: p.date})),
         all, pay: pay || [], finOK: pay !== null, week: {days, rec: wr}, rec: wr[today],
-        q: {students: (qs || []).map(x => ({id: x.id, name: x.name, phone: x.phone || '', fee: +x.fee || 0})), rec: qrec, pay: qp || [], ok: qs !== null && qr !== null && qp !== null},
+        q: {students: (qs || []).map(x => ({id: x.id, name: x.name, phone: x.phone || '', nid: x.nid || '', fee: +x.fee || 0})), rec: qrec, pay: qp || [], ok: qs !== null && qr !== null && qp !== null},
         kan: kanMap, kanOK: ka !== null
       };
       $('#date').textContent = todayFa();
@@ -2715,7 +2716,7 @@ const JAL = (() => {
     function sugItems() {
       const n = nz($('#sq').value || ''); if (!n) return [];
       const inQ = curSec() === 'qal';
-      const src = inQ ? QS().map(x => ({name: x.name, sub: x.phone || ''})) : S().map(x => ({name: x.name, sub: x.nid || ''}));
+      const src = inQ ? QS().map(x => ({name: x.name, sub: x.nid || x.phone || ''})) : S().map(x => ({name: x.name, sub: x.nid || ''}));
       const out = [];
       src.forEach(x => {
         const nn = nz(x.name), ix = nn.indexOf(n);
@@ -2871,7 +2872,7 @@ const JAL = (() => {
     });
 
     /* ===================== قلمچی (جدا از پانسیون: جدول‌های مستقل) ===================== */
-    let QTAB = 'dash', QD = '', QRNG = 14;
+    let QTAB = 'dash', QD = '', QRNG = 14, QEDIT = 0;
     const QS = () => D.q.students, qnm = id => (QS().find(x => x.id == id) || {name: '؟'}).name;
     const qRc = (id, k) => ((D.q.rec[k] || {})[id]) || '';
     const qPaid = id => D.q.pay.filter(x => x.student_id == id).reduce((a, x) => a + x.amount, 0);
@@ -2891,9 +2892,11 @@ const JAL = (() => {
       $$('#qTabs button').forEach(b => b.classList.toggle('on', b.dataset.qt === QTAB));
       if (!QD) QD = D.today;
       if (!$('#qDate').value) $('#qDate').value = QD;
-      const Q = QS(), q = $('#sq').value || '', FQ = Q.filter(x => matchQ(x.name, q));
+      const Q = QS(), q = $('#sq').value || '', FQ = Q.filter(x => matchQ(x.name, q) || matchQ(x.nid, q) || matchQ(x.phone, q));
       /* ---- افراد ---- */
-      $('#qPplBody').innerHTML = FQ.map(x => `<tr><td>${esc(x.name)}</td><td class="hide-sm ltr">${fa(esc(x.phone || '—'))}</td><td><button class="abtn danger sm" data-qdel="${x.id}">حذف</button></td></tr>`).join('') || '<tr><td colspan="3" class="muted">هنوز کسی ثبت نشده است.</td></tr>';
+      $('#qPplBody').innerHTML = FQ.map(x => QEDIT === x.id
+        ? `<tr data-qrow="${x.id}"><td><input data-qe="name" maxlength="100" value="${esc(x.name)}" style="min-width:140px"></td><td><input class="ltr" data-qe="nid" inputmode="numeric" maxlength="10" placeholder="۱۰ رقم" value="${esc(x.nid)}" style="min-width:120px"></td><td class="hide-sm"><input class="ltr" data-qe="phone" inputmode="tel" placeholder="09..." value="${esc(x.phone)}" style="min-width:120px"></td><td style="white-space:nowrap"><button class="abtn sm" data-qsave="${x.id}">ذخیره</button> <button class="abtn ghost sm" data-qcancel="1">انصراف</button></td></tr>`
+        : `<tr><td>${esc(x.name)}</td><td class="ltr">${x.nid ? fa(esc(x.nid)) : '<span class="chip">ثبت نشده</span>'}</td><td class="hide-sm ltr">${fa(esc(x.phone || '—'))}</td><td style="white-space:nowrap"><button class="abtn ghost sm" data-qedit="${x.id}">ویرایش</button> <button class="abtn danger sm" data-qdel="${x.id}">حذف</button></td></tr>`).join('') || '<tr><td colspan="4" class="muted">هنوز کسی ثبت نشده است.</td></tr>';
       /* ---- حضور و غیاب ---- */
       const v = Q.map(x => qRc(x.id, QD)), cn = t => v.filter(y => y === t).length;
       $('#qStats').innerHTML = `<div class="stat hl"><span>کل افراد</span><b>${fa(Q.length)}</b></div><div class="stat ok"><span>حاضر</span><b>${fa(cn('p'))}</b></div><div class="stat bad"><span>غایب</span><b>${fa(cn('a'))}</b></div><div class="stat late"><span>تأخیر</span><b>${fa(cn('l'))}</b></div><div class="stat"><span>ثبت‌نشده</span><b>${fa(v.filter(y => !y).length)}</b></div>`;
@@ -2972,13 +2975,28 @@ const JAL = (() => {
     $('#qDate').onchange = () => {QD = $('#qDate').value || D.today; qal()};
     $('#qToday').onclick = () => {QD = D.today; $('#qDate').value = QD; qal()};
     $('#qAdd').onclick = safe(async () => {
-      const name = normName($('#qName').value), phone = enDigits($('#qPhone').value);
-      if (name.length < 2 || (phone && !/^09\d{9}$/.test(phone))) {toast('نام را درست وارد کنید (شماره‌ی تماس اختیاری و به‌شکل ۰۹…)'); return }
-      const res = await db('POST', 'qalamchi_students', [{name, phone: phone || null}], {Prefer: 'return=representation'});
-      D.q.students.push({id: res[0].id, name: res[0].name, phone: res[0].phone || '', fee: 0});
-      audit('قلمچی — افزودن: ' + name); $('#qName').value = ''; $('#qPhone').value = ''; qal(); toast('به لیست قلمچی اضافه شد');
+      const name = normName($('#qName').value), phone = enDigits($('#qPhone').value), nid = enDigits($('#qNid').value);
+      if (name.length < 2 || (phone && !/^09\d{9}$/.test(phone)) || (nid && !/^\d{10}$/.test(nid))) {toast('نام را درست وارد کنید (کد ملی ۱۰ رقم و شماره‌ی تماس ۰۹… اختیاری)'); return }
+      const res = await db('POST', 'qalamchi_students', [{name, phone: phone || null, nid: nid || null}], {Prefer: 'return=representation'});
+      D.q.students.push({id: res[0].id, name: res[0].name, phone: res[0].phone || '', nid: res[0].nid || '', fee: 0});
+      audit('قلمچی — افزودن: ' + name); $('#qName').value = ''; $('#qPhone').value = ''; $('#qNid').value = ''; qal(); toast('به لیست قلمچی اضافه شد');
     });
+    $('#qPplBody').onkeydown = e => {if (e.key === 'Enter' && e.target.matches('[data-qe]')) {e.preventDefault(); e.target.closest('tr').querySelector('[data-qsave]').click()} else if (e.key === 'Escape') {QEDIT = 0; qal()}};
     $('#qPplBody').onclick = safe(async e => {
+      const ed = e.target.closest('[data-qedit]'), sv = e.target.closest('[data-qsave]');
+      if (ed) {QEDIT = +ed.dataset.qedit; qal(); const f = $('#qPplBody [data-qe=nid]'); if (f) f.focus(); return }
+      if (e.target.closest('[data-qcancel]')) {QEDIT = 0; qal(); return }
+      if (sv) {
+        const id = +sv.dataset.qsave, tr = sv.closest('tr'), g = k => tr.querySelector('[data-qe=' + k + ']').value;
+        const name = normName(g('name')), nid = enDigits(g('nid')), phone = enDigits(g('phone'));
+        if (name.length < 2 || (nid && !/^\d{10}$/.test(nid)) || (phone && !/^09\d{9}$/.test(phone))) {toast('نام، کد ملی (۱۰ رقم) و شماره‌ی تماس (۰۹…) را درست وارد کنید'); return }
+        sv.disabled = true;
+        try {
+          await db('PATCH', 'qalamchi_students?id=eq.' + id, {name, nid: nid || null, phone: phone || null}, {Prefer: 'return=minimal'});
+          Object.assign(QS().find(x => x.id === id), {name, nid, phone}); audit('قلمچی — ویرایش: ' + name); QEDIT = 0; qal(); toast('ذخیره شد');
+        } finally {sv.disabled = false}
+        return
+      }
       const b = e.target.closest('[data-qdel]'); if (!b) return; const id = +b.dataset.qdel, n = qnm(id);
       if (!confirm('«' + n + '» با همه‌ی حضور و غیاب و پرداخت‌هایش از قلمچی حذف شود؟')) return;
       await db('DELETE', 'qalamchi_students?id=eq.' + id, undefined, {Prefer: 'return=minimal'}); audit('قلمچی — حذف: ' + n);
@@ -3040,9 +3058,9 @@ const JAL = (() => {
     function kanRender() {
       $('#kanWarn').classList.toggle('hide', D.kanOK); kanStats();
       const q = $('#sq').value || '', K = D.kan;
-      $('#kanBody').innerHTML = QS().filter(s => matchQ(s.name, q) || matchQ(s.phone, q)).map(s => {
+      $('#kanBody').innerHTML = QS().filter(s => matchQ(s.name, q) || matchQ(s.nid, q) || matchQ(s.phone, q)).map(s => {
         const k = K[s.id] || {};
-        return `<tr data-sid="${s.id}"><td>${esc(s.name)}</td><td class="hide-sm ltr">${fa(esc(s.phone || '—'))}</td>` +
+        return `<tr data-sid="${s.id}"><td>${esc(s.name)}</td><td class="hide-sm ltr">${s.nid ? fa(esc(s.nid)) : '—'}</td>` +
           `<td><input class="ltr" data-k="u" maxlength="64" autocomplete="off" spellcheck="false" placeholder="نام کاربری" value="${esc(k.username || '')}" style="min-width:130px"></td>` +
           `<td><input class="ltr" data-k="p" maxlength="64" autocomplete="off" spellcheck="false" placeholder="رمز عبور" value="${esc(k.password || '')}" style="min-width:130px"></td>` +
           `<td style="white-space:nowrap">${kanBtns(s.id)}</td></tr>`;

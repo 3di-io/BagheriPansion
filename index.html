@@ -193,6 +193,16 @@ var SB_URL = 'https://qqfmlwwqfelzrzedjyih.supabase.co';
 var SB_KEY = 'sb_publishable_jkoeFIXATb1DeJ_VE8IQQw_c5evfe_r';
 var CONFIGURED = SB_URL.indexOf('YOUR-') === -1 && SB_KEY.indexOf('YOUR_') === -1;
 
+/* ===================== ثبت بازدید (ناشناس؛ فقط شناسه‌ی تصادفی مرورگر، بدون IP) ===================== */
+(function(){try{
+  if(!CONFIGURED)return;
+  if(sessionStorage.getItem('sd_v'))return;           /* هر نشست مرورگر فقط یک بار */
+  sessionStorage.setItem('sd_v','1');
+  var id=null;try{id=localStorage.getItem('sd_vid')}catch(e){}
+  if(!id){id=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now().toString(36)+Math.random().toString(36).slice(2,12));try{localStorage.setItem('sd_vid',id)}catch(e){}}
+  fetch(SB_URL+'/rest/v1/rpc/track_visit',{method:'POST',keepalive:true,headers:{apikey:SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_vid:id,p_page:'index'})}).catch(function(){});
+}catch(e){}})();
+
 /* ===================== ابزارها ===================== */
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const fa=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);

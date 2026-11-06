@@ -1509,6 +1509,23 @@
         grid-template-columns: 1fr
       }
     }
+
+    /* ===== آمار بازدید ===== */
+    .vscroll{overflow-x:auto;padding-bottom:4px}
+    .vbars{display:flex;gap:3px;height:210px;align-items:stretch}
+    .vb{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center}
+    .vb em{font-style:normal;font-size:10px;height:14px;color:var(--soft)}
+    .vz{flex:1;width:100%;display:flex;align-items:flex-end}
+    .vz i{display:block;width:100%;border-radius:5px 5px 0 0;background:var(--blue);opacity:.78}
+    .vb.t .vz i{background:var(--navy);opacity:1}
+    .vb span{height:16px;width:100%;display:flex;justify-content:center;white-space:nowrap;font-size:10px;color:var(--soft);margin-top:4px}
+    .vmx{display:grid;grid-template-columns:72px repeat(24,minmax(26px,1fr)) 56px;gap:4px;min-width:820px;align-items:center}
+    .vh{text-align:center;font-size:10.5px;color:var(--soft)}
+    .vw{font-size:12.5px;white-space:nowrap}
+    .vc{height:34px;border-radius:8px;display:grid;place-items:center;font-size:10px;font-weight:600;background:var(--chip)}
+    .vt{text-align:center;font-size:12px;font-weight:700;color:var(--blue)}
+    .vleg{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--soft);margin-top:12px}
+    .vleg i{width:120px;height:10px;border-radius:99px;background:linear-gradient(90deg,rgba(23,52,92,.1),rgba(23,52,92,1))}
   </style>
 </head>
 
@@ -1544,6 +1561,7 @@
           <button data-p="stu">👥 <span>دانش‌آموزان</span></button>
           <button data-p="fin">💰 <span>مالی پانسیون</span></button>
           <button data-p="log">🧾 <span>گزارش تغییرات</span></button>
+          <button data-p="vis">📈 <span>آمار بازدید</span></button>
           <button data-p="sms">💬 <span>پیامک اولیا</span></button>
         </div>
         <button class="grp" data-g="qal" aria-expanded="false" aria-controls="grp-qal">📝 <span>قلمچی</span><i class="chev">‹</i></button>
@@ -1993,6 +2011,39 @@
         </div>
       </section>
 
+      <section id="vis" class="hide">
+        <div class="panel-card">
+          <div class="chh">
+            <h4>نمای کلی بازدید سایت</h4>
+          </div>
+          <div class="stats" id="vOver"></div>
+        </div>
+        <div class="panel-card" style="margin-top:14px">
+          <div class="chh">
+            <h4>بازه‌ی زمانی</h4>
+            <div class="seg" id="vRange"><button class="r" data-r="1">امروز</button><button class="r" data-r="7">۷ روز</button><button class="r" data-r="30">۳۰ روز</button><button class="r" data-r="90">۹۰ روز</button><button class="r" data-r="365">یک سال</button></div>
+          </div>
+          <div class="chh">
+            <label class="muted">از <input type="text" class="jdate" readonly autocomplete="off" placeholder="انتخاب تاریخ" id="vFrom" style="width:auto"></label>
+            <label class="muted">تا <input type="text" class="jdate" readonly autocomplete="off" placeholder="انتخاب تاریخ" id="vTo" style="width:auto"></label>
+            <button class="abtn sm" id="vApply">اعمال بازه</button>
+          </div>
+          <div class="stats" id="vStats"></div>
+        </div>
+        <div class="panel-card" style="margin-top:14px">
+          <h4>نمودار بازدید <span class="muted" id="vBarNote"></span></h4>
+          <div class="vscroll"><div class="vbars" id="vBars"></div></div>
+        </div>
+        <div class="panel-card" style="margin-top:14px">
+          <h4>ماتریس بازدید: روز هفته × ساعت</h4>
+          <div class="vscroll"><div class="vmx" id="vMx"></div></div>
+          <div class="vleg">کم <i></i> زیاد</div>
+          <p class="muted" id="vBest" style="margin-top:8px"></p>
+        </div>
+        <p class="muted" style="margin-top:12px">هر بازدید = یک نشست مرورگر (بازدید مجدد همان مرورگر تا ۳۰ دقیقه شمرده نمی‌شود). «یکتا» بر اساس شناسه‌ی تصادفی مرورگر است و هیچ IP یا اطلاعات شخصی ذخیره نمی‌شود. ساعت‌ها به وقت تهران‌اند.
+          <span id="vSql"> اگر خطا دیدید فایل supabase_visits.sql را در SQL Editor سوپابیس اجرا کنید.</span></p>
+      </section>
+
       <section id="log" class="hide">
         <div class="panel-card">
           <h4>گزارش تغییرات (۲۰۰ مورد آخر)</h4>
@@ -2331,7 +2382,7 @@ const JAL = (() => {
     function closePanel() {sbLogout(); setView(false); D = EMPTY(); $('#adminPassword').value = ''}
 
     /* ===================== رابط پنل ===================== */
-    const titles = {fin: 'مالی پانسیون', qal: 'قلمچی', log: 'گزارش تغییرات', dash: 'داشبورد', hist: 'تاریخچه و آمار', att: 'حضور و غیاب', io: 'ورود و خروج', plan: 'برنامه‌ریزی', stu: 'دانش‌آموزان', sms: 'پیامک اولیا'};
+    const titles = {fin: 'مالی پانسیون', qal: 'قلمچی', log: 'گزارش تغییرات', vis: 'آمار بازدید سایت', dash: 'داشبورد', hist: 'تاریخچه و آمار', att: 'حضور و غیاب', io: 'ورود و خروج', plan: 'برنامه‌ریزی', stu: 'دانش‌آموزان', sms: 'پیامک اولیا'};
     const WD = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'];
     function show(p) {
       jdpClose(); if (typeof sugClose === 'function') sugClose();
@@ -2340,7 +2391,7 @@ const JAL = (() => {
       markNav(p); openGrp(p === 'qal' ? 'qal' : 'pan');
       const pt = $('#pTabs'); pt.classList.toggle('hide', !['dash', 'att', 'io', 'stu', 'fin'].includes(p));
       $$('#pTabs button').forEach(b => {b.classList.toggle('hide', !can(b.dataset.p)); b.classList.toggle('on', b.dataset.p === p)});
-      $('#title').textContent = titles[p]; render(); if (p === 'log') loadLog(); animText('#title'); animIn($('#' + p));
+      $('#title').textContent = titles[p]; render(); if (p === 'log') loadLog(); if (p === 'vis') loadVisits(); animText('#title'); animIn($('#' + p));
     }
     /* منوی دوسطحی: «پانسیون» و «قلمچی» به‌صورت گروه بازشونده */
     function openGrp(g) {$$('#nav .grp').forEach(b => {const on = b.dataset.g === g; b.setAttribute('aria-expanded', on); $('#grp-' + b.dataset.g).classList.toggle('closed', !on)})}
@@ -3017,6 +3068,59 @@ const JAL = (() => {
       }
     });
     $('#kanBody').onkeydown = e => {if (e.key === 'Enter' && e.target.matches('input')) {e.preventDefault(); e.target.closest('tr').querySelector('[data-ksave]').click()}};
+
+    /* ===================== آمار بازدید سایت ===================== */
+    let VR = 7, VBUSY = false;
+    const nf = n => fa(Number(n || 0).toLocaleString('en-US')).replace(/,/g, '٬');
+    async function visRpc(args) {
+      let tok; try {tok = await sbToken()} catch (e) {panelLoggedOut(); throw 0}
+      let r; try {r = await fetch(SB_URL + '/rest/v1/rpc/visit_stats', {method: 'POST', headers: {apikey: SB_KEY, Authorization: 'Bearer ' + tok, 'Content-Type': 'application/json'}, body: JSON.stringify(args)})} catch (e) {throw new Error('net')}
+      if (r.status === 401) {panelLoggedOut(); throw 0}
+      if (r.status === 404) throw new Error('nofn');
+      const j = await r.json().catch(() => null);
+      if (!r.ok) throw new Error(j && j.code === '42501' ? 'forbidden' : 'fail');
+      return j;
+    }
+    function vSet(days) {VR = days; const t = D.today || tehranToday(); $('#vTo').value = t; $('#vFrom').value = addDays(t, -(days - 1)); loadVisits()}
+    function vMsg(t) {['#vOver', '#vBars', '#vMx'].forEach(s => $(s).innerHTML = ''); $('#vBest').textContent = ''; $('#vStats').innerHTML = `<p class="muted">${t}</p>`}
+    async function loadVisits() {
+      if (!$('#vFrom').value || !$('#vTo').value) return vSet(VR || 7);
+      const today = D.today || tehranToday(); $('#vFrom').max = today; $('#vTo').max = today;
+      let from = $('#vFrom').value, to = $('#vTo').value;
+      if (from > to) {[from, to] = [to, from]; $('#vFrom').value = from; $('#vTo').value = to}
+      if ((new Date(to + 'T12:00:00Z') - new Date(from + 'T12:00:00Z')) / 864e5 > 729) {from = addDays(to, -729); $('#vFrom').value = from; toast('حداکثر بازه ۲ سال است')}
+      $$('#vRange button').forEach(b => b.classList.toggle('on', +b.dataset.r === VR));
+      if (VBUSY) return; VBUSY = true; $('#vApply').disabled = true;
+      try {vDraw(await visRpc({p_from: from, p_to: to}), from, to, today)}
+      catch (e) {
+        if (e === 0) return;
+        vMsg(e.message === 'nofn' ? 'تابع آمار بازدید در دیتابیس نیست؛ فایل supabase_visits.sql را در SQL Editor سوپابیس اجرا کنید.' : e.message === 'forbidden' ? 'فقط مدیر کل به آمار بازدید دسترسی دارد.' : 'دریافت آمار ممکن نشد.');
+      } finally {VBUSY = false; $('#vApply').disabled = false}
+    }
+    function vDraw(d, from, to, today) {
+      const n = Math.round((new Date(to + 'T12:00:00Z') - new Date(from + 'T12:00:00Z')) / 864e5) + 1, by = d.by_day || [];
+      const top = by.reduce((a, r) => !a || r.v > a.v ? r : a, null);
+      const card = (l, v, s, c) => `<div class="stat ${c || ''}"><span>${l}</span><b>${v}</b><small>${s || ''}</small></div>`;
+      $('#vOver').innerHTML = card('امروز', nf(d.views_today)) + card('دیروز', nf(d.views_yesterday)) + card('۷ روز اخیر', nf(d.views_7)) + card('۳۰ روز اخیر', nf(d.views_30)) + card('کل بازدیدها', nf(d.views_all), d.since ? 'از ' + jLabel(d.since) : '', 'hl');
+      $('#vStats').innerHTML = card('بازدید در بازه', nf(d.views), jLabel(from) + ' تا ' + jLabel(to), 'hl') + card('بازدیدکننده‌ی یکتا', nf(d.uniq), 'بر اساس مرورگر') +
+        card('میانگین روزانه', fa((d.views / n).toFixed(1)).replace('.', '٫'), 'در ' + fa(n) + ' روز') + card('پربازدیدترین روز', top ? nf(top.v) : '—', top ? jLabel(top.d) : 'بدون بازدید');
+      /* نمودار ستونی: تا ۶۲ روز روزانه، بیشتر از آن هفتگی */
+      const map = {}; by.forEach(r => map[r.d] = r); const days = [];
+      for (let k = from; k <= to; k = addDays(k, 1)) days.push({d: k, v: map[k] ? map[k].v : 0, u: map[k] ? map[k].u : 0});
+      const weekly = days.length > 62; let items = days;
+      if (weekly) {items = []; for (let i = 0; i < days.length; i += 7) {const c = days.slice(i, i + 7); items.push({d: c[0].d, e: c[c.length - 1].d, v: c.reduce((t, x) => t + x.v, 0)})}}
+      const max = Math.max(1, ...items.map(x => x.v)), step = Math.ceil(items.length / 16), few = items.length <= 16, jd = k => {const j = JAL.toJ(k); return fa(j.jm + '/' + j.jd)};
+      $('#vBarNote').textContent = weekly ? '(مجموع هفتگی)' : '(روزانه)';
+      $('#vBars').innerHTML = items.map((x, i) => `<div class="vb${x.d <= today && today <= (x.e || x.d) ? ' t' : ''}" title="${weekly ? jLabel(x.d) + ' تا ' + jLabel(x.e) + ': ' + nf(x.v) + ' بازدید' : jLabel(x.d) + ': ' + nf(x.v) + ' بازدید، ' + nf(x.u) + ' یکتا'}"><em>${few && x.v ? nf(x.v) : ''}</em><div class="vz"><i style="height:${x.v ? Math.max(x.v * 100 / max, 3) : 0}%"></i></div><span>${i % step === 0 ? jd(x.d) : ''}</span></div>`).join('');
+      /* ماتریس روز هفته × ساعت */
+      const g = Array.from({length: 7}, () => Array(24).fill(0)); (d.matrix || []).forEach(([w, h, c]) => {g[w][h] = c});
+      const gm = Math.max(0, ...g.flat()); let best = null; g.forEach((r, w) => r.forEach((c, h) => {if (c && (!best || c > best.c)) best = {w, h, c}}));
+      $('#vMx').innerHTML = '<div></div>' + [...Array(24)].map((_, i) => `<div class="vh">${fa(i)}</div>`).join('') + '<div class="vh">جمع</div>' +
+        g.map((r, w) => `<div class="vw">${WD[w]}</div>` + r.map((c, i) => {const a = gm ? .1 + .9 * Math.sqrt(c / gm) : 0; return `<div class="vc" style="${c ? `background:rgba(23,52,92,${a.toFixed(2)});color:${a > .55 ? '#fff' : 'var(--text)'}` : ''}" title="${WD[w]} ساعت ${fa(i)}: ${nf(c)} بازدید">${c ? fa(c) : ''}</div>`}).join('') + `<div class="vt">${nf(r.reduce((a, b) => a + b, 0))}</div>`).join('');
+      $('#vBest').textContent = best ? `پرترافیک‌ترین زمان: ${WD[best.w]} ساعت ${fa(best.h)} تا ${fa((best.h + 1) % 24)} (${nf(best.c)} بازدید)` : 'در این بازه بازدیدی ثبت نشده است.';
+    }
+    $('#vRange').onclick = e => {const b = e.target.closest('button'); if (b) vSet(+b.dataset.r)};
+    $('#vApply').onclick = () => {VR = 0; loadVisits()};
 
     $$('.jdate').forEach(initJDate);
 

@@ -575,6 +575,33 @@
       min-width: max-content
     }
 
+    /* تب‌های قلمچی: خطی ولی جدا از هم */
+    #qal #qTabs {
+      background: transparent;
+      padding: 0;
+      gap: 10px;
+      overflow: visible
+    }
+
+    #qal #qTabs button {
+      background: #fff;
+      border: 1.5px solid var(--input-b);
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-weight: 600;
+      transition: background .15s, border-color .15s, color .15s
+    }
+
+    #qal #qTabs button:hover {
+      border-color: var(--blue)
+    }
+
+    #qal #qTabs button.on {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff
+    }
+
     #qal .stats+.panel-card,
     #qal .panel-card+.panel-card {
       margin-top: 18px !important
@@ -982,6 +1009,199 @@
       color: #fff
     }
 
+    /* ===== انتخابگر تاریخ شمسی ===== */
+    .jdate {
+      cursor: pointer;
+      text-align: center;
+      direction: ltr;
+      min-width: 130px
+    }
+
+    .jdp {
+      position: fixed;
+      z-index: 9999;
+      width: 292px;
+      background: #fff;
+      color: var(--navy);
+      border: 1px solid var(--card-b);
+      border-radius: 20px;
+      box-shadow: 0 18px 44px var(--shadow);
+      padding: 12px;
+      direction: rtl;
+      font-family: 'Vazirmatn', Tahoma, sans-serif
+    }
+
+    .jdp .jh {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px
+    }
+
+    .jdp .jh select {
+      flex: 1;
+      min-width: 0;
+      width: auto;
+      padding: 6px 8px;
+      font-size: 13px;
+      border-radius: 11px
+    }
+
+    .jdp .jh button {
+      font: inherit;
+      font-size: 18px;
+      line-height: 1;
+      width: 32px;
+      height: 32px;
+      flex: none;
+      border: 0;
+      border-radius: 10px;
+      background: var(--chip);
+      color: var(--blue);
+      cursor: pointer
+    }
+
+    .jdp .jh button:hover {
+      background: var(--steel)
+    }
+
+    .jdp .jg {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+      text-align: center
+    }
+
+    .jdp .jw {
+      font-size: 11.5px;
+      color: var(--dim);
+      padding: 4px 0
+    }
+
+    .jdp .jw.f,
+    .jdp .jd.f {
+      color: var(--bad)
+    }
+
+    .jdp .jd {
+      font: inherit;
+      font-size: 13px;
+      height: 33px;
+      border: 0;
+      border-radius: 11px;
+      background: transparent;
+      color: var(--navy);
+      cursor: pointer
+    }
+
+    .jdp .jd:hover:not(:disabled) {
+      background: var(--chip)
+    }
+
+    .jdp .jd.t {
+      box-shadow: inset 0 0 0 1.5px var(--steel);
+      font-weight: 700
+    }
+
+    .jdp .jd.on {
+      background: var(--blue);
+      color: #fff;
+      font-weight: 700
+    }
+
+    .jdp .jd:disabled {
+      opacity: .3;
+      cursor: not-allowed
+    }
+
+    .jdp .jf {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px
+    }
+
+    .jdp .jf button {
+      font: inherit;
+      font-size: 12.5px;
+      border: 0;
+      background: transparent;
+      color: var(--blue);
+      cursor: pointer;
+      padding: 5px 8px;
+      border-radius: 9px
+    }
+
+    .jdp .jf button:hover {
+      background: var(--chip)
+    }
+
+    /* ===== پیشنهاد خودکار جستجو ===== */
+    .sqw {
+      position: relative;
+      flex: 0 1 300px;
+      min-width: 180px
+    }
+
+    .sqw input {
+      max-width: none
+    }
+
+    .sug {
+      position: absolute;
+      top: calc(100% + 6px);
+      inset-inline: 0;
+      z-index: 60;
+      background: #fff;
+      border: 1px solid var(--card-b);
+      border-radius: 18px;
+      box-shadow: 0 14px 34px var(--shadow);
+      padding: 6px;
+      max-height: 340px;
+      overflow: auto
+    }
+
+    .sug button {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font: inherit;
+      font-size: 13.5px;
+      text-align: right;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      padding: 8px 11px;
+      border-radius: 12px;
+      cursor: pointer
+    }
+
+    .sug button:hover,
+    .sug button.on {
+      background: var(--mist)
+    }
+
+    .sug mark {
+      background: rgba(157, 183, 213, .5);
+      color: inherit;
+      border-radius: 4px;
+      padding: 0 1px
+    }
+
+    .sug small {
+      color: var(--dim);
+      font-size: 11.5px;
+      direction: ltr;
+      flex: none
+    }
+
+    .sug .none {
+      padding: 10px 12px;
+      color: var(--dim);
+      font-size: 13px
+    }
+
     .tag {
       display: inline-block;
       padding: 3px 10px;
@@ -1113,6 +1333,8 @@
       .ap-top,
       .seg,
       .abtn,
+      .jdp,
+      .sug,
       .chh label,
       #hDate {
         display: none !important
@@ -1228,7 +1450,7 @@
     <main class="ap-main">
       <div class="ap-top">
         <h2 id="title">داشبورد</h2>
-        <input id="sq" placeholder="🔍 جستجوی دانش‌آموز (نام یا کد ملی)">
+        <div class="sqw"><input id="sq" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugBox" placeholder="🔍 جستجوی دانش‌آموز (نام یا کد ملی)"><div class="sug hide" id="sugBox" role="listbox"></div></div>
         <span class="chipd hide-sm" id="date"></span>
         <a class="abtn ghost" href="index.html" style="text-decoration:none">صفحه‌ی اولیا</a><button class="abtn ghost"
           onclick="closePanel()">خروج از حساب</button>
@@ -1374,7 +1596,7 @@
         </div>
         <div class="panel-card" style="margin-top:14px">
           <div class="chh">
-            <h4>روزهای ثبت‌شده</h4><label class="muted">رفتن به تاریخ <input type="date" id="hDate"
+            <h4>روزهای ثبت‌شده</h4><label class="muted">رفتن به تاریخ <input type="text" class="jdate" readonly autocomplete="off" placeholder="انتخاب تاریخ" id="hDate"
                 style="width:auto"></label>
           </div>
           <table>
@@ -1460,8 +1682,7 @@
         <div class="panel-card" style="margin-top:14px">
           <h4>ثبت پرداخت جدید</h4>
           <div class="arow"><label>دانش‌آموز<select id="fStu"></select></label><label>مبلغ (تومان)<input id="fAmt"
-                inputmode="numeric" class="ltr" placeholder="5,000,000"></label><label>تاریخ پرداخت<input type="date"
-                id="fDate"></label></div>
+                inputmode="numeric" class="ltr" placeholder="5,000,000"></label><label>تاریخ پرداخت<input type="text" class="jdate" readonly autocomplete="off" placeholder="انتخاب تاریخ" id="fDate"></label></div>
           <div class="arow" style="margin-top:10px"><label>توضیح (اختیاری)<input id="fNote" maxlength="200"
                 placeholder="مثلاً قسط مهر"></label>
             <div><button type="button" class="abtn ghost" id="fRcBtn">📎 افزودن عکس رسید</button><input type="file"
@@ -1513,13 +1734,84 @@
         <div class="panel-card hide" id="qWarn"><b style="color:var(--bad)">جدول‌های قلمچی هنوز ساخته نشده‌اند.</b>
           <span class="muted">فایل supabase_qalamchi.sql را در SQL Editor سوپابیس اجرا کنید.</span>
         </div>
-        <div class="seg" id="qTabs" style="margin-bottom:14px"><button class="on" data-qt="att">✅ حضور و غیاب</button><button data-qt="fin">💰 مالی</button><button data-qt="ppl">👥 افراد</button></div>
+        <div class="seg" id="qTabs" style="margin-bottom:14px"><button class="on" data-qt="dash">📊 داشبورد</button><button data-qt="att">✅ حضور و غیاب</button><button data-qt="fin">💰 مالی</button><button data-qt="ppl">👥 افراد</button></div>
 
-        <div id="qt-att">
+        <div id="qt-dash">
+          <div class="panel-card hide" id="qdAlerts" style="margin-bottom:14px"></div>
+          <div class="stats" id="qdStats"></div>
+          <div class="g g3" style="margin-top:14px">
+            <div class="panel-card">
+              <h4>درصد حضور در هفته‌ی جاری</h4>
+              <div class="bars" id="qdBars"></div>
+            </div>
+            <div class="panel-card">
+              <h4>وضعیت امروز</h4>
+              <div class="dn">
+                <div id="qdDonut"></div>
+                <div class="dpct"><b id="qdDonutPct">۰٪</b><span>حضور</span></div>
+              </div>
+              <div class="lg"><span><i style="background:var(--ok)"></i>حاضر</span><span><i style="background:var(--late)"></i>تأخیر</span><span><i style="background:var(--bad)"></i>غایب</span></div>
+            </div>
+            <div class="dk">
+              <h4>دریافتی قلمچی (کل)</h4><big id="qdkPaid">۰</big>
+              <div class="r">
+                <div>کل شهریه<b id="qdkFee">۰</b></div>
+                <div>مانده<b id="qdkRem">۰</b></div>
+              </div>
+            </div>
+          </div>
+          <div class="panel-card" style="margin-top:14px">
+            <div class="chh">
+              <h4>نمودارهای پیشرفت</h4>
+              <div class="seg" id="qdRange"><button class="r" data-r="7">۷ روز</button><button class="r" data-r="14">۱۴ روز</button><button class="r" data-r="30">۳۰ روز</button></div>
+            </div>
+            <div class="g g2">
+              <div>
+                <div class="chh"><b style="font-size:14px;color:var(--blue)">درصد پیشرفت حضور</b></div>
+                <div class="ch" id="qdChAtt"></div>
+              </div>
+              <div>
+                <div class="chh"><b style="font-size:14px;color:var(--blue)">درصد تأخیر</b></div>
+                <div class="ch" id="qdChLate"></div>
+              </div>
+            </div>
+            <p class="muted" style="margin-top:8px">درصد حضور = (حاضر + تأخیر) نسبت به افراد ثبت‌شده‌ی آن روز. جمعه‌ها و روزهای بدون ثبت نمایش داده نمی‌شوند.</p>
+          </div>
+          <div class="panel-card" style="margin-top:14px">
+            <div class="chh">
+              <h4>آمار کلی روزهای گذشته</h4><button class="abtn ghost sm" id="qdToAtt">حضور و غیاب ←</button>
+            </div>
+            <div class="stats" id="qdSum"></div>
+          </div>
+          <div class="panel-card" style="margin-top:14px">
+            <h4>ماتریس حضور و غیاب هفته</h4>
+            <div class="mx" id="qdMx"></div>
+          </div>
+          <div class="g g2" style="margin-top:14px">
+            <div class="panel-card">
+              <h4>غایبین امروز</h4>
+              <div id="qdAbs" class="muted"></div>
+            </div>
+            <div class="panel-card">
+              <h4>بیشترین غیبت (۳۰ روز اخیر)</h4>
+              <div id="qdTop"></div>
+            </div>
+            <div class="panel-card">
+              <h4>آخرین پرداخت‌ها</h4>
+              <div id="qdPay"></div>
+            </div>
+            <div class="panel-card">
+              <h4>بیشترین مانده‌ی شهریه</h4>
+              <div id="qdDebt"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="qt-att" class="hide">
           <div class="stats" id="qStats"></div>
           <div class="panel-card" style="margin-top:14px">
             <div class="arow" style="margin-bottom:12px">
-              <label>تاریخ<input type="date" id="qDate"></label>
+              <label>تاریخ<input type="text" class="jdate" readonly autocomplete="off" placeholder="انتخاب تاریخ" id="qDate"></label>
               <button class="abtn ghost" id="qAllP">همه حاضر</button>
               <button class="abtn ghost" id="qToday">امروز</button>
             </div>
@@ -1535,7 +1827,7 @@
           <div class="stats" id="qfStats"></div>
           <div class="panel-card" style="margin-top:14px">
             <h4>ثبت پرداخت جدید (قلمچی)</h4>
-            <div class="arow"><label>نام<select id="qfStu"></select></label><label>مبلغ (تومان)<input id="qfAmt" inputmode="numeric" class="ltr" placeholder="5,000,000"></label><label>تاریخ پرداخت<input type="date" id="qfDate"></label></div>
+            <div class="arow"><label>نام<select id="qfStu"></select></label><label>مبلغ (تومان)<input id="qfAmt" inputmode="numeric" class="ltr" placeholder="5,000,000"></label><label>تاریخ پرداخت<input type="text" class="jdate" readonly autocomplete="off" placeholder="انتخاب تاریخ" id="qfDate"></label></div>
             <div class="arow" style="margin-top:10px"><label>توضیح (اختیاری)<input id="qfNote" maxlength="200" placeholder="مثلاً قسط مهر"></label></div>
             <button class="abtn" id="qfAdd" style="margin-top:12px">ثبت پرداخت</button>
           </div>
@@ -1656,6 +1948,122 @@
     const toast = t => {const x = $('#toast'); x.textContent = t; x.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => x.classList.remove('show'), 2400)};
     const fake = t => toast(t + ' (نمایشی) ارسال شد ✓');
     const safe = f => async function (...a) {try {return await f.apply(this, a)} catch (e) {if (e) console.error(e)} };
+/* ===================== تقویم شمسی (الگوریتم jalaali) ===================== */
+const JAL = (() => {
+  const div = (a, b) => ~~(a / b), mod = (a, b) => a - ~~(a / b) * b;
+  const BR = [-61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210, 1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178];
+  function jalCal(jy, noLeap) {
+    const gy = jy + 621; let leapJ = -14, jp = BR[0], jm, jump = 0, n, i;
+    for (i = 1; i < BR.length; i++) {jm = BR[i]; jump = jm - jp; if (jy < jm) break; leapJ += div(jump, 33) * 8 + div(mod(jump, 33), 4); jp = jm}
+    n = jy - jp; leapJ += div(n, 33) * 8 + div(mod(n, 33) + 3, 4);
+    if (mod(jump, 33) === 4 && jump - n === 4) leapJ++;
+    const leapG = div(gy, 4) - div((div(gy, 100) + 1) * 3, 4) - 150, march = 20 + leapJ - leapG;
+    if (noLeap) return {gy, march};
+    if (jump - n < 6) n = n - jump + div(jump + 4, 33) * 33;
+    let leap = mod(mod(n + 1, 33) - 1, 4); if (leap === -1) leap = 4;
+    return {leap, gy, march};
+  }
+  const g2d = (gy, gm, gd) => {let d = div((gy + div(gm - 8, 6) + 100100) * 1461, 4) + div(153 * mod(gm + 9, 12) + 2, 5) + gd - 34840408; return d - div(div(gy + 100100 + div(gm - 8, 6), 100) * 3, 4) + 752};
+  const d2g = jdn => {
+    let j = 4 * jdn + 139361631; j += div(div(4 * jdn + 183187720, 146097) * 3, 4) * 4 - 3908;
+    const i = div(mod(j, 1461), 4) * 5 + 308, gd = div(mod(i, 153), 5) + 1, gm = mod(div(i, 153), 12) + 1;
+    return {gy: div(j, 1461) - 100100 + div(8 - gm, 6), gm, gd};
+  };
+  const j2d = (jy, jm, jd) => {const r = jalCal(jy, true); return g2d(r.gy, 3, r.march) + (jm - 1) * 31 - div(jm, 7) * (jm - 7) + jd - 1};
+  function d2j(jdn) {
+    const gy = d2g(jdn).gy; let jy = gy - 621; const r = jalCal(jy, false), j1 = g2d(gy, 3, r.march); let k = jdn - j1, jm, jd;
+    if (k >= 0) {if (k <= 185) return {jy, jm: 1 + div(k, 31), jd: mod(k, 31) + 1}; k -= 186}
+    else {jy--; k += 179; if (r.leap === 1) k++}
+    jm = 7 + div(k, 30); jd = mod(k, 30) + 1; return {jy, jm, jd};
+  }
+  return {
+    /* 'YYYY-MM-DD' میلادی ← → {jy,jm,jd} */
+    toJ: k => {const [y, m, d] = k.split('-').map(Number); return d2j(g2d(y, m, d))},
+    toG: (jy, jm, jd) => {const g = d2g(j2d(jy, jm, jd)); return g.gy + '-' + String(g.gm).padStart(2, '0') + '-' + String(g.gd).padStart(2, '0')},
+    len: (jy, jm) => jm <= 6 ? 31 : jm <= 11 ? 30 : (jalCal(jy, false).leap === 0 ? 30 : 29),
+    /* روز هفته‌ی اولِ ماه: 0 = شنبه … 6 = جمعه */
+    dow: (jy, jm, jd) => mod(j2d(jy, jm, jd) + 2, 7)
+  };
+})();
+
+    const JM = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'], JWD = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
+    const jp2 = n => String(n).padStart(2, '0');
+    /* نمایش فارسی: ۱۴۰۵/۰۸/۱۵ ، و خروجی لاتین برای Excel و نام فایل: 1405/08/15 */
+    const jLabel = k => {if (!k) return ''; const j = JAL.toJ(k); return fa(j.jy + '/' + jp2(j.jm) + '/' + jp2(j.jd))};
+    const jPlain = (k, sep = '/') => {if (!k) return ''; const j = JAL.toJ(String(k).slice(0, 10)); return j.jy + sep + jp2(j.jm) + sep + jp2(j.jd)};
+
+    /* ===================== انتخابگر تاریخ شمسی (جایگزین input type=date) =====================
+       مقدار .value همیشه همان تاریخ میلادی ISO است (YYYY-MM-DD) تا بقیه‌ی کد و دیتابیس بدون تغییر کار کنند؛ کاربر فقط شمسی می‌بیند. */
+    const JDP = {el: null, y: 0, m: 0, pop: null};
+    function initJDate(el) {
+      let iso = '', max = '';
+      const setText = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+      Object.defineProperty(el, 'value', {get: () => iso, set: v => {iso = /^\d{4}-\d{2}-\d{2}$/.test(v || '') ? v : ''; setText.call(el, jLabel(iso))}, configurable: true});
+      Object.defineProperty(el, 'max', {get: () => max, set: v => {max = v || ''}, configurable: true});
+      el.addEventListener('click', () => JDP.el === el ? jdpClose() : jdpOpen(el));
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {e.preventDefault(); jdpOpen(el)}
+        else if (e.key === 'Escape') jdpClose();
+      });
+    }
+    function jdpOpen(el) {
+      jdpClose();
+      const j = JAL.toJ(el.value || (typeof D !== 'undefined' && D.today) || tehranToday());
+      JDP.el = el; JDP.y = j.jy; JDP.m = j.jm;
+      const pop = document.createElement('div'); pop.className = 'jdp'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'انتخاب تاریخ شمسی');
+      document.body.appendChild(pop); JDP.pop = pop; jdpDraw(); jdpPlace();
+    }
+    function jdpClose() {if (JDP.pop) JDP.pop.remove(); JDP.pop = null; JDP.el = null}
+    function jdpPlace() {
+      const r = JDP.el.getBoundingClientRect(), pop = JDP.pop, w = pop.offsetWidth, h = pop.offsetHeight;
+      let left = Math.min(Math.max(8, r.right - w), innerWidth - w - 8), top = r.bottom + 6;
+      if (top + h > innerHeight - 8) top = Math.max(8, r.top - h - 6);
+      pop.style.left = left + 'px'; pop.style.top = top + 'px';
+    }
+    function jdpDraw() {
+      const {el, y, m, pop} = JDP, sel = el.value, mx = el.max, td = (typeof D !== 'undefined' && D.today) || tehranToday();
+      const first = JAL.dow(y, m, 1), len = JAL.len(y, m), cy = JAL.toJ(td).jy;
+      const y0 = Math.min(y, cy) - 8, y1 = Math.max(y, cy) + 3;
+      let h = '<div class="jh"><button type="button" data-a="pm" aria-label="ماه قبل">›</button>' +
+        '<select data-a="m" aria-label="ماه">' + JM.map((n, i) => `<option value="${i + 1}"${i + 1 === m ? ' selected' : ''}>${n}</option>`).join('') + '</select>' +
+        '<select data-a="y" aria-label="سال">' + Array.from({length: y1 - y0 + 1}, (_, i) => y0 + i).map(v => `<option value="${v}"${v === y ? ' selected' : ''}>${fa(v)}</option>`).join('') + '</select>' +
+        '<button type="button" data-a="nm" aria-label="ماه بعد">‹</button></div><div class="jg">' +
+        JWD.map((d, i) => `<span class="jw${i === 6 ? ' f' : ''}">${d}</span>`).join('') + '<span></span>'.repeat(first);
+      for (let d = 1; d <= len; d++) {
+        const k = JAL.toG(y, m, d), off = mx && k > mx, col = (first + d - 1) % 7;
+        h += `<button type="button" class="jd${k === sel ? ' on' : ''}${k === td ? ' t' : ''}${col === 6 ? ' f' : ''}" data-k="${k}"${off ? ' disabled' : ''}>${fa(d)}</button>`;
+      }
+      h += '</div><div class="jf"><button type="button" data-a="today">امروز</button><button type="button" data-a="close">بستن</button></div>';
+      pop.innerHTML = h;
+    }
+    function jdpPick(k) {
+      const el = JDP.el; if (!el) return; jdpClose();
+      if (el.value !== k) {el.value = k; el.dispatchEvent(new Event('change', {bubbles: true}))}
+      el.focus({preventScroll: true});
+    }
+    document.addEventListener('mousedown', e => {if (JDP.pop && !JDP.pop.contains(e.target) && e.target !== JDP.el) jdpClose()});
+    document.addEventListener('keydown', e => {if (e.key === 'Escape' && JDP.pop) jdpClose()});
+    window.addEventListener('resize', jdpClose);
+    window.addEventListener('scroll', e => {if (JDP.pop && !JDP.pop.contains(e.target)) jdpClose()}, true);
+    document.addEventListener('click', e => {
+      if (!JDP.pop || !JDP.pop.contains(e.target)) return;
+      const b = e.target.closest('button'); if (!b) return;
+      if (b.dataset.k) return jdpPick(b.dataset.k);
+      const a = b.dataset.a;
+      if (a === 'pm' || a === 'nm') {JDP.m += a === 'nm' ? 1 : -1; if (JDP.m > 12) {JDP.m = 1; JDP.y++} if (JDP.m < 1) {JDP.m = 12; JDP.y--} jdpDraw()}
+      else if (a === 'today') {const t = (typeof D !== 'undefined' && D.today) || tehranToday(), mx = JDP.el.max; jdpPick(mx && t > mx ? mx : t)}
+      else if (a === 'close') jdpClose();
+    });
+    document.addEventListener('change', e => {
+      if (!JDP.pop || !JDP.pop.contains(e.target)) return;
+      const t = e.target; e.stopPropagation();
+      if (t.dataset.a === 'm') JDP.m = +t.value; else if (t.dataset.a === 'y') JDP.y = +t.value; else return;
+      jdpDraw();
+    }, true);
+
+    /* ===================== جستجو: مقایسه‌ی یکنواخت (ی/ک عربی، ارقام فارسی، نیم‌فاصله) ===================== */
+    const nz = s => normName(enDigits(s)).toLowerCase();
+    const matchQ = (text, q) => {const n = nz(q); return !n || nz(text).includes(n)};
 
     /* ===================== انیمیشن‌های کوتاه ===================== */
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1797,6 +2205,7 @@
     const titles = {fin: 'مالی پانسیون', qal: 'قلمچی', log: 'گزارش تغییرات', dash: 'داشبورد', hist: 'تاریخچه و آمار', att: 'حضور و غیاب', io: 'ورود و خروج', plan: 'برنامه‌ریزی', stu: 'دانش‌آموزان', sms: 'پیامک اولیا'};
     const WD = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'];
     function show(p) {
+      jdpClose(); if (typeof sugClose === 'function') sugClose();
       if (!can(p)) p = 'dash';
       $$('.ap-main section').forEach(s => s.classList.toggle('hide', s.id !== p));
       $$('#nav button').forEach(b => b.classList.toggle('on', b.dataset.p === p));
@@ -1805,7 +2214,7 @@
     $('#nav').onclick = e => {const b = e.target.closest('button'); if (b) show(b.dataset.p)};
     const S = () => D.students, Rc = id => D.rec[id] || {};
     const nm = id => (S().find(s => s.id == id) || {name: '؟'}).name;
-    const F = () => {const q = enDigits($('#sq').value || ''); return q ? S().filter(s => s.name.includes(q) || s.nid.includes(q)) : S()};
+    const F = () => {const q = $('#sq').value || ''; return nz(q) ? S().filter(s => matchQ(s.name, q) || matchQ(s.nid, q)) : S()};
     const ini = n => esc([...n.trim()][0] || '؟');
 
     function render() {
@@ -1947,7 +2356,7 @@
     $('#hDetail').onclick = e => {
       if (e.target.id === 'hClose') {HD = ''; hist()}
       const c = e.target.closest('[data-clr]'); if (c) {const id = +c.dataset.clr; setRecFast(id, stPatch(id, '', HD), HD); hist(); toast('وضعیت حذف شد')}
-      if (e.target.id === 'hCsv') {const rc = D.all[HD] || {}; csv('day-' + HD, [['نام', 'وضعیت', 'علت غیبت', 'ورود', 'خروج', 'مطالعه (دقیقه)', 'درس', 'تست', 'توضیح']].concat(S().map(q => {const r = rc[q.id] || {}; return [q.name, stTxt[r.st] || '', r.reason, r.in, r.out, r.study, r.lessons, r.tests, r.note]})))}
+      if (e.target.id === 'hCsv') {const rc = D.all[HD] || {}; csv('day-' + jPlain(HD, '-'), [['نام', 'وضعیت', 'علت غیبت', 'ورود', 'خروج', 'مطالعه (دقیقه)', 'درس', 'تست', 'توضیح']].concat(S().map(q => {const r = rc[q.id] || {}; return [q.name, stTxt[r.st] || '', r.reason, r.in, r.out, r.study, r.lessons, r.tests, r.note]})))}
     };
     $('#hDetail').addEventListener('change', safe(async e => {
       const i = e.target, id = +(i.dataset.id || i.dataset.reason); if (!id) return;
@@ -1963,7 +2372,7 @@
       S().forEach(q => {
         let p = 0, l = 0, m = 0, le = 0, t = 0; const a = {}; HLIST.forEach(x => {const r = recOf(q.id, x.k); if (r.st === 'p') p++; else if (r.st === 'l') l++; else if (r.st === 'a') {const k = r.reason || '-'; a[k] = (a[k] || 0) + 1} m += r.study || 0; le += r.lessons || 0; t += r.tests || 0});
         rows.push([q.name, p, l, a['مجاز'] || 0, a['غیرمجاز'] || 0, a['بیماری'] || 0, a['-'] || 0, m, le, t])
-      }); csv('karnameh-' + D.today, rows)
+      }); csv('karnameh-' + jPlain(D.today, '-'), rows)
     };
 
 
@@ -1979,7 +2388,7 @@
     function audit(t) {QUIET = true; db('POST', 'audit_log', [{actor: ACTOR, action: String(t).slice(0, 300)}], {Prefer: 'return=minimal'}).catch(() => { }).finally(() => {QUIET = false})}
     async function loadLog() {
       QUIET = true; let r = null; try {r = await db('GET', 'audit_log?select=*&order=id.desc&limit=200')} catch (e) { } finally {QUIET = false}
-      $('#logBody').innerHTML = r ? (r.length ? r.map(x => `<tr><td>${esc(new Date(x.at).toLocaleString('fa-IR', {timeZone: 'Asia/Tehran', dateStyle: 'short', timeStyle: 'short'}))}</td><td class="ltr">${esc(x.actor)}</td><td>${esc(x.action)}</td></tr>`).join('') : '<tr><td colspan="3" class="muted">هنوز تغییری ثبت نشده است.</td></tr>') : '<tr><td colspan="3" class="muted">جدول audit_log ساخته نشده؛ فایل supabase_update_v2.sql را اجرا کنید.</td></tr>'
+      $('#logBody').innerHTML = r ? (r.length ? r.map(x => `<tr><td>${esc(new Date(x.at).toLocaleString('fa-IR-u-ca-persian', {timeZone: 'Asia/Tehran', dateStyle: 'short', timeStyle: 'short'}))}</td><td class="ltr">${esc(x.actor)}</td><td>${esc(x.action)}</td></tr>`).join('') : '<tr><td colspan="3" class="muted">هنوز تغییری ثبت نشده است.</td></tr>') : '<tr><td colspan="3" class="muted">جدول audit_log ساخته نشده؛ فایل supabase_update_v2.sql را اجرا کنید.</td></tr>'
     }
     const recOf = (id, date) => ((D.all[date] || {})[id]) || {};
     const reasonSel = (id, v) => `<select data-reason="${id}" style="min-width:104px"><option value="">علت غیبت…</option>${REASONS.map(x => `<option${v === x ? ' selected' : ''}>${x}</option>`).join('')}</select>`;
@@ -2025,8 +2434,8 @@
         c('رسیدها', fa(rc) + ' / ' + fa(D.pay.length), 'پرداخت دارای عکس رسید') + c('وضعیت دانش‌آموزان', '', `تسویه ${fa(cn('تسویه'))} · ناقص ${fa(cn('پرداخت ناقص'))} · بدهکار ${fa(cn('بدهکار'))}`);
       const cur = $('#fStu').value; $('#fStu').innerHTML = S().map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join(''); if (cur && S().some(s => s.id == cur)) $('#fStu').value = cur;
       if (!$('#fDate').value) $('#fDate').value = D.today;
-      const q = enDigits($('#sq').value || ''), last = id => (D.pay.find(x => x.student_id == id) || {}).paid_on;
-      $('#fBody').innerHTML = A.filter(x => !q || x.s.name.includes(q) || x.s.nid.includes(q)).map(x => `<tr><td>${esc(x.s.name)}</td><td><input class="ltr" inputmode="numeric" data-fee="${x.s.id}" value="${x.s.fee ? x.s.fee.toLocaleString('en-US') : ''}" placeholder="0" style="min-width:110px"></td><td>${money(x.pd)}</td><td>${money(x.rem)}</td><td class="hide-sm"><div class="pb"><i style="width:${x.pct}%"></i></div></td><td><span class="pill ${x.c}">${x.t}</span></td><td class="hide-sm">${last(x.s.id) ? pf(last(x.s.id), {year: 'numeric', month: 'short', day: 'numeric'}) : '—'}</td></tr>`).join('') || '<tr><td colspan="7" class="muted">دانش‌آموزی یافت نشد.</td></tr>';
+      const q = $('#sq').value || '', last = id => (D.pay.find(x => x.student_id == id) || {}).paid_on;
+      $('#fBody').innerHTML = A.filter(x => matchQ(x.s.name, q) || matchQ(x.s.nid, q)).map(x => `<tr><td>${esc(x.s.name)}</td><td><input class="ltr" inputmode="numeric" data-fee="${x.s.id}" value="${x.s.fee ? x.s.fee.toLocaleString('en-US') : ''}" placeholder="0" style="min-width:110px"></td><td>${money(x.pd)}</td><td>${money(x.rem)}</td><td class="hide-sm"><div class="pb"><i style="width:${x.pct}%"></i></div></td><td><span class="pill ${x.c}">${x.t}</span></td><td class="hide-sm">${last(x.s.id) ? pf(last(x.s.id), {year: 'numeric', month: 'short', day: 'numeric'}) : '—'}</td></tr>`).join('') || '<tr><td colspan="7" class="muted">دانش‌آموزی یافت نشد.</td></tr>';
       $('#fPay').innerHTML = D.pay.slice(0, 150).map(x => `<tr><td>${pf(x.paid_on, {year: 'numeric', month: 'short', day: 'numeric'})}</td><td>${esc(nm(x.student_id))}</td><td>${money(x.amount)}</td><td class="hide-sm">${esc(x.note || '—')}</td><td>${x.receipt_path ? `<button class="abtn ghost sm" data-rc="${esc(x.receipt_path)}">مشاهده</button>` : '<span class="muted">ندارد</span>'}</td><td><button class="abtn danger sm" data-delpay="${x.id}">حذف</button></td></tr>`).join('') || '<tr><td colspan="6" class="muted">پرداختی ثبت نشده است.</td></tr>';
     }
     $('#fRcBtn').onclick = () => $('#fRc').click();
@@ -2059,8 +2468,8 @@
         audit('حذف پرداخت ' + nm(p.student_id) + ': ' + p.amount + ' تومان'); D.pay = D.pay.filter(x => x.id !== id); fin()
       }
     });
-    $('#fX1').onclick = () => csv('payment-status-' + D.today, [['نام', 'کل شهریه', 'پرداختی', 'مانده', 'وضعیت']].concat(S().map(x => {const f = finSt(x); return [x.name, x.fee, f.pd, f.rem, f.t]})));
-    $('#fX2').onclick = () => csv('payments-' + D.today, [['تاریخ (میلادی)', 'دانش‌آموز', 'مبلغ', 'توضیح', 'رسید']].concat(D.pay.map(x => [x.paid_on, nm(x.student_id), x.amount, x.note, x.receipt_path ? 'دارد' : 'ندارد'])));
+    $('#fX1').onclick = () => csv('payment-status-' + jPlain(D.today, '-'), [['نام', 'کل شهریه', 'پرداختی', 'مانده', 'وضعیت']].concat(S().map(x => {const f = finSt(x); return [x.name, x.fee, f.pd, f.rem, f.t]})));
+    $('#fX2').onclick = () => csv('payments-' + jPlain(D.today, '-'), [['تاریخ (شمسی)', 'دانش‌آموز', 'مبلغ', 'توضیح', 'رسید']].concat(D.pay.map(x => [jPlain(x.paid_on), nm(x.student_id), x.amount, x.note, x.receipt_path ? 'دارد' : 'ندارد'])));
 
     /* ===================== عملیات مدیر (همه با RLS روی Supabase) ===================== */
     const ABS = 'کل روز غایب بود';
@@ -2103,6 +2512,54 @@
       });
     }
     $('#sq').oninput = render;
+
+    /* ===================== پیشنهاد خودکار (Autocomplete) برای جستجو ===================== */
+    const SUG = {list: [], i: -1, skip: false};
+    function sugItems() {
+      const n = nz($('#sq').value || ''); if (!n) return [];
+      const inQ = curSec() === 'qal';
+      const src = inQ ? QS().map(x => ({name: x.name, sub: x.phone || ''})) : S().map(x => ({name: x.name, sub: x.nid || ''}));
+      const out = [];
+      src.forEach(x => {
+        const nn = nz(x.name), ix = nn.indexOf(n);
+        const sc = ix === 0 ? 0 : ix > 0 && nn[ix - 1] === ' ' ? 1 : ix > 0 ? 2 : (x.sub && nz(x.sub).includes(n) ? 3 : -1);
+        if (sc >= 0) out.push({...x, sc});
+      });
+      return out.sort((a, b) => a.sc - b.sc || a.name.localeCompare(b.name, 'fa')).slice(0, 8);
+    }
+    function sugMark(name, q) {
+      const n = nz(q), nn = nz(name), ix = nn.indexOf(n);
+      if (ix < 0 || nn.length !== name.length) return esc(name);
+      return esc(name.slice(0, ix)) + '<mark>' + esc(name.slice(ix, ix + n.length)) + '</mark>' + esc(name.slice(ix + n.length));
+    }
+    function sugDraw() {
+      const box = $('#sugBox'), q = $('#sq').value || '';
+      if (!nz(q)) return sugClose();
+      const L = SUG.list = sugItems(); SUG.i = -1;
+      box.innerHTML = L.length ? L.map((x, i) => `<button type="button" role="option" data-i="${i}"><span>${sugMark(x.name, q)}</span>${x.sub ? `<small>${fa(esc(x.sub))}</small>` : ''}</button>`).join('') : '<div class="none">موردی یافت نشد</div>';
+      box.classList.remove('hide'); $('#sq').setAttribute('aria-expanded', 'true');
+    }
+    function sugClose() {const b = $('#sugBox'); if (b) b.classList.add('hide'); const q = $('#sq'); if (q) q.setAttribute('aria-expanded', 'false'); SUG.i = -1}
+    function sugMove(d) {
+      const bs = $$('#sugBox button'); if (!bs.length) return;
+      SUG.i = (SUG.i + d + bs.length) % bs.length;
+      bs.forEach((b, i) => {b.classList.toggle('on', i === SUG.i); if (i === SUG.i) b.scrollIntoView({block: 'nearest'})});
+    }
+    function sugPick(i) {
+      const x = SUG.list[i]; if (!x) return;
+      $('#sq').value = x.name; sugClose();
+      SUG.skip = true; $('#sq').dispatchEvent(new Event('input')); SUG.skip = false; /* همان فیلتر معمول جدول را اجرا می‌کند */
+    }
+    $('#sq').addEventListener('input', () => {if (!SUG.skip) sugDraw()});
+    $('#sq').addEventListener('focus', () => {if (nz($('#sq').value || '')) sugDraw()});
+    $('#sq').addEventListener('blur', () => setTimeout(sugClose, 120));
+    $('#sq').addEventListener('keydown', e => {
+      const open = !$('#sugBox').classList.contains('hide');
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {if (!open) sugDraw(); e.preventDefault(); sugMove(e.key === 'ArrowDown' ? 1 : -1)}
+      else if (e.key === 'Enter' && open && SUG.i >= 0) {e.preventDefault(); sugPick(SUG.i)}
+      else if (e.key === 'Escape') sugClose();
+    });
+    $('#sugBox').addEventListener('mousedown', e => {const b = e.target.closest('button[data-i]'); if (b) {e.preventDefault(); sugPick(+b.dataset.i)}});
     $('#pStu').onchange = render;
     $('#tplAbs').oninput = $('#tplIO').oninput = render;
     $('#toSms').onclick = () => show('sms');
@@ -2217,7 +2674,7 @@
     });
 
     /* ===================== قلمچی (جدا از پانسیون: جدول‌های مستقل) ===================== */
-    let QTAB = 'att', QD = '';
+    let QTAB = 'dash', QD = '', QRNG = 14;
     const QS = () => D.q.students, qnm = id => (QS().find(x => x.id == id) || {name: '؟'}).name;
     const qRc = (id, k) => ((D.q.rec[k] || {})[id]) || '';
     const qPaid = id => D.q.pay.filter(x => x.student_id == id).reduce((a, x) => a + x.amount, 0);
@@ -2230,11 +2687,12 @@
     function qal() {
       if (!D.today || !can('qal')) return;
       $('#qWarn').classList.toggle('hide', D.q.ok);
-      ['att', 'fin', 'ppl'].forEach(t => $('#qt-' + t).classList.toggle('hide', t !== QTAB));
+      ['dash', 'att', 'fin', 'ppl'].forEach(t => $('#qt-' + t).classList.toggle('hide', t !== QTAB));
+      if (QTAB === 'dash') qDash();
       $$('#qTabs button').forEach(b => b.classList.toggle('on', b.dataset.qt === QTAB));
       if (!QD) QD = D.today;
       if (!$('#qDate').value) $('#qDate').value = QD;
-      const Q = QS(), q = enDigits($('#sq').value || ''), FQ = q ? Q.filter(x => x.name.includes(q)) : Q;
+      const Q = QS(), q = $('#sq').value || '', FQ = Q.filter(x => matchQ(x.name, q));
       /* ---- افراد ---- */
       $('#qPplBody').innerHTML = FQ.map(x => `<tr><td>${esc(x.name)}</td><td class="hide-sm ltr">${fa(esc(x.phone || '—'))}</td><td><button class="abtn danger sm" data-qdel="${x.id}">حذف</button></td></tr>`).join('') || '<tr><td colspan="3" class="muted">هنوز کسی ثبت نشده است.</td></tr>';
       /* ---- حضور و غیاب ---- */
@@ -2248,9 +2706,69 @@
       $('#qfStats').innerHTML = c('کل شهریه‌ها', money(fee), 'تومان', 'hl') + c('دریافتی', money(pd), fee ? fa(Math.min(100, Math.round(pd * 100 / fee))) + '٪ وصول‌شده' : '', 'ok') + c('مانده', money(A.reduce((a, x) => a + x.rem, 0)), 'تومان', 'bad') + c('وضعیت افراد', '', `تسویه ${fa(ca('تسویه'))} · ناقص ${fa(ca('پرداخت ناقص'))} · بدهکار ${fa(ca('بدهکار'))}`);
       const cur = $('#qfStu').value; $('#qfStu').innerHTML = Q.map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join(''); if (cur && Q.some(s => s.id == cur)) $('#qfStu').value = cur;
       if (!$('#qfDate').value) $('#qfDate').value = D.today;
-      $('#qfBody').innerHTML = A.filter(x => !q || x.s.name.includes(q)).map(x => `<tr><td>${esc(x.s.name)}</td><td><input class="ltr" inputmode="numeric" data-qfee="${x.s.id}" value="${x.s.fee ? x.s.fee.toLocaleString('en-US') : ''}" placeholder="0" style="min-width:110px"></td><td>${money(x.pd)}</td><td>${money(x.rem)}</td><td class="hide-sm"><div class="pb"><i style="width:${x.pct}%"></i></div></td><td><span class="pill ${x.c}">${x.t}</span></td></tr>`).join('') || '<tr><td colspan="6" class="muted">کسی یافت نشد.</td></tr>';
+      $('#qfBody').innerHTML = A.filter(x => matchQ(x.s.name, q)).map(x => `<tr><td>${esc(x.s.name)}</td><td><input class="ltr" inputmode="numeric" data-qfee="${x.s.id}" value="${x.s.fee ? x.s.fee.toLocaleString('en-US') : ''}" placeholder="0" style="min-width:110px"></td><td>${money(x.pd)}</td><td>${money(x.rem)}</td><td class="hide-sm"><div class="pb"><i style="width:${x.pct}%"></i></div></td><td><span class="pill ${x.c}">${x.t}</span></td></tr>`).join('') || '<tr><td colspan="6" class="muted">کسی یافت نشد.</td></tr>';
       $('#qfPay').innerHTML = D.q.pay.slice(0, 150).map(x => `<tr><td>${pf(x.paid_on, {year: 'numeric', month: 'short', day: 'numeric'})}</td><td>${esc(qnm(x.student_id))}</td><td>${money(x.amount)}</td><td class="hide-sm">${esc(x.note || '—')}</td><td><button class="abtn danger sm" data-qdelpay="${x.id}">حذف</button></td></tr>`).join('') || '<tr><td colspan="5" class="muted">پرداختی ثبت نشده است.</td></tr>';
     }
+
+    /* ---- داشبورد قلمچی (هم‌شکل داشبورد پانسیون؛ بر پایه‌ی حضور و غیاب و مالی قلمچی) ---- */
+    function qDayStat(k) {
+      const rc = D.q.rec[k] || {}, v = QS().map(x => rc[x.id] || ''), n = t => v.filter(y => y === t).length, p = n('p'), a = n('a'), l = n('l'), reg = p + a + l;
+      return {k, p, a, l, reg, has: reg > 0, att: reg ? Math.round((p + l) * 100 / reg) : null, late: reg ? Math.round(l * 100 / reg) : null};
+    }
+    function qDash() {
+      const days = D.week.days; if (!days.length) return;
+      const Q = QS(), T = Q.length, V = Q.map(x => qRc(x.id, D.today)), n = t => V.filter(y => y === t).length, p = n('p'), a = n('a'), l = n('l');
+      const pc2 = c => T ? fa(Math.round(c * 100 / T)) + '٪ از کل' : '—';
+      const st = (cls, t, b, sm) => `<div class="stat ${cls}"><span>${t}</span><b>${b}</b><small>${sm || '&nbsp;'}</small></div>`;
+      $('#qdStats').innerHTML = st('hl', 'کل افراد', fa(T), 'ثبت‌شده امروز: ' + fa(p + a + l)) + st('ok', 'حاضر', fa(p), pc2(p)) + st('bad', 'غایب', fa(a), pc2(a)) + st('late', 'تأخیر', fa(l), pc2(l)) + st('', 'ثبت‌نشده', fa(T - p - a - l), 'امروز');
+      /* هشدار: غیبت متوالی */
+      const ks = Object.keys(D.q.rec).filter(k => k <= D.today && noFri(k) && qDayStat(k).has).sort().reverse().slice(0, 12), al = [];
+      Q.forEach(s => {let c = 0; for (const k of ks) {if (qRc(s.id, k) === 'a') c++; else break} if (c >= 3) al.push('🔴 ' + esc(s.name) + ': ' + fa(c) + ' جلسه غیبت متوالی')});
+      const ae = $('#qdAlerts'); ae.classList.toggle('hide', !al.length);
+      ae.innerHTML = al.length ? '<h4>⚠️ هشدارها (' + fa(al.length) + ')</h4>' + al.slice(0, 10).map(t => `<div class="al">${t}</div>`).join('') : '';
+      /* ستون‌های هفته */
+      $('#qdBars').innerHTML = days.map((k, i) => {
+        const d = qDayStat(k), pct = d.att || 0, cls = k === D.today ? 't' : (!d.reg || k > D.today || i === 6 ? 'h' : ''), h = cls === 'h' ? 45 : Math.max(pct, 14);
+        return `<div class="bw"><div class="bz"><div class="bp ${cls}" style="height:${h}%" title="${WD[i]}: ${fa(pct)}٪">${cls === 'h' ? '' : fa(pct) + '٪'}</div></div>${WD[i]}</div>`
+      }).join('');
+      /* دونات */
+      let c = 0;
+      $('#qdDonut').innerHTML = '<svg viewBox="0 0 200 106"><path d="M20 100A80 80 0 0 1 180 100" fill="none" stroke="rgba(127,127,127,.25)" stroke-width="24" pathLength="100"/>' +
+        [[p, 'var(--ok)'], [l, 'var(--late)'], [a, 'var(--bad)']].map(([v, col]) => {const f = T ? v * 100 / T : 0, x = `<path d="M20 100A80 80 0 0 1 180 100" fill="none" stroke="${col}" stroke-width="24" pathLength="100" stroke-dasharray="${f} 100" stroke-dashoffset="${-c}"/>`; c += f; return x}).join('') + '</svg>';
+      $('#qdDonutPct').textContent = fa(T ? Math.round((p + l) * 100 / T) : 0) + '٪';
+      /* مالی */
+      const A = Q.map(s => ({s, ...qFinSt(s)})), fee = A.reduce((t, x) => t + x.s.fee, 0), pd = D.q.pay.reduce((t, x) => t + x.amount, 0);
+      $('#qdkPaid').textContent = money(pd); $('#qdkFee').textContent = money(fee); $('#qdkRem').textContent = money(A.reduce((t, x) => t + x.rem, 0));
+      /* نمودارها */
+      $$('#qdRange button').forEach(b => b.classList.toggle('on', +b.dataset.r === QRNG));
+      const L = lastDays(QRNG).map(qDayStat);
+      $('#qdChAtt').innerHTML = lineSVG(L.map(x => ({k: x.k, v: x.att})), '#14774a');
+      $('#qdChLate').innerHTML = lineSVG(L.map(x => ({k: x.k, v: x.late})), '#8f6208');
+      /* آمار روزهای گذشته */
+      const H = L.filter(x => x.has), sm = f => H.reduce((t, x) => t + x[f], 0), sc = (cls, t, b) => `<div class="stat sm ${cls}"><span>${t}</span><b>${b}</b><small>&nbsp;</small></div>`;
+      $('#qdSum').innerHTML = sc('hl', 'جلسه‌های ثبت‌شده', fa(H.length)) + sc('ok', 'میانگین حضور', pc(avg(H.map(x => x.att)))) + sc('bad', 'مجموع غیبت', fa(sm('a'))) + sc('late', 'مجموع تأخیر', fa(sm('l'))) + sc('', 'مجموع حضور', fa(sm('p')));
+      /* ماتریس هفته */
+      $('#qdMx').innerHTML = !T ? '<p class="muted">هنوز کسی در قلمچی ثبت نشده است.</p>' : '<div></div>' + days.map((k, i) => `<div class="dh ${k === D.today ? 't' : i === 6 ? 'w' : ''}">${WD[i]}<br>${pf(k, {day: 'numeric'})}</div>`).join('') +
+        Q.map(s => `<div class="pn"><span class="av">${ini(s.name)}</span>${esc(s.name)}</div>` + days.map((k, i) => {
+          const r = qRc(s.id, k);
+          return `<div class="c ${i === 6 ? 'w' : r} ${k === D.today ? 't' : ''}" title="${esc(s.name)}${r ? ' — ' + stTxt[r] : ''}"></div>`
+        }).join('')).join('');
+      /* غایبین امروز */
+      const ab = Q.filter(s => qRc(s.id, D.today) === 'a');
+      $('#qdAbs').innerHTML = ab.length ? ab.map(s => `<span class="tag">${esc(s.name)}</span>`).join('') : 'غایبی ثبت نشده است.';
+      /* بیشترین غیبت ۳۰ روز اخیر */
+      const from = addDays(D.today, -29), cnt = {};
+      Object.keys(D.q.rec).filter(k => k >= from && k <= D.today && noFri(k)).forEach(k => Q.forEach(s => {if (qRc(s.id, k) === 'a') cnt[s.id] = (cnt[s.id] || 0) + 1}));
+      const top = Object.entries(cnt).sort((x, y) => y[1] - x[1]).slice(0, 5);
+      $('#qdTop').innerHTML = top.length ? top.map(([id, c2]) => `<div class="li"><span class="av">${ini(qnm(id))}</span><b style="flex:1;font-weight:600;font-size:13.5px">${esc(qnm(id))}</b><span class="chip">${fa(c2)} روز غیبت</span></div>`).join('') : '<p class="muted">غیبتی ثبت نشده است.</p>';
+      /* پرداخت‌ها و مانده */
+      const rp = D.q.pay.slice(0, 4);
+      $('#qdPay').innerHTML = rp.length ? rp.map(x => `<div class="li"><div style="flex:1"><b style="font-size:13.5px">${esc(qnm(x.student_id))}</b><div class="muted">${pf(x.paid_on, {year: 'numeric', month: 'long', day: 'numeric'})}</div></div><span class="chip ok">${money(x.amount)} تومان</span></div>`).join('') : '<p class="muted">هنوز پرداختی ثبت نشده است.</p>';
+      const db2 = A.filter(x => x.rem > 0).sort((x, y) => y.rem - x.rem).slice(0, 5);
+      $('#qdDebt').innerHTML = db2.length ? db2.map(x => `<div class="li"><span class="av">${ini(x.s.name)}</span><b style="flex:1;font-weight:600;font-size:13.5px">${esc(x.s.name)}</b><span class="chip">${money(x.rem)} تومان</span></div>`).join('') : '<p class="muted">مانده‌ای وجود ندارد.</p>';
+    }
+    $('#qdRange').onclick = e => {const b = e.target.closest('button'); if (b) {QRNG = +b.dataset.r; qDash()}};
+    $('#qdToAtt').onclick = () => {QTAB = 'att'; qal(); animIn($('#qt-att'))};
     $('#qTabs').onclick = e => {const b = e.target.closest('button'); if (!b) return; QTAB = b.dataset.qt; qal(); animIn($('#qt-' + QTAB))};
     $('#qDate').onchange = () => {QD = $('#qDate').value || D.today; qal()};
     $('#qToday').onclick = () => {QD = D.today; $('#qDate').value = QD; qal()};
@@ -2310,8 +2828,10 @@
       await db('DELETE', 'qalamchi_payments?id=eq.' + id, undefined, {Prefer: 'return=minimal'});
       audit('قلمچی — حذف پرداخت ' + qnm(p.student_id) + ': ' + p.amount + ' تومان'); D.q.pay = D.q.pay.filter(x => x.id !== id); qal();
     });
-    $('#qfX1').onclick = () => csv('qalamchi-payment-status-' + D.today, [['نام', 'کل شهریه', 'پرداختی', 'مانده', 'وضعیت']].concat(QS().map(x => {const f = qFinSt(x); return [x.name, x.fee, f.pd, f.rem, f.t]})));
-    $('#qfX2').onclick = () => csv('qalamchi-payments-' + D.today, [['تاریخ (میلادی)', 'نام', 'مبلغ', 'توضیح']].concat(D.q.pay.map(x => [x.paid_on, qnm(x.student_id), x.amount, x.note])));
+    $('#qfX1').onclick = () => csv('qalamchi-payment-status-' + jPlain(D.today, '-'), [['نام', 'کل شهریه', 'پرداختی', 'مانده', 'وضعیت']].concat(QS().map(x => {const f = qFinSt(x); return [x.name, x.fee, f.pd, f.rem, f.t]})));
+    $('#qfX2').onclick = () => csv('qalamchi-payments-' + jPlain(D.today, '-'), [['تاریخ (شمسی)', 'نام', 'مبلغ', 'توضیح']].concat(D.q.pay.map(x => [jPlain(x.paid_on), qnm(x.student_id), x.amount, x.note])));
+
+    $$('.jdate').forEach(initJDate);
 
     /* ===================== شروع ===================== */
     if (getSess()) {$('#loginView').classList.add('hide'); openPanel().catch(() => showLogin())}

@@ -1997,14 +1997,14 @@
 
         <div id="qt-kan" class="hide">
           <div class="panel-card hide" id="kanWarn"><b style="color:var(--bad)">جدول حساب‌های کانون هنوز ساخته نشده است.</b>
-            <span class="muted">فایل supabase_kanoon.sql را در SQL Editor سوپابیس اجرا کنید.</span>
+            <span class="muted">فایل supabase_qalamchi_kanoon.sql را در SQL Editor سوپابیس اجرا کنید.</span>
           </div>
           <div class="stats" id="kanStats"></div>
           <div class="panel-card" style="margin-top:14px">
             <h4>نام کاربری و رمز عبور سایت کانون (kanoon.ir)</h4>
-            <p class="muted" style="margin-bottom:12px">برای هر دانش‌آموز نام کاربری و رمز عبور کانون را وارد و «ذخیره» کنید (یا Enter بزنید). اولیا با نام کامل و کد ملی دانش‌آموز در بخش «قلمچی» صفحه‌ی اصلی سایت آن‌ها را می‌بینند. برای یافتن دانش‌آموز از کادر جستجوی بالای صفحه (نام یا کد ملی) استفاده کنید.</p>
+            <p class="muted" style="margin-bottom:12px">برای هر نفر از لیست قلمچی نام کاربری و رمز عبور کانون را وارد و «ذخیره» کنید (یا Enter بزنید). اولیا با نام کامل و کد ملی دانش‌آموز در بخش «قلمچی» صفحه‌ی اصلی سایت آن‌ها را می‌بینند. برای یافتن دانش‌آموز از کادر جستجوی بالای صفحه (نام یا کد ملی) استفاده کنید.</p>
             <table>
-              <thead><tr><th>نام</th><th class="hide-sm">کد ملی</th><th>نام کاربری</th><th>رمز عبور</th><th></th></tr></thead>
+              <thead><tr><th>نام</th><th class="hide-sm">تماس</th><th>نام کاربری</th><th>رمز عبور</th><th></th></tr></thead>
               <tbody id="kanBody"></tbody>
             </table>
           </div>
@@ -2357,7 +2357,7 @@ const JAL = (() => {
         can('qal') ? tryAll('qalamchi_students?select=*&order=id') : Promise.resolve([]),
         can('qal') ? tryAll('qalamchi_records?select=*&order=date,student_id') : Promise.resolve([]),
         can('qal') ? tryAll('qalamchi_payments?select=*&order=paid_on.desc,id.desc') : Promise.resolve([]),
-        can('qal') ? tryAll('kanoon_accounts?select=*&order=student_id') : Promise.resolve([])]);
+        can('qal') ? tryAll('qalamchi_kanoon_accounts?select=*&order=student_id') : Promise.resolve([])]);
       const qrec = {}; (qr || []).forEach(r => {(qrec[r.date] || (qrec[r.date] = {}))[r.student_id] = r.st});
       const all = {}; rc.forEach(r => {(all[r.date] || (all[r.date] = {}))[r.student_id] = toC(r)});
       const wr = {}; days.forEach(k => wr[k] = all[k] || (all[k] = {}));
@@ -3031,22 +3031,22 @@ const JAL = (() => {
     $('#qfX2').onclick = () => csv('qalamchi-payments-' + jPlain(D.today, '-'), [['تاریخ (شمسی)', 'نام', 'مبلغ', 'توضیح']].concat(D.q.pay.map(x => [jPlain(x.paid_on), qnm(x.student_id), x.amount, x.note])));
 
 
-    /* ---- حساب کانون (نام کاربری و رمز عبور سایت kanoon.ir برای هر دانش‌آموز؛ نمایش به اولیا در صفحه‌ی اصلی) ---- */
+    /* ---- حساب کانون (نام کاربری و رمز عبور سایت kanoon.ir برای هر نفر از لیست قلمچی (جدول qalamchi_students)) ---- */
     function kanStats() {
-      const A = S(), n = A.filter(s => D.kan[s.id]).length;
-      $('#kanStats').innerHTML = `<div class="stat hl"><span>کل دانش‌آموزان</span><b>${fa(A.length)}</b></div><div class="stat ok"><span>حساب ثبت‌شده</span><b>${fa(n)}</b></div><div class="stat bad"><span>بدون حساب</span><b>${fa(A.length - n)}</b></div>`;
+      const A = QS(), n = A.filter(s => D.kan[s.id]).length;
+      $('#kanStats').innerHTML = `<div class="stat hl"><span>کل افراد قلمچی</span><b>${fa(A.length)}</b></div><div class="stat ok"><span>حساب ثبت‌شده</span><b>${fa(n)}</b></div><div class="stat bad"><span>بدون حساب</span><b>${fa(A.length - n)}</b></div>`;
     }
     const kanBtns = id => `<button class="abtn sm" data-ksave="${id}">ذخیره</button>${D.kan[id] ? ` <button class="abtn danger sm" data-kdel="${id}">پاک‌کردن</button>` : ''}`;
     function kanRender() {
       $('#kanWarn').classList.toggle('hide', D.kanOK); kanStats();
       const q = $('#sq').value || '', K = D.kan;
-      $('#kanBody').innerHTML = S().filter(s => matchQ(s.name, q) || matchQ(s.nid, q)).map(s => {
+      $('#kanBody').innerHTML = QS().filter(s => matchQ(s.name, q) || matchQ(s.phone, q)).map(s => {
         const k = K[s.id] || {};
-        return `<tr data-sid="${s.id}"><td>${esc(s.name)}</td><td class="hide-sm ltr">${fa(esc(s.nid))}</td>` +
+        return `<tr data-sid="${s.id}"><td>${esc(s.name)}</td><td class="hide-sm ltr">${fa(esc(s.phone || '—'))}</td>` +
           `<td><input class="ltr" data-k="u" maxlength="64" autocomplete="off" spellcheck="false" placeholder="نام کاربری" value="${esc(k.username || '')}" style="min-width:130px"></td>` +
           `<td><input class="ltr" data-k="p" maxlength="64" autocomplete="off" spellcheck="false" placeholder="رمز عبور" value="${esc(k.password || '')}" style="min-width:130px"></td>` +
           `<td style="white-space:nowrap">${kanBtns(s.id)}</td></tr>`;
-      }).join('') || '<tr><td colspan="5" class="muted">دانش‌آموزی پیدا نشد.</td></tr>';
+      }).join('') || '<tr><td colspan="5" class="muted">کسی در لیست قلمچی پیدا نشد.</td></tr>';
     }
     $('#kanBody').onclick = safe(async e => {
       const sv = e.target.closest('[data-ksave]'), dl = e.target.closest('[data-kdel]'); if (!sv && !dl) return;
@@ -3056,14 +3056,14 @@ const JAL = (() => {
         if (!u || !p) {toast('نام کاربری و رمز عبور هر دو باید وارد شوند'); return }
         sv.disabled = true;
         try {
-          await db('POST', 'kanoon_accounts?on_conflict=student_id', [{student_id: id, username: u, password: p, updated_at: new Date().toISOString()}], {Prefer: 'resolution=merge-duplicates,return=minimal'});
+          await db('POST', 'qalamchi_kanoon_accounts?on_conflict=student_id', [{student_id: id, username: u, password: p, updated_at: new Date().toISOString()}], {Prefer: 'resolution=merge-duplicates,return=minimal'});
           D.kan[id] = {username: u, password: p}; iu.value = u; ip.value = p;
-          audit('قلمچی — حساب کانون ذخیره شد: ' + nm(id)); tr.lastElementChild.innerHTML = kanBtns(id); kanStats(); toast('ذخیره شد');
+          audit('قلمچی — حساب کانون ذخیره شد: ' + qnm(id)); tr.lastElementChild.innerHTML = kanBtns(id); kanStats(); toast('ذخیره شد');
         } finally {sv.disabled = false}
       } else {
-        if (!confirm('نام کاربری و رمز عبور کانون «' + nm(id) + '» پاک شود؟')) return;
-        await db('DELETE', 'kanoon_accounts?student_id=eq.' + id, undefined, {Prefer: 'return=minimal'});
-        delete D.kan[id]; iu.value = ''; ip.value = ''; audit('قلمچی — حساب کانون پاک شد: ' + nm(id));
+        if (!confirm('نام کاربری و رمز عبور کانون «' + qnm(id) + '» پاک شود؟')) return;
+        await db('DELETE', 'qalamchi_kanoon_accounts?student_id=eq.' + id, undefined, {Prefer: 'return=minimal'});
+        delete D.kan[id]; iu.value = ''; ip.value = ''; audit('قلمچی — حساب کانون پاک شد: ' + qnm(id));
         tr.lastElementChild.innerHTML = kanBtns(id); kanStats(); toast('پاک شد');
       }
     });

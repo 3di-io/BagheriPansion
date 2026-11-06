@@ -71,7 +71,27 @@ td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:
 .plan p{white-space:pre-wrap;line-height:1.9;font-size:13.5px;margin-top:6px}.plan small{color:var(--dim);margin-inline-start:8px}
 .sum{font-size:14px;line-height:2;margin:10px 0 12px;color:var(--soft)}
 
-@media(max-width:520px){.row{grid-template-columns:1fr}}
+/* بخش قلمچی (کانون) */
+.kan-head{font:inherit;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;text-align:right;padding:0}
+.kan-head i{width:48px;height:48px;border-radius:15px;background:var(--chip);border:1px solid var(--card-b);display:grid;place-items:center;font-style:normal;font-size:22px;flex:none}
+.kan-head div{flex:1;min-width:0}.kan-head b{display:block;font-size:16px}.kan-head span{font-size:12.5px;color:var(--soft);line-height:1.8}
+.kan-head em{font-style:normal;font-size:22px;color:var(--soft);transition:transform .2s;transform:rotate(-90deg)}
+.kan-head[aria-expanded=true] em{transform:rotate(90deg)}
+#kBody{margin-top:16px;padding-top:16px;border-top:1px solid var(--card-b)}
+.k-msg{background:var(--chip);border:1px solid var(--card-b);border-radius:15px;padding:13px 14px;font-size:13.5px;line-height:2;color:var(--soft);margin-bottom:12px}
+.k-msg b{color:var(--text)}
+.k-cred{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+.k-box{background:var(--chip);border:1px solid var(--card-b);border-radius:15px;padding:12px 14px;min-width:0}
+.k-box span{font-size:12px;color:var(--soft);display:block;margin-bottom:6px}
+.k-box code{display:block;font-family:Consolas,Menlo,monospace;font-size:17px;font-weight:700;direction:ltr;text-align:left;word-break:break-all;user-select:all;-webkit-user-select:all;margin-bottom:8px}
+.k-box button{font:inherit;cursor:pointer;border:1px solid var(--input-b);background:#fff;color:var(--accent);border-radius:10px;padding:5px 12px;font-size:12.5px;font-weight:600}
+.k-box button:hover{background:var(--hover)}
+.k-warn{font-size:12.5px;color:var(--late);line-height:1.9;margin:8px 0 14px}
+.k-steps{padding-inline-start:22px;font-size:13.5px;line-height:2.1;color:var(--soft);margin-bottom:6px}
+.k-steps li::marker{font-weight:700;color:var(--accent)}.k-steps b{color:var(--text)}
+a.btn{display:block;text-align:center;text-decoration:none}
+
+@media(max-width:520px){.row{grid-template-columns:1fr}.k-cred{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -123,6 +143,44 @@ td{padding:9px 8px;border-bottom:1px solid var(--chip);vertical-align:middle}tr:
     </div>
   </div>
   </div>
+  <section class="card" id="kanoon">
+    <button type="button" class="kan-head" id="kHead" aria-expanded="false" aria-controls="kBody">
+      <i>📝</i>
+      <div><b>قلمچی (کانون)</b><span>نام کاربری و رمز عبور دانش‌آموز در سایت kanoon.ir</span></div>
+      <em aria-hidden="true">‹</em>
+    </button>
+    <div id="kBody" class="hide">
+      <form id="kf" autocomplete="off">
+        <div class="row">
+          <label class="f">نام و نام خانوادگی دانش‌آموز<input id="kq" placeholder="مثلاً علی رضایی" required></label>
+          <label class="f">کد ملی دانش‌آموز<input id="knid" inputmode="numeric" maxlength="10" class="ltr" placeholder="۱۰ رقم" required></label>
+        </div>
+        <button class="btn" id="kGo">مشاهده‌ی نام کاربری و رمز عبور</button>
+        <div class="err" id="kErr" role="alert"></div>
+      </form>
+      <div id="kRes" class="hide">
+        <div class="k-msg">
+          <b>اولیای محترم،</b> موارد زیر <b>نام کاربری</b> و <b>رمز عبور</b> دانش‌آموز <b id="kName"></b> در سایت کانون (قلم‌چی) است که مدرسه برای او ثبت کرده است.
+          با این دو مورد می‌توانید وارد <b>صفحه‌ی شخصی</b> دانش‌آموز در سایت کانون شوید و مواردی مانند کارنامه و نتایج آزمون‌ها را ببینید.
+        </div>
+        <div class="k-cred">
+          <div class="k-box"><span>نام کاربری</span><code id="kUser"></code><button type="button" data-copy="kUser">کپی</button></div>
+          <div class="k-box"><span>رمز عبور</span><code id="kPass"></code><button type="button" data-copy="kPass">کپی</button></div>
+        </div>
+        <p class="k-warn">لطفاً این اطلاعات را نزد خود نگه دارید و در اختیار دیگران قرار ندهید.</p>
+        <h3>مراحل ورود به صفحه‌ی شخصی در سایت کانون</h3>
+        <ol class="k-steps">
+          <li>وارد سایت کانون به آدرس <b class="ltr" style="display:inline-block">kanoon.ir</b> شوید (دکمه‌ی پایین همین کار را انجام می‌دهد).</li>
+          <li>از نوار بالای صفحه، گزینه‌ی <b>«صفحه شخصی شما»</b> را انتخاب کنید.</li>
+          <li>گزینه‌ی <b>«دانش‌آموزان کانونی»</b> (صفحه‌ی شخصی دانش‌آموزان) را بزنید.</li>
+          <li><b>نام کاربری</b> و <b>رمز عبور</b> بالا را در کادرهای مربوطه وارد کنید.</li>
+          <li>روی <b>«ورود»</b> بزنید تا صفحه‌ی شخصی دانش‌آموز باز شود.</li>
+        </ol>
+        <a class="btn" href="https://www.kanoon.ir" target="_blank" rel="noopener noreferrer">رفتن به سایت کانون (kanoon.ir)</a>
+        <p class="note" style="color:var(--dim)">اگر ورود با مشکل روبه‌رو شد، با مدرسه یا پشتیبان کانون تماس بگیرید.</p>
+      </div>
+    </div>
+  </section>
   <p class="note">اطلاعات هر دانش‌آموز فقط با نام کامل و کد ملی او نمایش داده می‌شود.</p>
   <footer class="credit"><i></i><span>طراحی و توسعه توسط تیم پشتیبانی دبیرستان باقری</span><i></i></footer>
 </div>
@@ -228,6 +286,44 @@ $('#f').onsubmit=async e=>{
   finally{b.disabled=false}
 };
 $('#wk').onchange=()=>load(+$('#wk').value).catch(()=>{$('#err').textContent='ارتباط با سرور برقرار نشد.'});
+
+/* ===================== قلمچی (کانون) ===================== */
+function kReset(){$('#kRes').classList.add('hide');['#kName','#kUser','#kPass'].forEach(s=>$(s).textContent='')}
+$('#kHead').onclick=()=>{
+  const open=$('#kHead').getAttribute('aria-expanded')!=='true';
+  $('#kHead').setAttribute('aria-expanded',open);$('#kBody').classList.toggle('hide',!open);
+  if(open){
+    if(!$('#kq').value&&$('#q').value)$('#kq').value=$('#q').value;
+    if(!$('#knid').value&&$('#nid').value)$('#knid').value=$('#nid').value;
+    animIn($('#kBody'));
+  }else{kReset();$('#kErr').textContent=''}
+};
+$('#kf').onsubmit=async e=>{
+  e.preventDefault();$('#kErr').textContent='';kReset();const b=$('#kGo');b.disabled=true;
+  try{
+    if(!CONFIGURED)throw new Error('cfg');
+    const r=await fetch(SB_URL+'/rest/v1/rpc/kanoon_lookup',{method:'POST',headers:{apikey:SB_KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({p_name:$('#kq').value,p_nid:$('#knid').value})});
+    const d=await r.json().catch(()=>null);
+    if(r.status===404)throw new Error('nofn');
+    if(!r.ok||!d)throw new Error('net');
+    if(d.error){
+      $('#kErr').textContent=d.error==='blocked'?'تعداد تلاش بیش از حد مجاز است. چند دقیقه بعد دوباره امتحان کنید.':d.error==='noaccount'?'برای این دانش‌آموز هنوز نام کاربری و رمز عبور قلمچی ثبت نشده است. لطفاً با مدرسه تماس بگیرید.':'دانش‌آموزی با این مشخصات پیدا نشد. نام کامل و کد ملی را دقیق وارد کنید.';
+      return;
+    }
+    $('#kName').textContent=d.name;$('#kUser').textContent=d.username;$('#kPass').textContent=d.password;
+    $('#kRes').classList.remove('hide');animIn($('#kRes'));
+  }catch(x){$('#kErr').textContent=x.message==='cfg'?'اتصال به Supabase تنظیم نشده است (SB_URL و SB_KEY در index.html).':x.message==='nofn'?'دیتابیس هنوز آماده نیست؛ فایل supabase_kanoon.sql را در Supabase اجرا کنید.':'ارتباط با سرور برقرار نشد.'}
+  finally{b.disabled=false}
+};
+$('#kRes').addEventListener('click',async e=>{
+  const b=e.target.closest('[data-copy]');if(!b)return;
+  const txt=$('#'+b.dataset.copy).textContent;let ok=false;
+  try{await navigator.clipboard.writeText(txt);ok=true}catch(_){
+    try{const r=document.createRange();r.selectNodeContents($('#'+b.dataset.copy));const s=getSelection();s.removeAllRanges();s.addRange(r);ok=document.execCommand('copy');s.removeAllRanges()}catch(__){}
+  }
+  const old=b.textContent;b.textContent=ok?'کپی شد ✓':'انتخاب و کپی کنید';setTimeout(()=>b.textContent=old,1600);
+});
 
 </script>
 </body>

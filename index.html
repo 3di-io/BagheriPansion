@@ -259,7 +259,7 @@ window.addEventListener('load',()=>{if(window.gsap&&window.SplitText)gsap.regist
 async function lookup(week){
   if(!CONFIGURED)throw new Error('cfg');
   const r=await fetch(SB_URL+'/rest/v1/rpc/parent_lookup',{method:'POST',headers:{apikey:SB_KEY,'Content-Type':'application/json'},
-    body:JSON.stringify({p_name:$('#q').value,p_nid:$('#nid').value,p_week:week})});
+    body:JSON.stringify({p_name:$('#q').value,p_nid:$('#nid').value})});
   const d=await r.json().catch(()=>null);
   if(r.status===404)throw new Error('nofn');
   if(!r.ok||!d)throw new Error('net');
@@ -314,16 +314,27 @@ $('#kf').onsubmit=async e=>{
     if(!CONFIGURED)throw new Error('cfg');
     const r=await fetch(SB_URL+'/rest/v1/rpc/kanoon_lookup',{method:'POST',headers:{apikey:SB_KEY,'Content-Type':'application/json'},
       body:JSON.stringify({p_name:$('#kq').value,p_nid:$('#knid').value})});
-    const d=await r.json().catch(()=>null);
+    let d=null;
+    try{d=await r.json()}catch(_){}
     if(r.status===404)throw new Error('nofn');
-    if(!r.ok||!d)throw new Error('net');
+    if(!r.ok){
+      /* نمایش دقیق خطای PostgREST برای عیب‌یابی */
+      console.error('kanoon_lookup HTTP',r.status,d);
+      const msg=(d&&(d.message||d.hint||d.details))||('HTTP '+r.status);
+      $('#kErr').textContent='خطا در ارتباط با پایگاه داده: '+msg;
+      return;
+    }
+    if(!d){$('#kErr').textContent='پاسخ خالی از سرور دریافت شد.';return}
     if(d.error){
       $('#kErr').textContent=d.error==='blocked'?'تعداد تلاش بیش از حد مجاز است. چند دقیقه بعد دوباره امتحان کنید.':d.error==='noaccount'?'برای این دانش‌آموز هنوز نام کاربری و رمز عبور قلمچی ثبت نشده است. لطفاً با مدرسه تماس بگیرید.':'دانش‌آموزی با این مشخصات پیدا نشد. نام کامل و کد ملی را دقیق وارد کنید.';
       return;
     }
     $('#kName').textContent=d.name;$('#kUser').textContent=d.username;$('#kPass').textContent=d.password;
     $('#kRes').classList.remove('hide');animIn($('#kRes'));
-  }catch(x){$('#kErr').textContent=x.message==='cfg'?'اتصال به Supabase تنظیم نشده است (SB_URL و SB_KEY در index.html).':x.message==='nofn'?'دیتابیس هنوز آماده نیست؛ فایل supabase_kanoon.sql را در Supabase اجرا کنید.':'ارتباط با سرور برقرار نشد.'}
+  }catch(x){
+    console.error('kanoon_lookup exception',x);
+    $('#kErr').textContent=x.message==='cfg'?'اتصال به Supabase تنظیم نشده است (SB_URL و SB_KEY در index.html).':x.message==='nofn'?'تابع kanoon_lookup در دیتابیس یافت نشد؛ فایل supabase_qalamchi_nid.sql را در Supabase اجرا کنید.':'ارتباط با سرور برقرار نشد.';
+  }
   finally{b.disabled=false}
 };
 $('#kRes').addEventListener('click',async e=>{

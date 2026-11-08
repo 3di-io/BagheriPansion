@@ -1839,9 +1839,9 @@
       <section id="tel" class="hide">
         <div class="panel-card">
           <h4>📞 دفتر تلفن اولیا — پانسیون</h4>
-          <div class="tbar"><span class="muted tnote"></span><div class="seg"><button data-tf="all">همه</button><button class="a" data-tf="a">غایب</button><button class="l" data-tf="l">تأخیر</button><button class="p" data-tf="p">حاضر</button><button data-tf="n">ثبت‌نشده</button></div><button class="abtn ghost sm" data-telprint="1">🖨️ چاپ / PDF</button></div>
+          <div class="tbar"><label class="muted" style="display:flex;align-items:center;gap:6px">تاریخ <input type="text" class="jdate teldate" readonly autocomplete="off" placeholder="انتخاب تاریخ" style="width:150px;padding:8px 12px"></label><button class="abtn ghost sm" data-teltoday="1">امروز</button><span class="muted tnote"></span><div class="seg"><button data-tf="all">همه</button><button class="a" data-tf="a">غایب</button><button class="l" data-tf="l">تأخیر</button><button class="p" data-tf="p">حاضر</button><button data-tf="n">ثبت‌نشده</button></div><button class="abtn ghost sm" data-telprint="1">🖨️ چاپ / PDF</button></div>
           <div class="tlist"></div>
-          <p class="muted" style="margin-top:10px">با لمس «تماس» در گوشی، شماره‌ی ولی مستقیم شماره‌گیری می‌شود. وضعیت حضور همان ثبت امروز در «حضور و غیاب» است؛ برای جستجو از کادر بالای صفحه استفاده کنید.</p>
+          <p class="muted" style="margin-top:10px">با لمس «تماس» در گوشی، شماره‌ی ولی مستقیم شماره‌گیری می‌شود. وضعیت حضور همان ثبت روزی است که در تقویم انتخاب کرده‌اید (پیش‌فرض امروز)؛ برای جستجو از کادر بالای صفحه استفاده کنید.</p>
         </div>
       </section>
 
@@ -2041,7 +2041,7 @@
         <div id="qt-tel" class="hide">
           <div class="panel-card">
             <h4>📞 دفتر تلفن — قلمچی</h4>
-            <div class="tbar"><span class="muted tnote"></span><div class="seg"><button data-tf="all">همه</button><button class="a" data-tf="a">غایب</button><button class="l" data-tf="l">تأخیر</button><button class="p" data-tf="p">حاضر</button><button data-tf="n">ثبت‌نشده</button></div><button class="abtn ghost sm" data-telprint="1">🖨️ چاپ / PDF</button></div>
+            <div class="tbar"><label class="muted" style="display:flex;align-items:center;gap:6px">تاریخ <input type="text" class="jdate teldate" readonly autocomplete="off" placeholder="انتخاب تاریخ" style="width:150px;padding:8px 12px"></label><button class="abtn ghost sm" data-teltoday="1">امروز</button><span class="muted tnote"></span><div class="seg"><button data-tf="all">همه</button><button class="a" data-tf="a">غایب</button><button class="l" data-tf="l">تأخیر</button><button class="p" data-tf="p">حاضر</button><button data-tf="n">ثبت‌نشده</button></div><button class="abtn ghost sm" data-telprint="1">🖨️ چاپ / PDF</button></div>
             <div class="tlist"></div>
             <p class="muted" style="margin-top:10px">در لیست قلمچی فقط یک «شماره‌ی تماس» برای هر نفر ثبت می‌شود (همان شماره‌ای که در «افراد» وارد کرده‌اید)؛ اگر خالی باشد دکمه‌ی تماس نمایش داده نمی‌شود.</p>
           </div>
@@ -3210,7 +3210,7 @@ const JAL = (() => {
     document.addEventListener('input', e => {const t = e.target; if (t && t.matches && t.matches(MONEY_SEL)) fmtMoneyInput(t)});
 
     /* ===================== دفتر تلفن اولیا (پانسیون و قلمچی) ===================== */
-    const TELF = {pan: 'all', qal: 'all'}, TELL = {all: 'همه', a: 'غایب', l: 'تأخیر', p: 'حاضر', n: 'ثبت‌نشده'};
+    const TELD = {pan: '', qal: ''}, TELF = {pan: 'all', qal: 'all'}, TELL = {all: 'همه', a: 'غایب', l: 'تأخیر', p: 'حاضر', n: 'ثبت‌نشده'};
     const telNum = v => enDigits(v).replace(/[^\d+]/g, '');
     function telRow(r) {
       const n = telNum(r.num);
@@ -3218,30 +3218,42 @@ const JAL = (() => {
       const call = n ? `<a class="abtn tcall" href="tel:${esc(n)}" aria-label="تماس با ${esc(r.name)}">📞 تماس</a>` : '<span class="muted" style="grid-column:2;grid-row:1 / span 2">بدون شماره</span>';
       return `<div class="trow"><div class="tnm"><b>${esc(r.name)}</b>${pill}</div><div class="tno ltr">${n ? fa(esc(n)) : '—'}</div>${call}</div>`;
     }
+    function telDate(k, root) {
+      const el = $(root + ' .teldate'); el.max = D.today;
+      if (!TELD[k]) TELD[k] = D.today; if (el.value !== TELD[k]) el.value = TELD[k];
+      return TELD[k];
+    }
     function telPaint(k, root, rows) {
       const f = TELF[k], cnt = {all: rows.length, a: 0, l: 0, p: 0, n: 0}; rows.forEach(r => cnt[r.st || 'n']++);
       const list = rows.filter(r => f === 'all' || (r.st || 'n') === f).sort((a, b) => a.name.localeCompare(b.name, 'fa'));
       $$(root + ' [data-tf]').forEach(b => {b.classList.toggle('on', b.dataset.tf === f); b.textContent = TELL[b.dataset.tf] + ' ' + fa(cnt[b.dataset.tf])});
-      $(root + ' .tnote').textContent = 'وضعیت امروز: ' + todayFa() + ' — ' + fa(list.length) + ' نفر';
+      $(root + ' .tnote').textContent = pf(TELD[k], {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) + ' — ' + fa(list.length) + ' نفر';
       $(root + ' .tlist').innerHTML = list.map(telRow).join('') || '<p class="muted">موردی پیدا نشد.</p>';
     }
     function tel() {
       if (!D.today || $('#tel').classList.contains('hide')) return;
-      telPaint('pan', '#tel', F().map(s => ({name: s.name, num: s.par, st: Rc(s.id).st || ''})));
+      const d = telDate('pan', '#tel'); telPaint('pan', '#tel', F().map(s => ({name: s.name, num: s.par, st: recOf(s.id, d).st || ''})));
     }
     function telQ() {
       if (!D.today) return;
       const q = $('#sq').value || '';
-      telPaint('qal', '#qt-tel', QS().filter(x => matchQ(x.name, q) || matchQ(x.nid, q) || matchQ(x.phone, q)).map(x => ({name: x.name, num: x.phone, st: qRc(x.id, D.today)})));
+      const d = telDate('qal', '#qt-tel'); telPaint('qal', '#qt-tel', QS().filter(x => matchQ(x.name, q) || matchQ(x.nid, q) || matchQ(x.phone, q)).map(x => ({name: x.name, num: x.phone, st: qRc(x.id, d)})));
     }
     document.addEventListener('click', e => {
       const f = e.target.closest('#tel [data-tf], #qt-tel [data-tf]');
       if (f) {const pan = !!f.closest('#tel'); TELF[pan ? 'pan' : 'qal'] = f.dataset.tf; pan ? tel() : telQ(); return}
+      const td = e.target.closest('[data-teltoday]');
+      if (td) {const pan = !!td.closest('#tel'); TELD[pan ? 'pan' : 'qal'] = D.today; pan ? tel() : telQ(); return}
       if (e.target.closest('[data-telprint]')) {
         const ap = $('#adminPanel'); ap.classList.add('tel-print');
         window.addEventListener('afterprint', () => ap.classList.remove('tel-print'), {once: true});
         window.print();
       }
+    });
+
+    document.addEventListener('change', e => {
+      const el = e.target; if (!el.classList || !el.classList.contains('teldate')) return;
+      const pan = !!el.closest('#tel'); TELD[pan ? 'pan' : 'qal'] = el.value || D.today; pan ? tel() : telQ();
     });
 
     /* ===================== بستن/بازکردن گزینه‌های پنل (حالت تمرکز برای حضور و غیاب) ===================== */

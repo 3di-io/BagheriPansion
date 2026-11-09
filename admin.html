@@ -1433,75 +1433,87 @@
       }
     }
 
+    /* ===== کشوی منو: در دسکتاپ نوار کناری ثابت، در موبایل کشوی راست‌به‌چپ تمام‌قد ===== */
+    .ap-head {display: flex; align-items: center; justify-content: space-between; gap: 8px}
+    .ap-close, .ap-foot, .ap-toggle, .ap-scrim {display: none}
+
     @media(max-width:960px) {
-      .admin-panel.open {
-        display: block
+      .admin-panel.open {display: block}
+      .ap-scrim {
+        display: block; position: fixed; inset: 0; z-index: 75; background: rgba(2, 8, 18, .62);
+        opacity: 0; pointer-events: none; transition: opacity .25s; -webkit-tap-highlight-color: transparent
       }
+      .admin-panel.nav-open .ap-scrim {opacity: 1; pointer-events: auto}
+      body.ap-lock {overflow: hidden}
 
       .ap-side {
-        position: fixed;
-        bottom: 0;
-        inset-inline: 0;
-        z-index: 5;
-        flex-direction: row;
-        padding: 6px;
-        border-radius: 22px 22px 0 0;
-        border-inline-end: 0;
-        border-top: 1px solid rgba(157, 183, 213, .25);
-        overflow-x: auto;
-        background: rgba(7, 22, 41, .94)
+        position: fixed; top: 0; bottom: 0; right: 0; left: auto; z-index: 80;
+        width: min(86vw, 340px); flex-direction: column; gap: 0; padding: 0; overflow: hidden;
+        border-radius: 0; border-inline-end: 0; border-left: 1px solid rgba(157, 183, 213, .28);
+        background: rgba(7, 22, 41, .97); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+        box-shadow: -18px 0 50px rgba(0, 0, 0, .45);
+        transform: translateX(104%); visibility: hidden;
+        transition: transform .28s cubic-bezier(.2, .8, .2, 1), visibility 0s linear .28s
       }
+      .admin-panel.nav-open .ap-side {transform: none; visibility: visible; transition: transform .28s cubic-bezier(.2, .8, .2, 1), visibility 0s}
 
-      .ap-brand {
-        display: none
+      .ap-head {flex: none; padding: calc(14px + env(safe-area-inset-top, 0px)) 16px 12px}
+      .ap-brand {display: block; padding: 0; font-size: 18px}
+      .ap-side .ap-close {
+        display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; font-size: 20px;
+        color: var(--snow); border: 1.5px solid rgba(157, 183, 213, .55); background: transparent; padding: 0
       }
+      .ap-side .ap-close:hover {background: var(--hover)}
 
-      .ap-sub {
-        display: contents
+      .ap-side #nav {
+        display: flex !important; flex-direction: column; gap: 8px; flex: 1; min-height: 0;
+        overflow-y: auto; overscroll-behavior: contain; padding: 6px 14px 12px
       }
+      .ap-side #nav button {
+        padding: 14px 16px; font-size: 15px; border-radius: 16px; margin: 0;
+        background: rgba(157, 183, 213, .09); color: var(--steel); flex: none; white-space: normal
+      }
+      .ap-side #nav button:hover {background: var(--hover); color: var(--snow)}
+      .ap-side #nav button.on {background: #dbe7f5; color: var(--navy); font-weight: 700}
+      .ap-side #nav button.grp {background: rgba(157, 183, 213, .16); color: var(--snow); font-weight: 700}
+      .ap-side #nav button.grp.act {background: rgba(157, 183, 213, .3)}
+      .ap-side #nav button.grp .chev {display: block}
+      .ap-sub {display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; padding-inline-start: 12px; border-inline-start: 2px solid rgba(157, 183, 213, .28)}
+      .ap-sub.closed {display: none}
+      .ap-sub button {font-size: 14.5px}
 
-      .ap-sub.closed {
-        display: none
+      .ap-foot {
+        display: flex; gap: 10px; flex: none; padding: 12px 14px calc(12px + env(safe-area-inset-bottom, 0px));
+        border-top: 1px solid rgba(157, 183, 213, .2)
       }
+      .ap-side .ap-fbtn {
+        flex: 1; display: grid; place-items: center; min-height: 48px; padding: 0 10px; border-radius: 999px; font: inherit; font-size: 14px; font-weight: 700;
+        text-decoration: none; cursor: pointer; color: var(--snow); background: rgba(157, 183, 213, .12); border: 1px solid rgba(157, 183, 213, .4)
+      }
+      .ap-side .ap-fbtn.out {color: #ff9a9a; background: transparent; border-color: rgba(255, 120, 120, .6)}
 
-      .ap-side button.grp {
-        margin-top: 0;
-        background: rgba(157, 183, 213, .18)
+      .ap-main {position: absolute; inset: 0; padding: calc(12px + env(safe-area-inset-top, 0px)) 12px 20px}
+      .ap-top {
+        background: rgba(7, 22, 41, .55); border: 1px solid rgba(157, 183, 213, .22); border-radius: 22px;
+        padding: 10px 14px; gap: 12px
       }
+      .ap-top h2 {font-size: 18px}
+      .ap-toggle {
+        display: grid; place-items: center; width: 44px; height: 44px; flex: none; padding: 0; border-radius: 50%; cursor: pointer;
+        color: var(--snow); border: 1px solid rgba(157, 183, 213, .4); background: rgba(157, 183, 213, .1)
+      }
+      .ap-toggle:hover {background: var(--hover)}
+      .ap-top .sqw {flex: 1 1 100%}
+      .ap-top input {max-width: none; width: 100%}
 
-      .ap-side button.grp .chev {
-        display: none
-      }
-
-      .ap-side button {
-        flex: 1;
-        flex-direction: column;
-        gap: 2px;
-        font-size: 11px;
-        padding: 8px 4px;
-        justify-content: center;
-        text-align: center;
-        white-space: nowrap
-      }
-
-      .ap-main {
-        position: absolute;
-        inset: 0;
-        padding-bottom: 90px
-      }
-
-      .g3,
-      .g2 {
-        grid-template-columns: 1fr
-      }
-
-      .stats {
-        grid-template-columns: repeat(2, 1fr)
-      }
-
-      .hide-sm {
-        display: none
-      }
+      .g3, .g2 {grid-template-columns: 1fr}
+      .stats {grid-template-columns: repeat(2, 1fr)}
+      .hide-sm {display: none}
+      .focus-fab, .admin-panel.focusmode .focus-fab {display: none !important}
+      #pTabs {display: none !important}
+      #qTabs, #yTabs {flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch}
+      #qTabs::-webkit-scrollbar, #yTabs::-webkit-scrollbar {display: none}
+      #qTabs button, #yTabs button {flex: none; white-space: nowrap}
     }
 
     @media(max-width:520px) {
@@ -1548,6 +1560,10 @@
     .admin-panel.focusmode .ap-main{padding-bottom:16px}
     .focus-fab{display:none;position:fixed;bottom:16px;inset-inline-start:16px;z-index:70;box-shadow:0 10px 30px var(--shadow);min-height:44px;align-items:center}
     .admin-panel.focusmode .focus-fab{display:inline-flex}
+    .ynote{border-bottom:1px solid var(--line);padding:12px 0}
+    .ynote:last-child{border-bottom:0}
+    .ynote p{white-space:pre-wrap;line-height:1.95;margin-top:6px;font-size:14px}
+    @media(max-width:960px){.admin-panel.focusmode .ap-side{display:flex !important}.admin-panel.focusmode{grid-template-columns:none}}
     @media print{
       .focus-fab{display:none !important}
       .pill{-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -1578,8 +1594,9 @@
   </main>
 
   <div class="admin-panel" id="adminPanel">
-    <aside class="ap-side">
-      <div class="ap-brand">⚙️ پنل مدیریت</div>
+    <div class="ap-scrim" id="apScrim"></div>
+    <aside class="ap-side" id="apSide" aria-label="منوی پنل مدیریت">
+      <div class="ap-head"><div class="ap-brand">⚙️ پنل مدیریت</div><button class="ap-close" id="apClose" type="button" aria-label="بستن منو">✕</button></div>
       <nav id="nav" style="display:contents">
         <button class="grp" data-g="pan" aria-expanded="true" aria-controls="grp-pan">🏫 <span>پانسیون</span><i class="chev">‹</i></button>
         <div class="ap-sub" id="grp-pan">
@@ -1605,16 +1622,18 @@
           <button data-p="qal" data-qt="kan">🔑 <span>حساب کانون</span></button>
         </div>
       </nav>
+      <div class="ap-foot"><a class="ap-fbtn" href="index.html">مشاهده سایت</a><button class="ap-fbtn out" type="button" onclick="closePanel()">خروج از پنل</button></div>
     </aside>
     <main class="ap-main">
       <div class="ap-top">
+        <button class="ap-toggle" id="apToggle" type="button" aria-label="باز کردن منو" aria-controls="apSide" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/></svg></button>
         <h2 id="title">داشبورد</h2>
         <div class="sqw"><input id="sq" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugBox" placeholder="🔍 جستجوی دانش‌آموز (نام یا کد ملی)"><div class="sug hide" id="sugBox" role="listbox"></div></div>
         <span class="chipd hide-sm" id="date"></span>
-        <button class="abtn ghost" id="focusBtn" type="button" aria-pressed="false" title="منو و میانبرها را می‌بندد تا صفحه برای کار (مثلاً حضور و غیاب) آزاد شود">✕ بستن گزینه‌ها</button>
-        <a class="abtn ghost" href="index.html" style="text-decoration:none">صفحه‌ی اولیا</a><button class="abtn ghost"
+        <button class="abtn ghost hide-sm" id="focusBtn" type="button" aria-pressed="false" title="منو و میانبرها را می‌بندد تا صفحه برای کار (مثلاً حضور و غیاب) آزاد شود">✕ بستن گزینه‌ها</button>
+        <a class="abtn ghost hide-sm" href="index.html" style="text-decoration:none">صفحه‌ی اولیا</a><button class="abtn ghost hide-sm"
           onclick="closePanel()">خروج از حساب</button>
-        <img class="ap-logo" src="assets/Logo.png" alt="لوگو" onerror="this.remove()">
+        <img class="ap-logo hide-sm" src="assets/Logo.png" alt="لوگو" onerror="this.remove()">
       </div>
 
       <div class="seg hide" id="pTabs"><button data-p="dash">📊 داشبورد</button><button data-p="att">✅ حضور و غیاب</button><button data-p="io">🚪 ورود و خروج</button><button data-p="stu">👥 دانش‌آموزان</button><button data-p="fin">💰 مالی</button></div>
@@ -2024,7 +2043,8 @@
             <div class="arow">
               <label>نام و نام خانوادگی<input id="qName" maxlength="100"></label>
               <label>کد ملی (برای دیدن حساب کانون توسط اولیا)<input id="qNid" inputmode="numeric" maxlength="10" class="ltr" placeholder="۱۰ رقم"></label>
-              <label>شماره تماس (اختیاری)<input id="qPhone" inputmode="tel" class="ltr" placeholder="09..."></label>
+              <label>شماره ولی دانش‌آموز (اختیاری)<input id="qPar" inputmode="tel" class="ltr" placeholder="09..."></label>
+              <label>شماره دانش‌آموز (اختیاری)<input id="qPhone" inputmode="tel" class="ltr" placeholder="09..."></label>
               <button class="abtn" id="qAdd">افزودن</button>
             </div>
             <p class="muted" style="margin-top:10px">این لیست کاملاً جدا از «دانش‌آموزان» پانسیون است و با آن یکی نمی‌شود.</p>
@@ -2032,7 +2052,7 @@
           <div class="panel-card" style="margin-top:14px">
             <h4>لیست قلمچی</h4>
             <table>
-              <thead><tr><th>نام</th><th>کد ملی</th><th class="hide-sm">تماس</th><th></th></tr></thead>
+              <thead><tr><th>نام</th><th>کد ملی</th><th>شماره ولی</th><th class="hide-sm">شماره دانش‌آموز</th><th></th></tr></thead>
               <tbody id="qPplBody"></tbody>
             </table>
           </div>
@@ -2043,7 +2063,7 @@
             <h4>📞 دفتر تلفن — قلمچی</h4>
             <div class="tbar"><label class="muted" style="display:flex;align-items:center;gap:6px">تاریخ <input type="text" class="jdate teldate" readonly autocomplete="off" placeholder="انتخاب تاریخ" style="width:150px;padding:8px 12px"></label><button class="abtn ghost sm" data-teltoday="1">امروز</button><span class="muted tnote"></span><div class="seg"><button data-tf="all">همه</button><button class="a" data-tf="a">غایب</button><button class="l" data-tf="l">تأخیر</button><button class="p" data-tf="p">حاضر</button><button data-tf="n">ثبت‌نشده</button></div><button class="abtn ghost sm" data-telprint="1">🖨️ چاپ / PDF</button></div>
             <div class="tlist"></div>
-            <p class="muted" style="margin-top:10px">در لیست قلمچی فقط یک «شماره‌ی تماس» برای هر نفر ثبت می‌شود (همان شماره‌ای که در «افراد» وارد کرده‌اید)؛ اگر خالی باشد دکمه‌ی تماس نمایش داده نمی‌شود.</p>
+            <p class="muted" style="margin-top:10px">دکمه‌ی تماس با «شماره ولی» (ثبت‌شده در تب «افراد») برقرار می‌شود؛ اگر شماره‌ی ولی خالی باشد، شماره‌ی دانش‌آموز استفاده می‌شود و اگر هیچ‌کدام نباشد دکمه‌ی تماس نمایش داده نمی‌شود.</p>
           </div>
         </div>
 
@@ -2364,7 +2384,7 @@ const JAL = (() => {
     const EMPTY = () => ({today: '', students: [], rec: {}, plans: [], all: {}, pay: [], finOK: true, week: {days: [], rec: {}}, kan: {}, kanOK: true, q: {students: [], rec: {}, pay: [], ok: true}});
     function setView(panel) {
       $('#loginView').classList.toggle('hide', panel);
-      $('#adminPanel').classList.toggle('open', panel);
+      $('#adminPanel').classList.toggle('open', panel); if (!panel) $('#adminPanel').classList.remove('nav-open');
       document.body.style.overflow = panel ? 'hidden' : '';
     }
     function showLogin() {setView(false); $('#adminLoginError').textContent = ''; setTimeout(() => $('#adminUsername').focus(), 50)}
@@ -2419,7 +2439,7 @@ const JAL = (() => {
         today, students: st.map(s => ({id: s.id, name: s.name, nid: s.nid, phone: s.phone || '', par: s.par, fee: +s.boarding_fee || 0})),
         plans: pl.map(p => ({id: p.id, sid: p.student_id, type: p.type, title: p.title, text: p.body, image: p.image_path || '', date: p.date})),
         all, pay: pay || [], finOK: pay !== null, week: {days, rec: wr}, rec: wr[today],
-        q: {students: (qs || []).map(x => ({id: x.id, name: x.name, phone: x.phone || '', nid: x.nid || '', fee: +x.fee || 0})), rec: qrec, pay: qp || [], ok: qs !== null && qr !== null && qp !== null},
+        q: {students: (qs || []).map(x => ({id: x.id, name: x.name, phone: x.phone || '', par: x.parent_phone || '', nid: x.nid || '', fee: +x.fee || 0})), rec: qrec, pay: qp || [], ok: qs !== null && qr !== null && qp !== null},
         kan: kanMap, kanOK: ka !== null
       };
       $('#date').textContent = todayFa();
@@ -2456,8 +2476,17 @@ const JAL = (() => {
       const b = e.target.closest('button'); if (!b) return;
       if (b.classList.contains('grp')) return openGrp(b.getAttribute('aria-expanded') === 'true' ? null : b.dataset.g);
       if (b.dataset.qt) QTAB = b.dataset.qt;
-      show(b.dataset.p);
+      apOpen(false); show(b.dataset.p);
     };
+    /* کشوی منو در موبایل: از سمت راست، تمام‌قد (مثل نوار کناری ویندوز) */
+    function apOpen(on) {
+      $('#adminPanel').classList.toggle('nav-open', !!on); $('#apToggle').setAttribute('aria-expanded', !!on);
+      document.body.classList.toggle('ap-lock', !!on);
+    }
+    $('#apToggle').onclick = () => apOpen(!$('#adminPanel').classList.contains('nav-open'));
+    $('#apClose').onclick = $('#apScrim').onclick = () => apOpen(false);
+    document.addEventListener('keydown', e => {if (e.key === 'Escape' && $('#adminPanel').classList.contains('nav-open')) apOpen(false)});
+    matchMedia('(min-width: 961px)').addEventListener('change', e => {if (e.matches) apOpen(false)});
     $('#pTabs').onclick = e => {const b = e.target.closest('button'); if (b) show(b.dataset.p)};
     const S = () => D.students, Rc = id => D.rec[id] || {};
     const nm = id => (S().find(s => s.id == id) || {name: '؟'}).name;
@@ -2945,11 +2974,11 @@ const JAL = (() => {
       $$('#qTabs button').forEach(b => b.classList.toggle('on', b.dataset.qt === QTAB));
       if (!QD) QD = D.today;
       if (!$('#qDate').value) $('#qDate').value = QD;
-      const Q = QS(), q = $('#sq').value || '', FQ = Q.filter(x => matchQ(x.name, q) || matchQ(x.nid, q) || matchQ(x.phone, q));
+      const Q = QS(), q = $('#sq').value || '', FQ = Q.filter(x => matchQ(x.name, q) || matchQ(x.nid, q) || matchQ(x.phone, q) || matchQ(x.par, q));
       /* ---- افراد ---- */
       $('#qPplBody').innerHTML = FQ.map(x => QEDIT === x.id
-        ? `<tr data-qrow="${x.id}"><td><input data-qe="name" maxlength="100" value="${esc(x.name)}" style="min-width:140px"></td><td><input class="ltr" data-qe="nid" inputmode="numeric" maxlength="10" placeholder="۱۰ رقم" value="${esc(x.nid)}" style="min-width:120px"></td><td class="hide-sm"><input class="ltr" data-qe="phone" inputmode="tel" placeholder="09..." value="${esc(x.phone)}" style="min-width:120px"></td><td style="white-space:nowrap"><button class="abtn sm" data-qsave="${x.id}">ذخیره</button> <button class="abtn ghost sm" data-qcancel="1">انصراف</button></td></tr>`
-        : `<tr><td>${esc(x.name)}</td><td class="ltr">${x.nid ? fa(esc(x.nid)) : '<span class="chip">ثبت نشده</span>'}</td><td class="hide-sm ltr">${fa(esc(x.phone || '—'))}</td><td style="white-space:nowrap"><button class="abtn ghost sm" data-qedit="${x.id}">ویرایش</button> <button class="abtn danger sm" data-qdel="${x.id}">حذف</button></td></tr>`).join('') || '<tr><td colspan="4" class="muted">هنوز کسی ثبت نشده است.</td></tr>';
+        ? `<tr data-qrow="${x.id}"><td><input data-qe="name" maxlength="100" value="${esc(x.name)}" style="min-width:140px"></td><td><input class="ltr" data-qe="nid" inputmode="numeric" maxlength="10" placeholder="۱۰ رقم" value="${esc(x.nid)}" style="min-width:120px"></td><td><input class="ltr" data-qe="par" inputmode="tel" placeholder="09..." value="${esc(x.par)}" style="min-width:120px"></td><td class="hide-sm"><input class="ltr" data-qe="phone" inputmode="tel" placeholder="09..." value="${esc(x.phone)}" style="min-width:120px"></td><td style="white-space:nowrap"><button class="abtn sm" data-qsave="${x.id}">ذخیره</button> <button class="abtn ghost sm" data-qcancel="1">انصراف</button></td></tr>`
+        : `<tr><td>${esc(x.name)}</td><td class="ltr">${x.nid ? fa(esc(x.nid)) : '<span class="chip">ثبت نشده</span>'}</td><td class="ltr">${fa(esc(x.par || '—'))}</td><td class="hide-sm ltr">${fa(esc(x.phone || '—'))}</td><td style="white-space:nowrap"><button class="abtn ghost sm" data-qedit="${x.id}">ویرایش</button> <button class="abtn danger sm" data-qdel="${x.id}">حذف</button></td></tr>`).join('') || '<tr><td colspan="5" class="muted">هنوز کسی ثبت نشده است.</td></tr>';
       /* ---- حضور و غیاب ---- */
       const v = Q.map(x => qRc(x.id, QD)), cn = t => v.filter(y => y === t).length;
       $('#qStats').innerHTML = `<div class="stat hl"><span>کل افراد</span><b>${fa(Q.length)}</b></div><div class="stat ok"><span>حاضر</span><b>${fa(cn('p'))}</b></div><div class="stat bad"><span>غایب</span><b>${fa(cn('a'))}</b></div><div class="stat late"><span>تأخیر</span><b>${fa(cn('l'))}</b></div><div class="stat"><span>ثبت‌نشده</span><b>${fa(v.filter(y => !y).length)}</b></div>`;
@@ -3028,11 +3057,11 @@ const JAL = (() => {
     $('#qDate').onchange = () => {QD = $('#qDate').value || D.today; qal()};
     $('#qToday').onclick = () => {QD = D.today; $('#qDate').value = QD; qal()};
     $('#qAdd').onclick = safe(async () => {
-      const name = normName($('#qName').value), phone = enDigits($('#qPhone').value), nid = enDigits($('#qNid').value);
-      if (name.length < 2 || (phone && !/^09\d{9}$/.test(phone)) || (nid && !/^\d{10}$/.test(nid))) {toast('نام را درست وارد کنید (کد ملی ۱۰ رقم و شماره‌ی تماس ۰۹… اختیاری)'); return }
-      const res = await db('POST', 'qalamchi_students', [{name, phone: phone || null, nid: nid || null}], {Prefer: 'return=representation'});
-      D.q.students.push({id: res[0].id, name: res[0].name, phone: res[0].phone || '', nid: res[0].nid || '', fee: 0});
-      audit('قلمچی — افزودن: ' + name); $('#qName').value = ''; $('#qPhone').value = ''; $('#qNid').value = ''; qal(); toast('به لیست قلمچی اضافه شد');
+      const name = normName($('#qName').value), phone = enDigits($('#qPhone').value), par = enDigits($('#qPar').value), nid = enDigits($('#qNid').value);
+      if (name.length < 2 || (phone && !/^09\d{9}$/.test(phone)) || (par && !/^09\d{9}$/.test(par)) || (nid && !/^\d{10}$/.test(nid))) {toast('نام را درست وارد کنید (کد ملی ۱۰ رقم؛ شماره‌ها به‌صورت ۰۹… و اختیاری)'); return }
+      const res = await db('POST', 'qalamchi_students', [{name, phone: phone || null, parent_phone: par || null, nid: nid || null}], {Prefer: 'return=representation'});
+      D.q.students.push({id: res[0].id, name: res[0].name, phone: res[0].phone || '', par: res[0].parent_phone || '', nid: res[0].nid || '', fee: 0});
+      audit('قلمچی — افزودن: ' + name); $('#qName').value = ''; $('#qPhone').value = ''; $('#qPar').value = ''; $('#qNid').value = ''; qal(); toast('به لیست قلمچی اضافه شد');
     });
     $('#qPplBody').onkeydown = e => {if (e.key === 'Enter' && e.target.matches('[data-qe]')) {e.preventDefault(); e.target.closest('tr').querySelector('[data-qsave]').click()} else if (e.key === 'Escape') {QEDIT = 0; qal()}};
     $('#qPplBody').onclick = safe(async e => {
@@ -3041,12 +3070,12 @@ const JAL = (() => {
       if (e.target.closest('[data-qcancel]')) {QEDIT = 0; qal(); return }
       if (sv) {
         const id = +sv.dataset.qsave, tr = sv.closest('tr'), g = k => tr.querySelector('[data-qe=' + k + ']').value;
-        const name = normName(g('name')), nid = enDigits(g('nid')), phone = enDigits(g('phone'));
-        if (name.length < 2 || (nid && !/^\d{10}$/.test(nid)) || (phone && !/^09\d{9}$/.test(phone))) {toast('نام، کد ملی (۱۰ رقم) و شماره‌ی تماس (۰۹…) را درست وارد کنید'); return }
+        const name = normName(g('name')), nid = enDigits(g('nid')), phone = enDigits(g('phone')), par = enDigits(g('par'));
+        if (name.length < 2 || (nid && !/^\d{10}$/.test(nid)) || (phone && !/^09\d{9}$/.test(phone)) || (par && !/^09\d{9}$/.test(par))) {toast('نام، کد ملی (۱۰ رقم) و شماره‌ها (۰۹…) را درست وارد کنید'); return }
         sv.disabled = true;
         try {
-          await db('PATCH', 'qalamchi_students?id=eq.' + id, {name, nid: nid || null, phone: phone || null}, {Prefer: 'return=minimal'});
-          Object.assign(QS().find(x => x.id === id), {name, nid, phone}); audit('قلمچی — ویرایش: ' + name); QEDIT = 0; qal(); toast('ذخیره شد');
+          await db('PATCH', 'qalamchi_students?id=eq.' + id, {name, nid: nid || null, phone: phone || null, parent_phone: par || null}, {Prefer: 'return=minimal'});
+          Object.assign(QS().find(x => x.id === id), {name, nid, phone, par}); audit('قلمچی — ویرایش: ' + name); QEDIT = 0; qal(); toast('ذخیره شد');
         } finally {sv.disabled = false}
         return
       }
@@ -3111,7 +3140,7 @@ const JAL = (() => {
     function kanRender() {
       $('#kanWarn').classList.toggle('hide', D.kanOK); kanStats();
       const q = $('#sq').value || '', K = D.kan;
-      $('#kanBody').innerHTML = QS().filter(s => matchQ(s.name, q) || matchQ(s.nid, q) || matchQ(s.phone, q)).map(s => {
+      $('#kanBody').innerHTML = QS().filter(s => matchQ(s.name, q) || matchQ(s.nid, q) || matchQ(s.phone, q) || matchQ(s.par, q)).map(s => {
         const k = K[s.id] || {};
         return `<tr data-sid="${s.id}"><td>${esc(s.name)}</td><td class="hide-sm ltr">${s.nid ? fa(esc(s.nid)) : '—'}</td>` +
           `<td><input class="ltr" data-k="u" maxlength="64" autocomplete="off" spellcheck="false" placeholder="نام کاربری" value="${esc(k.username || '')}" style="min-width:130px"></td>` +
@@ -3237,7 +3266,7 @@ const JAL = (() => {
     function telQ() {
       if (!D.today) return;
       const q = $('#sq').value || '';
-      const d = telDate('qal', '#qt-tel'); telPaint('qal', '#qt-tel', QS().filter(x => matchQ(x.name, q) || matchQ(x.nid, q) || matchQ(x.phone, q)).map(x => ({name: x.name, num: x.phone, st: qRc(x.id, d)})));
+      const d = telDate('qal', '#qt-tel'); telPaint('qal', '#qt-tel', QS().filter(x => matchQ(x.name, q) || matchQ(x.nid, q) || matchQ(x.phone, q) || matchQ(x.par, q)).map(x => ({name: x.name, num: x.par || x.phone, st: qRc(x.id, d)})));
     }
     document.addEventListener('click', e => {
       const f = e.target.closest('#tel [data-tf], #qt-tel [data-tf]');
@@ -3263,7 +3292,7 @@ const JAL = (() => {
       try {sessionStorage.setItem('sd_focus', on ? '1' : '')} catch (e) { }
     }
     $('#focusBtn').onclick = $('#focusFab').onclick = () => setFocusMode(!$('#adminPanel').classList.contains('focusmode'));
-    try {if (sessionStorage.getItem('sd_focus') === '1') setFocusMode(true)} catch (e) { }
+    try {if (sessionStorage.getItem('sd_focus') === '1' && !matchMedia('(max-width: 960px)').matches) setFocusMode(true)} catch (e) { }
 
     /* ===================== شروع ===================== */
     if (getSess()) {$('#loginView').classList.add('hide'); openPanel().catch(() => showLogin())}
